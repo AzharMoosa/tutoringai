@@ -1,0 +1,22 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": ["hi", "how are you", "hello", "hey", "good day", "whats up"],
+            "responses": ["Hello! How can I help you today?", "Hi there, how can I help you?"],
+            "context_set": ""
+        },
+        {
+            "tag": "name",
+            "patterns": ["what is your name?", "name", "who are you?", "what should i call you?"],
+            "responses": ["My name is MARC.", "You can call me MARC!", "I am MARC. Nice to meet you!"],
+            "context_set": ""
+        },
+        {
+            "tag": "goodbye",
+            "patterns": ["bye", "goodbye", "i'm going", "i have to go", "see you", "goodnight"],
+            "responses": ["Goodbye!", "Bye! It was nice speaking with you."],
+            "context_set": ""
+        }
+    ]
+}
