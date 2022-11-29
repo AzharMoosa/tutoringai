@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "postbuild": "cd frontend && npm i && npm run build"
+    }
+}
