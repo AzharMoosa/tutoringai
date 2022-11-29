@@ -5,11 +5,13 @@ from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 from backend.resources.chatbot_api import ChatbotAPI
+from flask_socketio import SocketIO, join_room, leave_room, send
 
 app = Flask(__name__, static_folder='frontend/build/static',
             template_folder='frontend/build')
 CORS(app)
 api = Api(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Setup Swagger UI
 app.config.update({
@@ -25,6 +27,22 @@ app.config.update({
 docs = FlaskApiSpec(app)
 
 
+@socketio.on('join')
+def on_join(data):
+    username, room = data["username"], data["room"]
+    join_room(room)
+    print(f"{username} has joined the {room}!")
+    send(username + ' has entered the room.', to=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    username, room = data["username"], data["room"]
+    leave_room(room)
+    print(f"{username} has left the {room}!")
+    send(username + ' has left the room.', to=room)
+
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 @cross_origin()
@@ -32,9 +50,10 @@ def serve(path):
     return render_template("index.html")
 
 
-api.add_resource(ChatbotAPI, "/chatbot")
+api.add_resource(ChatbotAPI, "/api/chatbot")
 docs.register(ChatbotAPI)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+    socketio.run(app)
