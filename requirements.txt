@@ -27,11 +27,12 @@ Markdown==3.4.1
 MarkupSafe==2.1.1
 marshmallow==3.19.0
 nltk==3.7
-numpy==1.23.5
+numpy==1.21.6
 oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==21.3
 Pillow==9.3.0
+pkg_resources==0.0.0
 protobuf==3.19.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -51,7 +52,7 @@ tensorflow-io-gcs-filesystem==0.28.0
 termcolor==2.1.1
 tflearn==0.5.0
 tqdm==4.64.1
-typing-extensions==4.4.0
+typing_extensions==4.4.0
 urllib3==1.26.13
 webargs==8.2.0
 Werkzeug==2.2.2
