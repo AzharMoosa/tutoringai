@@ -10,8 +10,8 @@ import nltk
 import random
 
 
-def load_intent():
-    return json.loads(open("intents/chatbot_intents.json").read())
+def load_intent(path="intents/chatbot_intents.json"):
+    return json.loads(open(path).read())
 
 
 def process_intents(intents):
