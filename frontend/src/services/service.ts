@@ -1,1 +1,1 @@
-export const TODO: String = "";
+export const TODO: String = '';

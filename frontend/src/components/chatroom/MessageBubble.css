@@ -1,0 +1,9 @@
+@import '../../assets/Constants.css';
+
+.message-bubble {
+  background-color: var(--secondary-light-bg);
+  width: 40%;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin: 0.8rem 0;
+}

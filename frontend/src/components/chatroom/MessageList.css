@@ -1,0 +1,11 @@
+@import '../../assets/Constants.css';
+
+.message-list {
+  display: flex;
+  background-color: var(--primary-bg);
+  flex-direction: column;
+  height: 80vh;
+  padding: 1.5rem 1rem;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
