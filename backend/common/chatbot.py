@@ -11,9 +11,9 @@ import os
 lemmatizer = WordNetLemmatizer()
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 intents = json.loads(open(f"{__location__}/intents/chatbot_intents.json").read())["intents"]
-words = pickle.load(open(f"{__location__}/words.pkl", "rb"))
-classes = pickle.load(open(f"{__location__}/classes.pkl", "rb"))
-model = load_model(f"{__location__}/chatbotmodel.h5")
+words = pickle.load(open(f"{__location__}/model/words.pkl", "rb"))
+classes = pickle.load(open(f"{__location__}/model/classes.pkl", "rb"))
+model = load_model(f"{__location__}/model/chatbotmodel.h5")
 
 def parse_text(text):
     """

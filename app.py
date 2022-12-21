@@ -5,6 +5,7 @@ from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 from backend.resources.chatbot_api import ChatbotAPI
+from backend.resources.chatroom_api import ChatRoomAPI
 from flask_socketio import SocketIO, join_room, leave_room, send
 
 app = Flask(__name__, static_folder='frontend/build/static',
@@ -34,7 +35,6 @@ app.config.update({
 })
 docs = FlaskApiSpec(app)
 
-
 @socketio.on('join')
 def on_join(data):
     username, room = data["username"], data["room"]
@@ -60,7 +60,8 @@ def serve(path):
 
 api.add_resource(ChatbotAPI, "/api/chatbot")
 docs.register(ChatbotAPI)
-
+api.add_resource(ChatRoomAPI, "/api/chatroom")
+docs.register(ChatRoomAPI)
 
 if __name__ == "__main__":
     app.run(debug=True)

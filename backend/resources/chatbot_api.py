@@ -5,6 +5,7 @@ from marshmallow import Schema, fields
 from pymongo import MongoClient
 from backend.resources.db import client
 from backend.common.chatbot import Chatbot
+import traceback
 
 class ChatbotResponseSchema(Schema):
     output_text = fields.Str(default="I don't understand the question. Please try again.")
@@ -20,5 +21,6 @@ class ChatbotAPI(MethodResource, Resource):
         try:
             output_text = Chatbot.generate_response(input_text)
             return { 'output_text': output_text }
-        except:
-            return { 'error': "Server Error. Please try again!" }
+        except Exception:
+            traceback.print_exc()
+            return { 'error': "Server Error. There was a problem with your request, please try again." }
