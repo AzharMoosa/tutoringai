@@ -8,6 +8,7 @@ const MessageList = ({ messageList }: { messageList: Array<Message> }) => {
     <div className="message-list">
       {messageList.map(({ messageContent, fromChatbot }) => (
         <MessageBubble
+          key={Math.random()}
           messageContent={messageContent}
           fromChatbot={fromChatbot}
         />
