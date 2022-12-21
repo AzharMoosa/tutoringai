@@ -8,11 +8,12 @@ from nltk.stem import WordNetLemmatizer
 import json
 import nltk
 import random
-
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 def load_intent(path="intents/chatbot_intents.json"):
     return json.loads(open(path).read())
-
 
 def process_intents(intents):
     words = []

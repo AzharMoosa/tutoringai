@@ -13,6 +13,14 @@ CORS(app)
 api = Api(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+# Setup DB
+try:
+    from backend.resources.db import client
+    print("Connected to MongoDB")
+except Exception:
+    print("Failed to connect to DB")
+    exit()
+
 # Setup Swagger UI
 app.config.update({
     'APISPEC_SPEC': APISpec(
