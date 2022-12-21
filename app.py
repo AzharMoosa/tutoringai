@@ -7,6 +7,7 @@ from flask_apispec.extension import FlaskApiSpec
 from backend.resources.chatbot_api import ChatbotAPI
 from backend.resources.chatroom_api import ChatRoomAPI
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
+from backend.common.chatbot import Chatbot
 
 app = Flask(__name__, static_folder='frontend/build/static',
             template_folder='frontend/build')
@@ -54,7 +55,7 @@ def on_leave(data):
 def on_message(data):
     username, message, room = data["username"], data["message"], data["room"]
     print(f"{username} sent: {message} to room: {room}!")
-    emit("recieved_message", { "message": f"Success Message" }, to=room)
+    emit("recieved_message", { "message": Chatbot.generate_response(message) }, to=room)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

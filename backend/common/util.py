@@ -99,3 +99,6 @@ def train_chatbot():
     train_model(train_x, train_y)
 
     print("Successfully Trained Chatbot!")
+
+if __name__ == "__main__":
+    train_chatbot()

@@ -57,7 +57,7 @@ const ChatRoom = () => {
 
   const sendMessage = (messageContent: string) => {
     setMessageList([...messageList, { messageContent, fromChatbot: false }]);
-    socket.emit('message', { username: 'test', message: 'message', room: '1' });
+    socket.emit('message', { username: 'test', message: messageContent, room: '1' });
   };
 
   return (
