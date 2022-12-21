@@ -63,7 +63,6 @@ def on_message(data):
 def serve(path):
     return render_template("index.html")
 
-
 api.add_resource(ChatbotAPI, "/api/chatbot")
 docs.register(ChatbotAPI)
 api.add_resource(ChatRoomAPI, "/api/chatroom")
