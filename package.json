@@ -1,5 +1,5 @@
 {
-    "scripts": {
-        "postbuild": "cd frontend && npm i && npm run build"
-    }
+  "scripts": {
+    "heroku-postbuild": "cd frontend && npm i && npm run build"
+  }
 }
