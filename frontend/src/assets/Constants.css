@@ -1,6 +1,8 @@
 :root {
-  --primary-bg: #565656;
-  --secondary-bg: #10ac84;
-  --primary-light-bg: #576574;
-  --secondary-light-bg: #1dd1a1;
+  --grey: #eeeff1;
+  --black: #0d0d0d;
+  --white: #ffffff;
+  --light-grey: #b2b2b2;
+  --light-black: #404040;
+  --blue: #0084be;
 }

@@ -4,8 +4,85 @@
   box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@font-face {
+  font-family: 'Gilroy-Regular';
+  src: url('fonts/Gilroy-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: url('fonts/Gilroy-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy-Medium';
+  src: url('fonts/Gilroy-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy-Black';
+  src: url('fonts/Gilroy-Black.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy-SemiBold';
+  src: url('fonts/Gilroy-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy-Light';
+  src: url('fonts/Gilroy-Light.ttf');
+}
+
+html {
+  height: 100%;
+}
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Gilroy-Regular';
+  height: 100%;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  height: 100%;
+}
+
+#title {
+  font-family: 'Gilroy-Bold';
+  color: var(--black);
+  font-size: 42px;
+}
+
+#title span {
+  color: var(--blue);
+}
+
+.btn-small {
+  font-family: 'Gilroy-Regular';
+  font-size: 19px;
+  padding: 1rem 3.5rem;
+  border-radius: 43px;
+  background-color: var(--black);
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.btn-primary,
+.btn-secondary {
+  font-family: 'Gilroy-Regular';
+  font-size: 29px;
+  padding: 1.5rem 3rem;
+  border-radius: 43px;
+}
+
+.btn-primary {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--black);
 }

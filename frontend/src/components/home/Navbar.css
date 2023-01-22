@@ -1,0 +1,11 @@
+.navbar-items {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.navbar-items h2 {
+  font-size: 27px;
+  color: var(--black);
+  font-family: 'Gilroy-SemiBold';
+}

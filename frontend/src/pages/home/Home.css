@@ -1,0 +1,48 @@
+@import '../../assets/Constants.css';
+
+.landing-page {
+  height: 100%;
+}
+
+.silver-bg {
+  height: 100%;
+  background: linear-gradient(var(--grey) 95%, transparent 40%) no-repeat;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 5rem 0 4rem 0;
+  align-items: center;
+}
+
+#home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#home h1 {
+  font-family: 'Gilroy-SemiBold';
+  font-size: 106px;
+  text-align: center;
+  margin: 4rem 0;
+}
+
+#home h3 {
+  margin: 2rem 0;
+  font-family: 'Gilroy-Light';
+  font-size: 34px;
+  width: 75%;
+  text-align: center;
+}
+
+.button-layout {
+  margin: 3rem 0;
+  padding-bottom: 15rem;
+}
+
+.button-layout .btn-primary {
+  margin-right: 1rem;
+}
