@@ -1,4 +1,5 @@
 import React from 'react';
+import './FeatureBox.css';
 
 interface FeatureBoxStyle {
   title: string;
@@ -6,7 +7,12 @@ interface FeatureBoxStyle {
 }
 
 const FeatureBox = ({ title, textContent }: FeatureBoxStyle) => {
-  return <div>FeatureBox</div>;
+  return (
+    <div className="feature-box">
+      <h2>{title}</h2>
+      <p>{textContent}</p>
+    </div>
+  );
 };
 
 export default FeatureBox;

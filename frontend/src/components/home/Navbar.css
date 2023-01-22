@@ -4,8 +4,9 @@
   width: 40%;
 }
 
-.navbar-items h2 {
+.navbar-items a {
   font-size: 27px;
   color: var(--black);
   font-family: 'Gilroy-SemiBold';
+  text-decoration: none;
 }

@@ -1,0 +1,15 @@
+.feature-box {
+  border-radius: 31px;
+  border: 1px solid var(--black);
+  padding: 2rem 2.5rem;
+}
+
+.feature-box h2 {
+  font-family: 'Gilroy-SemiBold';
+  font-size: 30px;
+  margin-bottom: 1rem;
+}
+
+.feature-box p {
+  font-size: 18px;
+}

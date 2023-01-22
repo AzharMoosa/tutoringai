@@ -1,0 +1,29 @@
+.info-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 33px;
+  border: 1px solid var(--black);
+  padding: 1rem;
+  width: 430px;
+}
+
+.info-box h2 {
+  font-family: 'Gilroy-SemiBold';
+  font-size: 53px;
+  text-align: center;
+}
+
+.info-icon {
+  margin: 2rem 0;
+  width: 100px;
+  height: 100px;
+}
+
+.info-box p {
+  font-family: 'Gilroy-Regular';
+  font-size: 27px;
+  width: 95%;
+  text-align: center;
+  color: var(--black);
+}

@@ -36,17 +36,17 @@ const Home = () => {
           <div id="about">
             <InfoBox
               title="Box 1"
-              icon=""
+              icon="robot"
               textContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel vestibulum ante. Vivamus aliquet a libero ut cursus. Mauris ullamcorper posuere ex non ultricies. Aliquam congue mi finibus pharetra finibus."
             />
             <InfoBox
               title="Box 2"
-              icon=""
+              icon="message"
               textContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel vestibulum ante. Vivamus aliquet a libero ut cursus. Mauris ullamcorper posuere ex non ultricies. Aliquam congue mi finibus pharetra finibus."
             />
             <InfoBox
               title="Box 3"
-              icon=""
+              icon="repeat"
               textContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel vestibulum ante. Vivamus aliquet a libero ut cursus. Mauris ullamcorper posuere ex non ultricies. Aliquam congue mi finibus pharetra finibus."
             />
           </div>
@@ -106,7 +106,7 @@ const Home = () => {
             }}
           />
           <ServiceInfo
-            title="Heading One"
+            title="Heading Two"
             subHeading={
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel '
             }
@@ -128,10 +128,10 @@ const Home = () => {
             flipped={true}
           />
         </div>
+      </div>
 
-        <div id="contact">
-          <Footer />
-        </div>
+      <div id="contact">
+        <Footer />
       </div>
     </div>
   );

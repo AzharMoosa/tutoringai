@@ -6,7 +6,7 @@
 
 .silver-bg {
   height: 100%;
-  background: linear-gradient(var(--grey) 95%, transparent 40%) no-repeat;
+  background: linear-gradient(var(--grey) 85%, transparent 40%) no-repeat;
 }
 
 .navbar {
@@ -40,9 +40,48 @@
 
 .button-layout {
   margin: 3rem 0;
-  padding-bottom: 15rem;
+  padding-bottom: 10rem;
 }
 
 .button-layout .btn-primary {
   margin-right: 1rem;
+}
+
+#about {
+  z-index: 1;
+  background-color: var(--white);
+  border-radius: 33px;
+  border: 1px solid var(--black);
+  padding: 4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+#features {
+  margin: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#features h1 {
+  font-family: 'Gilroy-SemiBold';
+  font-size: 70px;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+#features .features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row: auto auto;
+  grid-column-gap: 68px;
+  grid-row-gap: 109px;
+}
+
+#services {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 }
