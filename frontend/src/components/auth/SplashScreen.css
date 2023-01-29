@@ -1,0 +1,5 @@
+.auth-left {
+  width: 50%;
+  height: 100vh;
+  background-color: var(--light-black);
+}

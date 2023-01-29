@@ -1,0 +1,13 @@
+@import '../../assets/Constants.css';
+
+.auth-screen {
+  display: flex;
+}
+
+.auth-right {
+  background-color: var(--grey);
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

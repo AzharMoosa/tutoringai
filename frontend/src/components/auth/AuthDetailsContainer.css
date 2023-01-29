@@ -1,0 +1,74 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.auth-container h2 {
+  font-size: 55px;
+  font-family: 'Gilroy-SemiBold';
+}
+
+.auth-container h4 {
+  font-family: 'Gilroy-Regular';
+  font-size: 18px;
+  margin-bottom: 2rem;
+  margin-left: 0.3rem;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--black);
+  padding: 1.5rem 0;
+}
+
+.remember-me-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-password {
+  font-size: 20px;
+  font-family: 'Gilroy-RegularItalic';
+  cursor: pointer;
+}
+
+.remember-me-container input {
+  margin-right: 0.7rem;
+  width: 25px;
+  height: 25px;
+  background-color: var(--white);
+  border: var(--black);
+}
+
+.remember-me-container input[type='checkbox'] {
+  accent-color: var(--black);
+}
+
+.remember-me-container label {
+  font-size: 17px;
+  font-family: 'Gilroy-Regular';
+}
+
+.sign-in-social {
+  margin: 1rem;
+}
+
+.no-account {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.no-account span {
+  margin-left: 0.4rem;
+  font-family: 'Gilroy-SemiBold';
+}
+
+.no-account span a {
+  text-decoration: none;
+  color: var(--black);
+}

@@ -7,6 +7,7 @@ import ServiceInfo from '../../components/home/ServiceInfo';
 import Button from '../../components/util/Button';
 import Title from '../../components/util/Title';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -16,7 +17,9 @@ const Home = () => {
           <div className="navbar">
             <Title />
             <Navbar />
-            <Button textContent="Login" small={true} />
+            <Link to="/login">
+              <Button textContent="Login" small={true} />
+            </Link>
           </div>
           <div id="home">
             <h1>Lorem Ipsum Dolor Sit Amet Consect Adipiscing Elit.</h1>
