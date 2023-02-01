@@ -6,11 +6,17 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 from backend.resources.chatbot_api import ChatbotAPI
 from backend.resources.chatroom_api import ChatRoomAPI
+from backend.resources.auth_api import LoginAPI
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from backend.common.chatbot import Chatbot
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__, static_folder='frontend/build/static',
             template_folder='frontend/build')
+app.config["JWT_SECRET_KEY"] = "secret-key"
+
+jwt = JWTManager(app)
+
 CORS(app)
 api = Api(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -63,6 +69,8 @@ def on_message(data):
 def serve(path):
     return render_template("index.html")
 
+api.add_resource(LoginAPI, "/api/auth/login")
+docs.register(LoginAPI)
 api.add_resource(ChatbotAPI, "/api/chatbot")
 docs.register(ChatbotAPI)
 api.add_resource(ChatRoomAPI, "/api/chatroom")
