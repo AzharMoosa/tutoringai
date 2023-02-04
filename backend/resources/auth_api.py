@@ -1,7 +1,5 @@
+from flask import jsonify, request, make_response
 from flask_restful import Resource
-from flask_apispec.views import MethodResource
-from flask_apispec import marshal_with, doc, use_kwargs
-from marshmallow import Schema, fields
 from pymongo import MongoClient
 from backend.resources.db import client
 from backend.common.chatbot import Chatbot
@@ -10,84 +8,70 @@ import traceback
 from flask_jwt_extended import create_access_token
 import hashlib
 
-class LoginResponseSchema(Schema):
-    current_date = fields.Date()
-    email = fields.Str()
-    fullName = fields.Str()
-    token = fields.Str()
-    _id = fields.Str()
+
+def encrypt_password(password):
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
-class LoginRequestSchema(Schema):
-    email = fields.String(required=True, description="User's Email")
-    password = fields.String(required=True, description="User's Password")
-
-
-class RegisterResponseSchema(Schema):
-    current_date = fields.Date()
-    email = fields.Str()
-    fullName = fields.Str()
-    token = fields.Str()
-    _id = fields.Str()
-
-
-class RegisterRequestSchema(Schema):
-    full_name = fields.String(required=True, description="User's Full Name")
-    email = fields.String(required=True, description="User's Email Address")
-    password = fields.String(required=True, description="User's Password")
-
-class LoginAPI(MethodResource, Resource):
-    @doc(description="TODO")
-    @use_kwargs(LoginRequestSchema, location=("json"))
-    @marshal_with(LoginResponseSchema)
-    def post(self, email, password):
+class LoginAPI(Resource):
+    def post(self):
         try:
+            user_details = request.get_json()
             db = client["Users"]
             all_users = db.all_users
 
-            user = all_users.find_one({}, { "email": email })
+            # Get User Details
+            email = user_details["email"]
+            password = user_details["password"]
+
+            user = all_users.find_one({"email": email})
 
             # Verify User Exists
             if not user:
-                return { 'error' : "Invalid email or password!" }, 403
-            
+                return {'error': "User does not exist!"}, 403
+
             # Generate JWT Token
-            token = create_access_token(identity=user["_id"])
+            token = create_access_token(identity=user["email"])
 
-            encrypted_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+            encrypted_password = encrypt_password(password)
 
-            if encrypted_password != password:
-                return { 'error' : "Invalid email or password!" }, 403
-            
-            return { "createdDate": user["createdDate"], "email": email, "fullName": user["fullName"], "token": token, "_id": user["_id"] }, 200
+            if encrypted_password != user["password"]:
+                return {'error': "Invalid email or password!"}, 403
+
+            return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "token": token, "_id": str(user["_id"])}), 200)
         except Exception:
             traceback.print_exc()
-            return { 'error': "Server Error! Unable to create a new chatroom, please try again." }, 500
-        
-class RegisterAPI(MethodResource, Resource):
-    @doc(description="Registers a new user into the database.")
-    @use_kwargs(RegisterRequestSchema, location=("json"))
-    @marshal_with(RegisterResponseSchema)
-    def post(self, full_name, email, password):
+            return {'error': "Server Error! Unable to create a new user, please try again."}, 500
+
+
+class RegisterAPI(Resource):
+    def post(self):
         try:
+            user_details = request.get_json()
             db = client["Users"]
             all_users = db.all_users
 
-            user = all_users.find_one({}, { "email": email })
+            # Get User Details
+            email = user_details["email"]
+            full_name = user_details["fullName"]
+            password = user_details["password"]
+
+            user = all_users.find_one({"email": email})
 
             # Verify User Does Not Exists
             if user:
-                return { 'error' : "User already exist!" }, 403
+                return {"error": "User already exist!"}, 403
 
             # Create User
             current_date = datetime.datetime.today()
-            password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-            created_user = all_users.insert_one({ "createdDate": current_date, "email": email, "fullName": full_name, "password": password })
+            hashed_password = encrypt_password(password)
+            created_user = all_users.insert_one(
+                {"createdDate": current_date, "email": email, "fullName": full_name, "password": hashed_password})
 
             # Generate JWT Token
-            token = create_access_token(identity=created_user.inserted_id)
+            token = create_access_token(identity=email)
 
-            return { "createdDate": current_date, "email": email, "fullName": full_name, "token": token, "_id": created_user.inserted_id }, 200
+            return make_response(jsonify({"email": email, "fullName": full_name, "token": token, "_id": str(created_user.inserted_id)}), 200)
         except Exception:
             traceback.print_exc()
-            return { 'error': "Server Error! Unable to create a new chatroom, please try again." }, 500
+            return {'error': "Server Error! Unable to create a new user, please try again."}, 500
