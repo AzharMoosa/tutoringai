@@ -73,6 +73,7 @@ body {
   background-color: var(--black);
   color: var(--white);
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .btn-primary,
@@ -81,6 +82,7 @@ body {
   font-size: 29px;
   padding: 1.5rem 3rem;
   border-radius: 43px;
+  cursor: pointer;
 }
 
 .btn-primary {

@@ -3,6 +3,10 @@ import Button from '../../components/util/Button';
 import Input from '../../components/util/Input';
 import './AuthDetailsContainer.css';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/redux/hooks';
+import { Toaster } from 'react-hot-toast';
+import { registerUser } from '../../features/auth/authSlice';
+import { isRegisterDetailsValid } from '../../services/auth/verifyAuthDetails';
 
 const RegisterDetailsContainer = () => {
   const [fullName, setFullName] = useState<string>('');
@@ -10,8 +14,16 @@ const RegisterDetailsContainer = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const dispatch = useAppDispatch();
+
+  const register = () => {
+    isRegisterDetailsValid(fullName, email, password, confirmPassword) &&
+      dispatch(registerUser({ email, fullName, password }));
+  };
+
   return (
     <div className="auth-container">
+      <Toaster />
       <h2>Get Started</h2>
       <h4>Please enter your details</h4>
       <Input
@@ -42,7 +54,7 @@ const RegisterDetailsContainer = () => {
         value={confirmPassword}
         setValue={setConfirmPassword}
       />
-      <Button textContent="Register" small={true} />
+      <Button textContent="Register" small={true} onClick={() => register()} />
       <h4 className="no-account">
         Already have an account?
         <span>

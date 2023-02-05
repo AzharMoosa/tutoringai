@@ -7,15 +7,27 @@ interface ButtonStyle {
   primary?: boolean;
   icon?: string;
   small?: boolean;
+  onClick?: any;
 }
 
-const Button = ({ textContent, primary = true, icon, small }: ButtonStyle) => {
+const Button = ({
+  textContent,
+  primary = true,
+  icon,
+  small,
+  onClick = () => {}
+}: ButtonStyle) => {
   return (
     <>
       {small ? (
-        <button className="btn-small">{textContent}</button>
+        <button className="btn-small" onClick={onClick}>
+          {textContent}
+        </button>
       ) : (
-        <button className={`${primary ? 'btn-primary' : 'btn-secondary'}`}>
+        <button
+          onClick={onClick}
+          className={`${primary ? 'btn-primary' : 'btn-secondary'}`}
+        >
           {textContent}
           {icon && <FontAwesomeIcon icon={faArrowRight} />}
         </button>
