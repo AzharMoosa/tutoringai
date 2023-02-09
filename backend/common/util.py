@@ -8,9 +8,11 @@ from nltk.stem import WordNetLemmatizer
 import json
 import nltk
 import random
+import os
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def load_intent(path="intents/chatbot_intents.json"):
     return json.loads(open(path).read())
@@ -78,7 +80,7 @@ def train_model(train_x, train_y, epochs=500, batch_size=5, verbose=0):
                   optimizer=sgd, metrics=["accuracy"])
     hist = model.fit(np.array(train_x, dtype=object).astype('float32'), np.array(train_y, dtype=object).astype('float32'),
                      epochs=epochs, batch_size=batch_size, verbose=verbose)
-    model.save("chatbotmodel.h5", hist)
+    model.save(f"{__location__}/model/chatbotmodel.h5", hist)
 
 
 def train_chatbot():
@@ -88,8 +90,9 @@ def train_chatbot():
 
     words = lemmatize_words(lemmatizer, words)
     classes = sorted(set(classes))
-    pickle.dump(words, open("words.pkl", "wb"))
-    pickle.dump(classes, open("classes.pkl", "wb"))
+
+    pickle.dump(words, open(f"{__location__}/model/words.pkl", "wb"))
+    pickle.dump(classes, open(f"{__location__}/model/classes.pkl", "wb"))
 
     training = generate_training_data(words, classes, documents, lemmatizer)
 

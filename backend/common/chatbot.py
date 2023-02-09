@@ -73,8 +73,21 @@ class Chatbot:
         input_text = input_text.lower().strip()
         intents_list = predict_class(input_text)
         tag = intents_list[0]["intent"]
-        for intent in intents:
+        prob = float(intents_list[0]["prob"])
+
+        UNCERTAIN_THRESHOLD = 0.7
+        uncertain_responses = ["Sorry, I did not understand the question!", "I am unable to answer that question.", "I didn't quite catch that. Please try again!"]
+
+        if prob < UNCERTAIN_THRESHOLD:
+            return random.choice(uncertain_responses)
+
+        for intent in intents:                    
             if intent["tag"] == tag:
                 result = random.choice(intent["responses"])
                 break
         return result
+
+if __name__ == "__main__":
+    while True:
+        input_text = input("Message: ")
+        print(Chatbot.generate_response(input_text))
