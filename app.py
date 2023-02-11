@@ -8,6 +8,7 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from backend.common.chatbot import Chatbot
 from backend.common.question_engine.question_engine import generated_questions
 from flask_jwt_extended import JWTManager
+import os
 
 app = Flask(__name__, static_folder='frontend/build/static',
             template_folder='frontend/build')
@@ -71,5 +72,6 @@ api.add_resource(ChatbotAPI, "/api/chatbot")
 api.add_resource(ChatRoomAPI, "/api/chatroom")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
     socketio.run(app)
