@@ -28,5 +28,5 @@ export const initialiseChatRoom = (
   messageListener: (response: ChatbotResponse) => void
 ) => {
   socket.emit('join', { username: 'test', room: '1' });
-  socket.on('recieved_message', messageListener);
+  socket.on('received_message', messageListener);
 };

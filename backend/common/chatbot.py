@@ -9,11 +9,14 @@ from tensorflow.keras.models import load_model
 import os
 
 lemmatizer = WordNetLemmatizer()
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-intents = json.loads(open(f"{__location__}/intents/chatbot_intents.json").read())["intents"]
+__location__ = os.path.realpath(os.path.join(
+    os.getcwd(), os.path.dirname(__file__)))
+intents = json.loads(
+    open(f"{__location__}/intents/chatbot_intents.json").read())["intents"]
 words = pickle.load(open(f"{__location__}/model/words.pkl", "rb"))
 classes = pickle.load(open(f"{__location__}/model/classes.pkl", "rb"))
 model = load_model(f"{__location__}/model/chatbotmodel.h5")
+
 
 def parse_text(text):
     """
@@ -48,6 +51,7 @@ def generate_bag_of_words(text):
 
     return np.array(bag)
 
+
 def predict_class(sentence):
     bag_of_words = generate_bag_of_words(sentence)
     result = model.predict(np.array([bag_of_words]), verbose=0)[0]
@@ -57,6 +61,7 @@ def predict_class(sentence):
     result.sort(key=lambda x: x[1], reverse=True)
 
     return [{"intent": classes[r[0]], "prob": str(r[1])} for r in result]
+
 
 class Chatbot:
     @staticmethod
@@ -76,16 +81,18 @@ class Chatbot:
         prob = float(intents_list[0]["prob"])
 
         UNCERTAIN_THRESHOLD = 0.7
-        uncertain_responses = ["Sorry, I did not understand the question!", "I am unable to answer that question.", "I didn't quite catch that. Please try again!"]
+        uncertain_responses = ["Sorry, I did not understand the question!",
+                               "I am unable to answer that question.", "I didn't quite catch that. Please try again!"]
 
         if prob < UNCERTAIN_THRESHOLD:
             return random.choice(uncertain_responses)
 
-        for intent in intents:                    
+        for intent in intents:
             if intent["tag"] == tag:
                 result = random.choice(intent["responses"])
                 break
         return result
+
 
 if __name__ == "__main__":
     while True:

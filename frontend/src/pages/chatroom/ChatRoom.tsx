@@ -17,16 +17,18 @@ import {
 
 const ChatRoom = () => {
   const socket = useSocket(WEB_SOCKET_URI, WEB_SOCKET_CONFIG);
+  const [isAnswering, setIsAnswering] = useState<boolean>(false);
 
   const [messageList, setMessageList] = useState<Array<Message>>([
     { messageContent: DEFAULT_MESSAGE, fromChatbot: true }
   ]);
 
-  const updateMessageList = (response: ChatbotResponse) =>
+  const updateMessageList = (response: ChatbotResponse) => {
     setMessageList([
       ...messageList,
       { messageContent: response.message, fromChatbot: true }
     ]);
+  };
 
   useEffect(() => {
     socket.connect();
@@ -39,10 +41,14 @@ const ChatRoom = () => {
 
   const sendMessage = (messageContent: string) => {
     setMessageList([...messageList, { messageContent, fromChatbot: false }]);
+    setIsAnswering(true);
     socket.emit('message', {
       username: 'test',
-      message: messageContent,
-      room: '1'
+      room: '1',
+      messageInfo: {
+        message: messageContent,
+        isAnswering: isAnswering
+      }
     });
   };
 
