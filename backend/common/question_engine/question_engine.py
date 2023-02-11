@@ -13,7 +13,10 @@ class Question:
         self.question = question
         self.context = context
         self.answer = answer
-    
+
+    def is_correct(self, user_answer):
+        return int(self.answer) == int(user_answer)
+        
     def __str__(self) -> str:
         return self.question
 
@@ -45,8 +48,9 @@ class QuestionEngine:
         
         parsed_statement = re.sub(r'\<(.*?)\>', lambda x: process_attribute(x), statement)
         parsed_answer = re.sub(r'\<(.*?)\>', lambda x: process_attribute(x), answer)
+        answer_value = re.findall(r'\d+', parsed_answer)[0]
         
-        return parsed_answer, parsed_statement
+        return parsed_answer, parsed_statement, answer_value
 
     @staticmethod
     def generate_questions():
@@ -69,14 +73,12 @@ class QuestionEngine:
                 statement = template.pop("statement", None)
                 answer = template.pop("answer", None)
 
-                parsed_answer, parsed_context = QuestionEngine.process_template(statement, answer, template)
+                parsed_answer, parsed_context, answer_value = QuestionEngine.process_template(statement, answer, template)
             
                 extracted_question = re.search('question: (.+?)\?', get_question(parsed_answer, parsed_context)).group(1)
             except AttributeError:
                 raise Exception("Error Generating Question")
 
-            return Question(f"{parsed_context} {extracted_question}?", parsed_context, parsed_answer)
+            return Question(f"{parsed_context} {extracted_question}?", parsed_context, answer_value)
         
         return [generate_question(template) for template in question_info["templates"]]
-
-print(QuestionEngine.generate_questions()[0][0])

@@ -8,7 +8,7 @@
         "answer": "<names[0]> has <num_answer> <object>",
         "names": ["John", "Joe", "Sarah"],
         "activity": "playing football",
-        "object": "apple",
+        "object": "apples",
         "numbers": ["5", "2", "9", "4"],
         "num_answer": "3"
       }
