@@ -6,7 +6,7 @@ from backend.resources.chatroom_api import ChatRoomAPI
 from backend.resources.auth_api import LoginAPI, RegisterAPI
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from backend.common.chatbot import Chatbot
-from backend.common.question_engine.question_engine import generated_questions
+from backend.common.question_engine.question_generation import retrieve_questions
 from flask_jwt_extended import JWTManager
 import os
 
@@ -51,10 +51,10 @@ def on_message(data):
     print(f"{username} sent a message to room: {room}!")
     # message = Chatbot.generate_response(message_info["message"])
     if message_info["isAnswering"]:
-        response_message = "Thats correct!" if generated_questions[0][0].is_correct(
+        response_message = "Thats correct!" if retrieve_questions()[0].is_correct(
             message_info["message"]) else "Sorry that is wrong"
     else:
-        response_message = generated_questions[0][0].question
+        response_message = retrieve_questions()[0].question
     emit("received_message", {
          "message": response_message}, to=room)
 

@@ -1,0 +1,9 @@
+[
+    {
+        "question": "John, Joe, Sarah are playing football. John has 5 apples and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have? How many apples does John have?",
+        "context": "John, Joe, Sarah are playing football. John has 5 apples and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?",
+        "answer": "3",
+        "category": "arithmetic",
+        "type": "addition"
+    }
+]

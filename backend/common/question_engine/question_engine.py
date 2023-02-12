@@ -1,31 +1,13 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import re
 import json
+from collections import namedtuple
+from json import JSONEncoder
 import os
+from question import Question, QuestionEncoder
+from question_transformer import model, tokenizer
 
 __location__ = os.path.realpath(os.path.join(
     os.getcwd(), os.path.dirname(__file__)))
-
-tokenizer = AutoTokenizer.from_pretrained(
-    "mrm8488/t5-base-finetuned-question-generation-ap")
-model = AutoModelForSeq2SeqLM.from_pretrained(
-    "mrm8488/t5-base-finetuned-question-generation-ap")
-
-
-class Question:
-    def __init__(self, question, context, answer) -> None:
-        self.question = question
-        self.context = context
-        self.answer = answer
-
-    def is_correct(self, user_answer):
-        try:
-            return int(self.answer) == int(user_answer)
-        except ValueError:
-            return False
-
-    def __str__(self) -> str:
-        return self.question
 
 
 class QuestionEngine:
@@ -67,7 +49,7 @@ class QuestionEngine:
     def generate_questions():
         with open(f"{__location__}/question_bank.json") as question_bank:
             data = json.load(question_bank)
-            return [QuestionEngine.generate_question_list(question_info) for question_info in data]
+            return sum([QuestionEngine.generate_question_list(question_info) for question_info in data], [])
 
     @staticmethod
     def generate_question_list(question_info):
@@ -80,7 +62,7 @@ class QuestionEngine:
 
             return tokenizer.decode(output[0])
 
-        def generate_question(template):
+        def generate_question(template, category, type):
             try:
                 statement = template.pop("statement", None)
                 answer = template.pop("answer", None)
@@ -93,9 +75,20 @@ class QuestionEngine:
             except AttributeError:
                 raise Exception("Error Generating Question")
 
-            return Question(f"{parsed_context} {extracted_question}?", parsed_context, answer_value)
+            return Question(f"{parsed_context} {extracted_question}?", parsed_context, answer_value, category, type)
 
-        return [generate_question(template) for template in question_info["templates"]]
+        return [generate_question(template, question_info["category"], question_info["type"]) for template in question_info["templates"]]
 
 
-generated_questions = QuestionEngine.generate_questions()
+def update_questions():
+    # TODO: Store In Database
+    generated_questions = QuestionEngine.generate_questions()
+    questions_json = json.dumps(
+        generated_questions, indent=4, cls=QuestionEncoder)
+
+    with open(f"{__location__}/questions.json", "w") as f:
+        f.write(questions_json)
+
+
+if __name__ == "__main__":
+    update_questions()
