@@ -34,34 +34,23 @@ body {
   color: var(--blue);
 }
 
-.btn-small {
-  font-family: 'Poppins';
-  font-size: 19px;
-  padding: 1rem 3.5rem;
-  border-radius: 43px;
-  background-color: var(--black);
-  color: var(--white);
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.btn-primary,
-.btn-secondary {
-  font-family: 'Poppins';
-  font-size: 29px;
-  padding: 1.5rem 3rem;
-  border-radius: 43px;
-  cursor: pointer;
-}
-
 .btn-primary {
-  background-color: var(--black);
-  color: var(--white);
+  font-family: 'Poppins';
+  font-weight: 500;
+  font-size: 20px;
+  padding: 1rem 2.5rem;
+  border-radius: 13px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: var(--purple);
+  color: var(--grey);
+  width: 100%;
+  transition: all 0.5s ease-in;
 }
 
-.btn-secondary {
-  background-color: transparent;
-  color: var(--black);
+.btn-primary:hover {
+  background-color: #737fff;
 }
 
 .input-container {

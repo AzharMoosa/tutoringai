@@ -54,7 +54,10 @@ const RegisterDetailsContainer = () => {
         value={confirmPassword}
         setValue={setConfirmPassword}
       />
-      <Button textContent="Register" small={true} onClick={() => register()} />
+      <div className="register-btn-layout">
+        <Button textContent="Register" onClick={() => register()} />
+      </div>
+
       <h4 className="no-account">
         Already have an account?
         <span>

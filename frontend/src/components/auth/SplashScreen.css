@@ -1,5 +1,11 @@
 .auth-left {
   width: 50%;
   height: 100vh;
-  background-color: var(--light-black);
+  background-color: var(--grey);
+}
+
+@media only screen and (max-width: 1440px) {
+  .auth-left {
+    width: 0%;
+  }
 }

@@ -18,7 +18,7 @@ const Home = () => {
             <Title />
             <Navbar />
             <Link to="/login">
-              <Button textContent="Login" small={true} />
+              <Button textContent="Login" />
             </Link>
           </div>
           <div id="home">
@@ -28,12 +28,8 @@ const Home = () => {
               aliquet a libero ut cursus. Mauris
             </h3>
             <div className="button-layout">
-              <Button textContent="Get Started" icon="faArrowRight" />
-              <Button
-                textContent="Learn More"
-                icon="faArrowRight"
-                primary={false}
-              />
+              <Button textContent="Get Started" />
+              <Button textContent="Learn More" />
             </div>
           </div>
           <div id="about">

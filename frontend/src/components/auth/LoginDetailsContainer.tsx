@@ -40,7 +40,7 @@ const LoginDetailsContainer = () => {
         setValue={setPassword}
       />
       <br />
-      <Button textContent="Login" small={true} onClick={() => login()} />
+      <Button textContent="Login" onClick={() => login()} />
       <div className="login-options">
         <div className="remember-me-container">
           <input type="checkbox" id="remember-me" />

@@ -2,15 +2,17 @@
   display: flex;
   flex-direction: column;
   width: 70%;
+  color: var(--grey);
 }
 
 .auth-container h2 {
-  font-size: 55px;
-  font-weight: 600;
+  font-size: 40px;
+  font-weight: 500;
 }
 
 .auth-container h4 {
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 300;
   margin-bottom: 2rem;
   margin-left: 0.3rem;
 }
@@ -19,7 +21,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--black);
+  border-bottom: 1px solid var(--grey);
   padding: 1.5rem 0;
 }
 
@@ -30,7 +32,8 @@
 }
 
 .forgot-password {
-  font-size: 20px;
+  font-size: 14px;
+  font-weight: 300;
   cursor: pointer;
   font-style: italic;
 }
@@ -56,6 +59,7 @@
 }
 
 .no-account {
+  margin-top: 1rem;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -67,5 +71,40 @@
 
 .no-account span a {
   text-decoration: none;
-  color: var(--black);
+  color: var(--purple);
+}
+
+.register-btn-layout {
+  margin: 2rem 0;
+}
+
+@media only screen and (max-width: 500px) {
+  .auth-container h2 {
+    font-size: 28px;
+  }
+
+  .auth-container h4 {
+    font-size: 12px;
+  }
+
+  .login-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid var(--grey);
+    padding: 1.5rem 0;
+  }
+
+  .remember-me-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .no-account {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.1rem;
+  }
 }

@@ -5,9 +5,15 @@
 }
 
 .auth-right {
-  background-color: var(--grey);
+  background-color: var(--blue);
   width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media only screen and (max-width: 1440px) {
+  .auth-right {
+    width: 100%;
+  }
 }
