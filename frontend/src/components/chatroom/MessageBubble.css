@@ -2,8 +2,10 @@
 
 .message-bubble {
   background-color: var(--secondary-light-bg);
-  width: 40%;
-  border-radius: 8px;
+  color: var(--grey);
+  width: 92%;
+  border-radius: 10px;
   padding: 0.8rem;
   margin: 0.8rem 0;
+  font-size: 15px;
 }

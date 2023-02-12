@@ -1,10 +1,9 @@
 import React from 'react';
-import { SECONDARY_LIGHT_BG, LIGHT_GRAY } from '../../data/colorConstants';
+import { BLUE, PURPLE } from '../../data/colorConstants';
 import './MessageBubble.css';
 
 const messageBubbleStyle = (fromChatbot: boolean) => ({
-  backgroundColor: fromChatbot ? SECONDARY_LIGHT_BG : LIGHT_GRAY,
-  alignSelf: fromChatbot ? 'flex-start' : 'flex-end'
+  backgroundColor: fromChatbot ? PURPLE : BLUE
 });
 
 const MessageBubble = ({
