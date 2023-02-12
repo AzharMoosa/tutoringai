@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../hooks/redux/hooks';
 
 const AuthRoute = ({ children }: { children: any }) => {
   const token = useAppSelector((state) => state.auth.token);
-  return token ? <Navigate to="/chatroom" /> : children;
+  return token ? <Navigate to="/dashboard" /> : children;
 };
 
 export default AuthRoute;

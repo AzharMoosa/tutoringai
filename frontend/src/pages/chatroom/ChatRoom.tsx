@@ -14,6 +14,8 @@ import {
   startDefaultListeners,
   initialiseChatRoom
 } from '../../utils/chatRoomUtils';
+import MainContainer from '../../components/shared/MainContainer';
+import { Page } from '../../data/pageConstants';
 
 const ChatRoom = () => {
   const socket = useSocket(WEB_SOCKET_URI, WEB_SOCKET_CONFIG);
@@ -30,14 +32,14 @@ const ChatRoom = () => {
     ]);
   };
 
-  // useEffect(() => {
-  //   socket.connect();
+  useEffect(() => {
+    socket.connect();
 
-  //   startDefaultListeners(socket);
+    startDefaultListeners(socket);
 
-  //   initialiseChatRoom(socket, updateMessageList);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [messageList]);
+    initialiseChatRoom(socket, updateMessageList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messageList]);
 
   const sendMessage = (messageContent: string) => {
     setMessageList([...messageList, { messageContent, fromChatbot: false }]);
@@ -53,10 +55,12 @@ const ChatRoom = () => {
   };
 
   return (
-    <div className="chatroom">
-      <MessageList messageList={messageList} />
-      <MessageBox sendMessage={sendMessage} />
-    </div>
+    <MainContainer current={Page.CHATROOM}>
+      <div className="chatroom">
+        <MessageList messageList={messageList} />
+        <MessageBox sendMessage={sendMessage} />
+      </div>
+    </MainContainer>
   );
 };
 

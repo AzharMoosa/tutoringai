@@ -1,0 +1,26 @@
+.sidebar {
+  background-color: var(--blue);
+  min-height: 100vh;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item-icon {
+  height: 35px;
+  width: 35px;
+  color: var(--grey);
+  margin: 1.5rem 0;
+  cursor: pointer;
+}
+
+.highlight {
+  color: var(--purple);
+}

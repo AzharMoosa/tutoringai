@@ -7,6 +7,8 @@ import Register from './pages/auth/Register';
 import PrivateRoute from './components/util/routes/PrivateRoute';
 import ChatRoom from './pages/chatroom/ChatRoom';
 import AuthRoute from './components/util/routes/AuthRoute';
+import Dashboard from './pages/dashboard/Dashboard';
+import Settings from './pages/settings/Settings';
 
 const router = createBrowserRouter([
   {
@@ -34,10 +36,26 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/dashboard',
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    )
+  },
+  {
     path: '/chatroom',
     element: (
       <PrivateRoute>
         <ChatRoom />
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/settings',
+    element: (
+      <PrivateRoute>
+        <Settings />
       </PrivateRoute>
     )
   }
