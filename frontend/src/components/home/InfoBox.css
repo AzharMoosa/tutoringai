@@ -9,7 +9,7 @@
 }
 
 .info-box h2 {
-  font-family: 'Gilroy-SemiBold';
+  font-weight: 600;
   font-size: 53px;
   text-align: center;
 }
@@ -21,7 +21,6 @@
 }
 
 .info-box p {
-  font-family: 'Gilroy-Regular';
   font-size: 27px;
   width: 95%;
   text-align: center;

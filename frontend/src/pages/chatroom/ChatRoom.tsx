@@ -30,14 +30,14 @@ const ChatRoom = () => {
     ]);
   };
 
-  useEffect(() => {
-    socket.connect();
+  // useEffect(() => {
+  //   socket.connect();
 
-    startDefaultListeners(socket);
+  //   startDefaultListeners(socket);
 
-    initialiseChatRoom(socket, updateMessageList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageList]);
+  //   initialiseChatRoom(socket, updateMessageList);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [messageList]);
 
   const sendMessage = (messageContent: string) => {
     setMessageList([...messageList, { messageContent, fromChatbot: false }]);

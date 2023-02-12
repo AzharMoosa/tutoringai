@@ -6,11 +6,10 @@
 
 .auth-container h2 {
   font-size: 55px;
-  font-family: 'Gilroy-SemiBold';
+  font-weight: 600;
 }
 
 .auth-container h4 {
-  font-family: 'Gilroy-Regular';
   font-size: 18px;
   margin-bottom: 2rem;
   margin-left: 0.3rem;
@@ -32,8 +31,8 @@
 
 .forgot-password {
   font-size: 20px;
-  font-family: 'Gilroy-RegularItalic';
   cursor: pointer;
+  font-style: italic;
 }
 
 .remember-me-container input {
@@ -50,7 +49,6 @@
 
 .remember-me-container label {
   font-size: 17px;
-  font-family: 'Gilroy-Regular';
 }
 
 .sign-in-social {
@@ -65,7 +63,6 @@
 
 .no-account span {
   margin-left: 0.4rem;
-  font-family: 'Gilroy-SemiBold';
 }
 
 .no-account span a {

@@ -55,6 +55,7 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
+      localStorage.removeItem('token');
       state.authDetails = null;
       state.token = null;
     }
@@ -65,14 +66,14 @@ export const AuthSlice = createSlice({
       state.token = action.payload.token;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      toast.error("Invalid Email or Password", { id: "invalid-login"});
+      toast.error('Invalid Email or Password', { id: 'invalid-login' });
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.authDetails = action.payload;
       state.token = action.payload.token;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      toast.error("Unable to create new user", { id: "invalid-register"});
+      toast.error('Unable to create new user', { id: 'invalid-register' });
     });
   }
 });

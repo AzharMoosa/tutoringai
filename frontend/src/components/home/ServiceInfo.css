@@ -16,19 +16,20 @@
 }
 
 .service-info-content h2 {
-  font-family: 'Gilroy-SemiBold';
+  font-weight: 600;
   font-size: 30px;
 }
 
 .service-info-content h3 {
-  font-family: 'Gilroy-Medium';
+  font-weight: 500;
   font-size: 40px;
   margin: 2rem 0 4rem 0;
   color: var(--light-black);
 }
 
 .service-info-content p {
-  font-family: 'Gilroy-Medium';
+  font-weight: 500;
+
   font-size: 25px;
   width: 80%;
   margin-bottom: 3rem;
@@ -43,7 +44,7 @@
 }
 
 .service-info-box-txt h4 {
-  font-family: 'Gilroy-Bold';
+  font-weight: 700;
   font-size: 30px;
   margin-bottom: 1rem;
 }

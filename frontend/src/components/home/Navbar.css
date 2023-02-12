@@ -7,6 +7,6 @@
 .navbar-items a {
   font-size: 27px;
   color: var(--black);
-  font-family: 'Gilroy-SemiBold';
+  font-weight: 600;
   text-decoration: none;
 }
