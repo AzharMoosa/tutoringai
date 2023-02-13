@@ -1,12 +1,12 @@
 footer {
-  background-color: var(--light-black);
+  background-color: var(--blue);
   color: var(--white);
   padding: 3rem;
   margin-top: 3rem;
 }
 
 footer #title {
-  color: var(--white) !important;
+  color: var(--grey) !important;
 }
 
 footer .container {
@@ -15,16 +15,16 @@ footer .container {
 }
 
 .footer-left {
-  width: 60%;
+  width: 50%;
 }
 
 .footer-left h1 {
   margin: 1rem 0;
-  font-size: 60px;
+  font-size: 40px;
 }
 
 .footer-left p {
-  font-size: 30px;
+  font-size: 16px;
 }
 
 .footer-right {
@@ -32,7 +32,7 @@ footer .container {
 }
 
 .footer-right h2 {
-  font-size: 30px;
+  font-size: 18px;
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -42,14 +42,14 @@ footer .container {
   flex-direction: column;
   padding-right: 2rem;
   height: 96%;
-  border-right: 2px solid var(--white);
+  border-right: 2px solid var(--grey);
 }
 
 .quick-links a {
-  font-size: 25px;
+  font-size: 14px;
   margin: 1rem 0;
   text-decoration: none;
-  color: var(--white);
+  color: var(--grey);
 }
 
 .get-in-touch {
@@ -69,5 +69,6 @@ footer .container {
 
 .get-in-touch-email h3 {
   margin-left: 0.8rem;
-  font-size: 25px;
+  font-size: 14px;
+  font-weight: 400;
 }

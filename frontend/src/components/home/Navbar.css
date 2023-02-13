@@ -5,8 +5,8 @@
 }
 
 .navbar-items a {
-  font-size: 27px;
-  color: var(--black);
-  font-weight: 600;
+  font-size: 18px;
+  color: var(--grey);
+  font-weight: 400;
   text-decoration: none;
 }

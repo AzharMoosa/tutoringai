@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface InputStyle {
   name: string;
   placeholder?: string;
@@ -14,17 +12,15 @@ const Input = ({
   type,
   placeholder = '',
   setValue
-}: InputStyle) => {
-  return (
-    <input
-      className="input-container"
-      name={name}
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
-};
+}: InputStyle) => (
+  <input
+    className="input-container"
+    name={name}
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
+);
 
 export default Input;

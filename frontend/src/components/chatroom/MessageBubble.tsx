@@ -1,4 +1,3 @@
-import React from 'react';
 import { BLUE, PURPLE } from '../../data/colorConstants';
 import './MessageBubble.css';
 
@@ -12,12 +11,10 @@ const MessageBubble = ({
 }: {
   messageContent: string;
   fromChatbot: boolean;
-}) => {
-  return (
-    <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{messageContent}</p>
-    </div>
-  );
-};
+}) => (
+  <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+    <p>{messageContent}</p>
+  </div>
+);
 
 export default MessageBubble;

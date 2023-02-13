@@ -1,4 +1,3 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faRobot,
@@ -6,32 +5,25 @@ import {
   faRepeat
 } from '@fortawesome/free-solid-svg-icons';
 import './InfoBox.css';
+import { AboutInfo } from '../../data/landingPageConstants';
 
-interface InfoBoxStyle {
-  title: string;
-  icon: string;
-  textContent: string;
-}
-
-const InfoBox = ({ title, icon, textContent }: InfoBoxStyle) => {
-  return (
-    <div className="info-box">
-      <h2>{title}</h2>
-      <FontAwesomeIcon
-        className="info-icon"
-        icon={
-          icon === 'robot'
-            ? faRobot
-            : icon === 'message'
-            ? faMessage
-            : icon === 'repeat'
-            ? faRepeat
-            : faRobot
-        }
-      />
-      <p>{textContent}</p>
-    </div>
-  );
-};
+const InfoBox = ({ info }: { info: AboutInfo }) => (
+  <div className="info-box">
+    <FontAwesomeIcon
+      className="info-icon"
+      icon={
+        info.icon === 'robot'
+          ? faRobot
+          : info.icon === 'message'
+          ? faMessage
+          : info.icon === 'repeat'
+          ? faRepeat
+          : faRobot
+      }
+    />
+    <h2>{info.title}</h2>
+    <p>{info.textContent}</p>
+  </div>
+);
 
 export default InfoBox;
