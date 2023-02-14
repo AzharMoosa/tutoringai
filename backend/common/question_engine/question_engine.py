@@ -74,7 +74,7 @@ class QuestionEngine:
                     'question: (.+?)\?', get_question(parsed_answer, parsed_context)).group(1)
             except AttributeError:
                 raise Exception("Error Generating Question")
-
+            # TODO: Fix Repeat Question
             return Question(f"{parsed_context} {extracted_question}?", parsed_context, answer_value, category, type)
 
         return [generate_question(template, question_info["category"], question_info["type"]) for template in question_info["templates"]]

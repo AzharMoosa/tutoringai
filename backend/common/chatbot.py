@@ -7,6 +7,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 import os
+from backend.common.question_engine.question_generation import retrieve_questions
 
 lemmatizer = WordNetLemmatizer()
 __location__ = os.path.realpath(os.path.join(
@@ -65,20 +66,35 @@ def predict_class(sentence):
 
 class Chatbot:
     @staticmethod
-    def generate_response(input_text):
+    def generate_message(message_content, is_answering):
+        return {"message": message_content, "isAnswering": is_answering }   
+
+    @staticmethod
+    def generate_response(state):
         """
         Generates a response based on the input text.
 
         Arguments:
-            input_text {str} The input text from user.
+            state {dict} The input text from user.
 
         Returns:
             {str} The output text predicted by the chatbot.
         """
+
+        input_text = state["message"]
+
+        if state["isAnswering"]:
+            return Chatbot.generate_message("Thats correct!", False) if retrieve_questions()[0].is_correct(
+            state["message"]) else Chatbot.generate_message("Sorry that is wrong", True)
+
         input_text = input_text.lower().strip()
         intents_list = predict_class(input_text)
         tag = intents_list[0]["intent"]
         prob = float(intents_list[0]["prob"])
+        is_question = tag == "revision-mode"
+
+        if is_question:
+            return Chatbot.generate_message(retrieve_questions()[0].question, True)
 
         UNCERTAIN_THRESHOLD = 0.7
         uncertain_responses = ["Sorry, I did not understand the question!",
@@ -91,8 +107,8 @@ class Chatbot:
             if intent["tag"] == tag:
                 result = random.choice(intent["responses"])
                 break
-        return result
 
+        return Chatbot.generate_message(result, state["isAnswering"])
 
 if __name__ == "__main__":
     while True:

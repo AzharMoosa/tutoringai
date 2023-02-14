@@ -1,7 +1,10 @@
 import { Socket } from 'socket.io-client';
 
 export interface ChatbotResponse {
-  message: string;
+  state: {
+    message: string;
+    isAnswering: boolean;
+  };
 }
 
 export const startDefaultListeners = (socket: Socket) => {

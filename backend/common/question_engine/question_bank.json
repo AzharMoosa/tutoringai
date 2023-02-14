@@ -4,7 +4,7 @@
     "type": "addition",
     "templates": [
       {
-        "statement": "<[names]> are <activity>. <names[0]> has <numbers[0]> <object> and <names[1]> has <numbers[1]> <object>. <names[1]> gives <numbers[1]> <object> to <names[0]>. <names[2]> has <numbers[2]> <object>. <names[0]> gives <numbers[3]> <object> to <names[2]>. How many <object> does <names[0]> have?",
+        "statement": "<[names]> are <activity>. <names[0]> has <numbers[0]> <object> and <names[1]> has <numbers[1]> <object>. <names[1]> gives <numbers[1]> <object> to <names[0]>. <names[2]> has <numbers[2]> <object>. <names[0]> gives <numbers[3]> <object> to <names[2]>.",
         "answer": "<names[0]> has <num_answer> <object>",
         "names": ["John", "Joe", "Sarah"],
         "activity": "playing football",

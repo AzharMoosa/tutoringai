@@ -26,9 +26,10 @@ const ChatRoom = () => {
   ]);
 
   const updateMessageList = (response: ChatbotResponse) => {
+    setIsAnswering(response.state.isAnswering);
     setMessageList([
       ...messageList,
-      { messageContent: response.message, fromChatbot: true }
+      { messageContent: response.state.message, fromChatbot: true }
     ]);
   };
 
@@ -43,13 +44,12 @@ const ChatRoom = () => {
 
   const sendMessage = (messageContent: string) => {
     setMessageList([...messageList, { messageContent, fromChatbot: false }]);
-    setIsAnswering(true);
     socket.emit('message', {
       username: 'test',
       room: '1',
-      messageInfo: {
+      state: {
         message: messageContent,
-        isAnswering: isAnswering
+        isAnswering
       }
     });
   };
