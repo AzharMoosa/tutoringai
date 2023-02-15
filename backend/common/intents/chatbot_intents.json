@@ -43,7 +43,9 @@
         "what do you do?",
         "service",
         "what do you offer?",
-        "what can you help me with?"
+        "what can you help me with?",
+        "i need help",
+        "help"
       ],
       "responses": [
         "I offer two services for tutoring mathematics: Revision Mode and Assessment Mode. During revision mode, I can help you understand math topics. During assessment mode, I can test your knowledge and give you feedback to identify your strengths and weaknesses.",
@@ -64,6 +66,32 @@
       "responses": [
         "Okay! Lets begin our revision session. What topic would you like to revise?",
         "Great! I will help you revise. What would you specifically like to revise?"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "arithmetic",
+      "patterns": [
+        "arithmetic",
+        "i need help with arithmetic",
+        "i am struggling with arithmetics",
+        "i need help adding",
+        "i need help subtracting",
+        "i need help with multiplications",
+        "i need help with division",
+        "how do you add",
+        "how do you subtract",
+        "how do you multiply",
+        "how do you divide",
+        "add",
+        "subtract",
+        "multiply",
+        "divide"
+      ],
+      "responses": [
+        "I can help you with arithmetics. Let's work through a question together.",
+        "Let's get started revising arithmetics. We can work through a question together.",
+        "Great. Let's begin by looking at some arithmetic problems."
       ],
       "context_set": ""
     }

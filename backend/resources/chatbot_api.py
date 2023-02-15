@@ -8,8 +8,7 @@ import traceback
 class ChatbotAPI(Resource):
     def post(self, input_text):
         try:
-            output_text = Chatbot.generate_response(input_text)
-            return {'output_text': output_text}
+            return {'output_text': "TODO"}
         except Exception:
             traceback.print_exc()
             return {'error': "Server Error. There was a problem with your request, please try again."}

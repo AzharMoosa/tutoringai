@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 import os
-from backend.common.question_engine.question_generation import retrieve_questions
+from backend.common.question_engine.question_generation import retrieve_questions_by_category
 
 lemmatizer = WordNetLemmatizer()
 __location__ = os.path.realpath(os.path.join(
@@ -17,7 +17,7 @@ intents = json.loads(
 words = pickle.load(open(f"{__location__}/model/words.pkl", "rb"))
 classes = pickle.load(open(f"{__location__}/model/classes.pkl", "rb"))
 model = load_model(f"{__location__}/model/chatbotmodel.h5")
-
+topics = ["arithmetic"]
 
 def parse_text(text):
     """
@@ -59,6 +59,9 @@ def predict_class(sentence):
     ERROR_THRESHOLD = 0.2
     result = [(i, r) for i, r in enumerate(result) if r > ERROR_THRESHOLD]
 
+    if not result:
+        return []
+
     result.sort(key=lambda x: x[1], reverse=True)
 
     return [{"intent": classes[r[0]], "prob": str(r[1])} for r in result]
@@ -66,8 +69,42 @@ def predict_class(sentence):
 
 class Chatbot:
     @staticmethod
-    def generate_message(message_content, is_answering):
-        return {"message": message_content, "isAnswering": is_answering }   
+    def generate_answer_response(state):
+        def generate_next_question(question_index, question_list):
+            return {
+                "currentQuestion": question_list[question_index], 
+                "questionList": question_list,
+                "questionIndex": str(question_index)
+            }
+
+        question_index = int(state["questionIndex"])
+        users_answer = state["message"]
+        correct_response = ["Thats correct!"]
+        incorrect_response = ["Sorry that is wrong"]
+        if retrieve_questions_by_category("arithmetic")[question_index].is_correct(users_answer):
+            question_index += 1
+            if question_index < len(state["questionList"]):
+                new_state = generate_next_question(question_index, state["questionList"])
+                message = f"{random.choice(correct_response)}. " + new_state["currentQuestion"]["question"]
+                return Chatbot.generate_message(message, True, new_state)
+            else:
+                return Chatbot.generate_message(random.choice(correct_response), False)
+        else:
+            return Chatbot.generate_message(random.choice(incorrect_response), True, state)
+
+    @staticmethod
+    def generate_question_list(message_content, tag):
+        question_list = retrieve_questions_by_category(tag)
+        first_question = question_list[0].question
+        return {"message": f"{message_content}\n{first_question}", 
+                "isAnswering": True, 
+                "currentQuestion": first_question, 
+                "questionList": [q.serialize() for q in question_list],
+                "questionIndex": "0" }
+
+    @staticmethod
+    def generate_message(message_content, is_answering, state={}):
+        return {**state, "message": message_content, "isAnswering": is_answering }   
 
     @staticmethod
     def generate_response(state):
@@ -80,37 +117,26 @@ class Chatbot:
         Returns:
             {str} The output text predicted by the chatbot.
         """
-
+        state["message"] = state["message"].lower().strip()
         input_text = state["message"]
 
-        if state["isAnswering"]:
-            return Chatbot.generate_message("Thats correct!", False) if retrieve_questions()[0].is_correct(
-            state["message"]) else Chatbot.generate_message("Sorry that is wrong", True)
-
-        input_text = input_text.lower().strip()
         intents_list = predict_class(input_text)
         tag = intents_list[0]["intent"]
         prob = float(intents_list[0]["prob"])
-        is_question = tag == "revision-mode"
 
-        if is_question:
-            return Chatbot.generate_message(retrieve_questions()[0].question, True)
+        if state["isAnswering"]:
+            return Chatbot.generate_answer_response(state)
 
         UNCERTAIN_THRESHOLD = 0.7
         uncertain_responses = ["Sorry, I did not understand the question!",
                                "I am unable to answer that question.", "I didn't quite catch that. Please try again!"]
 
         if prob < UNCERTAIN_THRESHOLD:
-            return random.choice(uncertain_responses)
+            return Chatbot.generate_message(random.choice(uncertain_responses), False)
 
-        for intent in intents:
-            if intent["tag"] == tag:
-                result = random.choice(intent["responses"])
-                break
+        result = next((random.choice(intent["responses"]) for intent in intents if intent["tag"] == tag), random.choice(uncertain_responses))
+
+        if tag in topics:
+            return Chatbot.generate_question_list(result, tag)
 
         return Chatbot.generate_message(result, state["isAnswering"])
-
-if __name__ == "__main__":
-    while True:
-        input_text = input("Message: ")
-        print(Chatbot.generate_response(input_text))

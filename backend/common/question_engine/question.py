@@ -17,6 +17,15 @@ class Question:
 
     def __str__(self) -> str:
         return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "context": self.context,
+            "answer": self.answer,
+            "category": self.category,
+            "type": self.type
+        }
 
 
 class QuestionEncoder(JSONEncoder):

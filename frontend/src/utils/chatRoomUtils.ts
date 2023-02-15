@@ -1,9 +1,20 @@
 import { Socket } from 'socket.io-client';
 
+export interface Question {
+  question: string;
+  context: string;
+  answer: string;
+  category: string;
+  type: string;
+}
+
 export interface ChatbotResponse {
   state: {
     message: string;
     isAnswering: boolean;
+    currentQuestion: string | undefined;
+    questionList: Question[] | undefined
+    questionIndex: string | undefined
   };
 }
 
