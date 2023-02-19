@@ -1,5 +1,6 @@
 import json
 from backend.common.question_engine.question import Question
+from backend.resources.db import client
 import os
 
 __location__ = os.path.realpath(os.path.join(
@@ -14,5 +15,6 @@ def retrieve_questions_by_category(category):
     return list(filter(lambda x: x.category == category, questions_list))
 
 def retrieve_questions():
-    questions_json = json.loads(open(f"{__location__}/questions.json").read())
-    return [Question(**question) for question in questions_json]
+    db = client["Questions"]
+    all_questions = db.all_questions.find()
+    return [Question(**question) for question in all_questions]

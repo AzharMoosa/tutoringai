@@ -5,6 +5,11 @@ from json import JSONEncoder
 import os
 from question import Question, QuestionEncoder
 from question_transformer import model, tokenizer
+from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+load_dotenv()
+client = MongoClient(os.getenv("MONGODB_URI"), serverSelectionTimeoutMS=5000)
 
 __location__ = os.path.realpath(os.path.join(
     os.getcwd(), os.path.dirname(__file__)))
@@ -81,14 +86,12 @@ class QuestionEngine:
 
 
 def update_questions():
-    # TODO: Store In Database
     generated_questions = QuestionEngine.generate_questions()
     questions_json = json.dumps(
         generated_questions, indent=4, cls=QuestionEncoder)
-
-    with open(f"{__location__}/questions.json", "w") as f:
-        f.write(questions_json)
-
+    db = client["Questions"]
+    all_questions = db.all_questions
+    all_questions.insert_many(json.loads(questions_json))
 
 if __name__ == "__main__":
     update_questions()
