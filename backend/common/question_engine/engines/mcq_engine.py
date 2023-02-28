@@ -1,5 +1,5 @@
 from nltk.corpus import wordnet
-from typing import List
+from typing import List, Tuple
 import nltk
 import re
 import random
@@ -9,8 +9,15 @@ from collections import OrderedDict
 import string
 from sense2vec import Sense2Vec
 from rapidfuzz.distance import Levenshtein
+from sentence_transformers import SentenceTransformer
+from typing import List, Tuple
+import itertools
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 nltk.download("wordnet")
+
+model = SentenceTransformer('all-MiniLM-L12-v2')
 
 
 class MCQEngine:
@@ -20,9 +27,26 @@ class MCQEngine:
         self.s2v = Sense2Vec().from_disk("s2v")
 
     def __get_synset(self, word: str):
+        """
+        Gets the synset of a given word
+
+        Arguments:
+            word {str} The word to generate the synset from
+
+        Returns:
+            {synset} The synset from the word
+        """
         return wordnet.synsets(word, "n")
 
     def generate_distractors_wordnet(self) -> List[List[str]]:
+        """
+        Generates the distractors using wordnet. First the synset
+        of a word is retrieved. Then for each synset, the hyponyms
+        are determined and added to the distractor list.
+
+        Returns:
+            {List[List[str]]} The distractors for the correct answer
+        """
         distractors = []
 
         answer = self.answer.lower()
@@ -52,9 +76,27 @@ class MCQEngine:
         return distractors
 
     def __get_concept_net_graph(self, url: str) -> dict:
+        """
+        Gets the concept net graph using the url
+
+        Arguments:
+            url {str} The API endpoint to retrieve concept net graph
+
+        Returns:
+            {dict} The concept net graph
+        """
         return requests.get(url).json()
 
     def generate_distractors_conceptnet(self) -> List[str]:
+        """
+        Generates the distractors using conceptnet. First the
+        graph is generated using the answer. Then the end term
+        is used to find the connections to the answer. Finally,
+        the distractors are added to the list.
+
+        Returns:
+            {List[str]} The distractors for the correct answer
+        """
         distractors = []
 
         answer = self.answer.lower()
@@ -74,9 +116,27 @@ class MCQEngine:
         return distractors
 
     def __process_s2v_word(self, word: str) -> str:
+        """
+        Processes the word generated from s2v
+
+        Arguments:
+            word {str} The word to be processed
+
+        Returns:
+            {str} Processed word
+        """
         return word[0].split("|")[0].replace("_", " ").lower()
 
-    def __filter_distractors(self, distractors: List[str]) -> List[str]:
+    def __filter_distractors_edit_distance(self, distractors: List[str]) -> List[str]:
+        """
+        Filters the distractors using Levenshtein Normalized Distance
+
+        Arguments:
+            distractors {List[str]} The distractors to be filtered
+
+        Returns:
+            {List[str]} The filtered distractors
+        """
         def get_edits(word):
             letters = "abcdefghijklmnopqrstuvwxyz " + string.punctuation
             splits = [(word[:i], word[i:]) for i in range(len(word) + 1)]
@@ -97,6 +157,18 @@ class MCQEngine:
         return [word for word in filtered_distractors if Levenshtein.normalized_distance(word.lower(), self.answer.lower()) > threshold]
 
     def generate_distractors_sense2vec(self, filter_output: bool = True) -> List[str]:
+        """
+        Generates the distractors using sense2vec. First the best
+        sense is determined. Then the most similar words are found.
+
+        Arguments:
+            filter_output {bool} The flag to determine if the output
+                                 should be filtered using edit
+                                 distance
+
+        Returns:
+            {List[str]} The distractors for the correct answer
+        """
         answer = self.answer.lower()
         answer = answer.replace(" ", "_")
 
@@ -108,11 +180,70 @@ class MCQEngine:
 
         distractors = list(OrderedDict.fromkeys(distractors))
 
-        return self.__filter_distractors(distractors) if filter_output else distractors
+        return self.__filter_distractors_edit_distance(distractors) if filter_output else distractors
+
+    def __filter_distractors_mmr(self, document_embeddings: np.ndarray, word_embeddings: np.ndarray, distractors: List[str], top_n=5, diversity: float = 0.9) -> List[Tuple[str, float]]:
+        """
+        Adapted from https://github.com/MaartenGr/KeyBERT/blob/master/keybert/_mmr.py
+        @author - Maarten Grootendorst,
+        @title - KeyBERT: Minimal keyword extraction with BERT
+        @year - 2020,
+        @publisher - Zenodo
+        @version - v0.3.0
+        @doi - 10.5281/zenodo.4461265
+        @url - https://doi.org/10.5281/zenodo.4461265
+        """
+        similarity = cosine_similarity(word_embeddings, document_embeddings)
+        word_similarity = cosine_similarity(word_embeddings)
+
+        keyword_idx = [np.argmax(similarity)]
+        candidates_idx = [i for i in range(
+            len(distractors)) if i != keyword_idx[0]]
+
+        for _ in range(top_n - 1):
+            c_similarities = similarity[candidates_idx, :]
+            t_similarities = np.max(
+                word_similarity[candidates_idx][:, keyword_idx], axis=1)
+            mmr = (1 - diversity) * c_similarities - \
+                diversity * t_similarities.reshape(-1, 1)
+            mmr_idx = candidates_idx[np.argmax(mmr)]
+
+            keyword_idx.append(mmr_idx)
+            candidates_idx.remove(mmr_idx)
+
+        return [(distractors[idx], round(float(similarity.reshape(1, -1)[0][idx]), 4)) for idx in keyword_idx]
+
+    def __get_embeddings(self, distractors: List[str]) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Generates the answer and document embeddings
+
+        Arguments:
+            distractors {List[str]} The list of distractors
+
+        Returns:
+            {Tuple[np.ndarry, np.ndarray]} The answer and document embeddings
+        """
+        return model.encode([self.answer]), model.encode(distractors)
+
+    def generate_distractors_transformer(self) -> List[str]:
+        """
+        Generates the distractors using sentence transformers. The
+        distractors are generated using sense2vec. Then it is filtered
+        using MMR to determine the correct distractors.
+
+        Returns:
+            {List[str]} The distractors for the correct answer
+        """
+        distractors = [self.answer] + self.generate_distractors_sense2vec()
+        a_embedding, d_embedding = self.__get_embeddings(distractors)
+        filtered_distractors = self.__filter_distractors_mmr(
+            a_embedding, d_embedding, distractors)
+        return [distractor[0] for distractor in filtered_distractors][1:]
 
 
 if __name__ == "__main__":
-    m = MCQEngine("ww", "USA")
+    m = MCQEngine("ww", "Barack Obama")
     # print(m.generate_distractors_wordnet())
     # print(m.generate_distractors_conceptnet())
-    print(m.generate_distractors_sense2vec())
+    # print(m.generate_distractors_sense2vec())
+    print(m.generate_distractors_transformer())
