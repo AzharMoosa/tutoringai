@@ -182,7 +182,7 @@ class MCQEngine:
 
         return self.__filter_distractors_edit_distance(distractors) if filter_output else distractors
 
-    def __filter_distractors_mmr(self, document_embeddings: np.ndarray, word_embeddings: np.ndarray, distractors: List[str], top_n=5, diversity: float = 0.9) -> List[Tuple[str, float]]:
+    def filter_distractors_mmr(self, document_embeddings: np.ndarray, word_embeddings: np.ndarray, distractors: List[str], top_n=5, diversity: float = 0.9) -> List[Tuple[str, float]]:
         """
         Adapted from https://github.com/MaartenGr/KeyBERT/blob/master/keybert/_mmr.py
         @author - Maarten Grootendorst,

@@ -1,0 +1,114 @@
+from typing import Tuple, List
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import torch
+from keyword_extraction_engine import KeywordExtraction
+from summarization_engine import TextSummarization
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+from sense2vec import Sense2Vec
+import numpy as np
+import random
+from sentence_transformers import SentenceTransformer
+from rapidfuzz.distance import Levenshtein
+from collections import OrderedDict
+from sklearn.metrics.pairwise import cosine_similarity
+from mcq_engine import MCQEngine
+import nltk
+nltk.download('omw-1.4')
+
+model = T5ForConditionalGeneration.from_pretrained('ramsrigouthamg/t5_squad_v1')
+tokenizer = T5Tokenizer.from_pretrained('ramsrigouthamg/t5_squad_v1')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Device {device}")
+model = model.to(device)
+
+s2v = Sense2Vec().from_disk("s2v")
+
+class TextToQuestion:
+    @staticmethod
+    def __get_input_ids_attention_mask(text: str):
+        max_length = 384
+        encoder = tokenizer.encode_plus(text,
+                                        max_length=max_length,
+                                        pad_to_max_length=False,
+                                        truncation=True,
+                                        return_tensors="pt").to(device)
+
+        return encoder["input_ids"], encoder["attention_mask"]
+
+    @staticmethod
+    def __filter_same_sense(sense: str, words: List[str]) -> List[str]:
+        def process_word(word: str) -> str:
+            return word[0].split("|")[0].replace("_", " ").title().strip()
+
+        base_sense = sense.split("|")[1]
+        
+        return [process_word(word) for word in words if word[0].split("|")[1] == base_sense]
+
+    @staticmethod
+    def __maximum_similarity_score(word: str, words: List[str]):
+        return max([Levenshtein.normalized_distance(w.lower(), word.lower()) for w in words])
+
+    @staticmethod
+    def __generate_distractors_sense2vec(word: str, question: str, n=40):
+        best_sense = s2v.get_best_sense(word, senses=["NOUN", "PERSON", "PRODUCT", "LOC", "ORG", "EVENT", "NORP", "WORK OF ART", "FAC", "GPE", "NUM", "FACILITY"])
+        most_similar = TextToQuestion.__filter_same_sense(best_sense, s2v.most_similar(best_sense, n=n))
+
+        threshold = 0.6
+        distractors = [word]
+        question_token = question.split()
+
+        for word in most_similar:
+            if TextToQuestion.__maximum_similarity_score(word, distractors) < threshold and word not in distractors and distractors not in question_token:
+                distractors.append(word)
+            
+        return distractors[1:]
+    
+    @staticmethod
+    def get_mcq_question(text: str, options=4, type: str="sense2vec") -> dict:
+        question_list = TextToQuestion.get_question(text)
+        mcq_mapping = {}
+        for question, answer in question_list:
+            if type == "wordnet":
+                distractors = MCQEngine(question, answer).generate_distractors_wordnet()
+            elif type == "sense2vec":
+                distractors = MCQEngine(question, answer).generate_distractors_sense2vec()
+            elif type == "transformer":
+                distractors = MCQEngine(question, answer).generate_distractors_transformer()
+            else:
+                distractors = []
+
+            distractors = [answer.capitalize()] + distractors[:options-1]
+            random.shuffle(distractors)
+            mcq_mapping[question] = (distractors, answer.capitalize())
+
+        return mcq_mapping
+
+    @staticmethod
+    def get_question(context: str) -> List[Tuple[str, str]]:
+        summarized_text = TextSummarization.summarize(context)
+        keywords = KeywordExtraction.get_keywords(context)
+        question_list = []
+
+        for keyword in keywords:
+            text = f"context: {summarized_text} answer: {keyword}"
+            input_ids, attention_mask = TextToQuestion.__get_input_ids_attention_mask(text)
+            
+            model_output = model.generate(input_ids=input_ids,
+                                      attention_mask=attention_mask,
+                                      early_stopping=True,
+                                      num_beams=5,
+                                      num_return_sequences=1,
+                                      no_repeat_ngram_size=2,
+                                      max_length=72)
+        
+            decoded_output = [tokenizer.decode(id, skip_special_tokens=True) for id in model_output]
+            question = decoded_output[0].replace("question:", "").strip()
+            question_list.append((question, keyword))
+
+        return question_list
+    
+
+if __name__ == "__main__":
+    # a = TextToQuestion.get_question("A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his nap, the Lion laid his huge paw angrily on the tiny creature to kill her.  \"Spare me!\" begged the poor Mouse. \"Please let me go and some day I will surely repay you.\"  The Lion was much amused to think that a Mouse could ever help him. But he was generous and finally let the Mouse go.  Some days later, while stalking his prey in the forest, the Lion was caught in the toils of a hunter's net. Unable to free himself, he filled the forest with his angry roaring. The Mouse knew the voice and quickly found the Lion struggling in the net. Running to one of the great ropes that bound him, she gnawed it until it parted, and soon the Lion was free. \"You laughed when I said I would repay you,\" said the Mouse. \"Now you see that even a Mouse can help a Lion.")
+    b = TextToQuestion.get_mcq_question("A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his nap, the Lion laid his huge paw angrily on the tiny creature to kill her.  \"Spare me!\" begged the poor Mouse. \"Please let me go and some day I will surely repay you.\"  The Lion was much amused to think that a Mouse could ever help him. But he was generous and finally let the Mouse go.  Some days later, while stalking his prey in the forest, the Lion was caught in the toils of a hunter's net. Unable to free himself, he filled the forest with his angry roaring. The Mouse knew the voice and quickly found the Lion struggling in the net. Running to one of the great ropes that bound him, she gnawed it until it parted, and soon the Lion was free. \"You laughed when I said I would repay you,\" said the Mouse. \"Now you see that even a Mouse can help a Lion.")
+    print(b)
