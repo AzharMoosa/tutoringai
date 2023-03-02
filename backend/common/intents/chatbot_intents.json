@@ -83,9 +83,13 @@
         "how do you subtract",
         "how do you multiply",
         "how do you divide",
+        "addition",
         "add",
         "subtract",
+        "subtraction",
+        "multiplication",
         "multiply",
+        "division",
         "divide"
       ],
       "responses": [

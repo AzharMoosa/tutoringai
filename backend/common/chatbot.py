@@ -127,7 +127,7 @@ class Chatbot:
         if state["isAnswering"]:
             return Chatbot.generate_answer_response(state)
 
-        UNCERTAIN_THRESHOLD = 0.7
+        UNCERTAIN_THRESHOLD = 0.4
         uncertain_responses = ["Sorry, I did not understand the question!",
                                "I am unable to answer that question.", "I didn't quite catch that. Please try again!"]
 
