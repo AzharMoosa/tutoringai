@@ -236,7 +236,7 @@ class MCQEngine:
         """
         distractors = [self.answer] + self.generate_distractors_sense2vec()
         a_embedding, d_embedding = self.__get_embeddings(distractors)
-        filtered_distractors = self.__filter_distractors_mmr(
+        filtered_distractors = self.filter_distractors_mmr(
             a_embedding, d_embedding, distractors)
         return [distractor[0] for distractor in filtered_distractors][1:]
 
