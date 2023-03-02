@@ -5,12 +5,8 @@ from keyword_extraction_engine import KeywordExtraction
 from summarization_engine import TextSummarization
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from sense2vec import Sense2Vec
-import numpy as np
 import random
-from sentence_transformers import SentenceTransformer
 from rapidfuzz.distance import Levenshtein
-from collections import OrderedDict
-from sklearn.metrics.pairwise import cosine_similarity
 from mcq_engine import MCQEngine
 import nltk
 nltk.download('omw-1.4')
@@ -26,6 +22,17 @@ s2v = Sense2Vec().from_disk("s2v")
 class TextToQuestion:
     @staticmethod
     def __get_input_ids_attention_mask(text: str):
+        """
+        The input text is first preprocessed and encoded
+        using the tokenizer. Then the input ids and 
+        attention mask is extracted.
+
+        Arguments:
+            text {str} The input text to be encoded
+
+        Returns:
+            {tuple()} The input ids and the attention mask
+        """
         max_length = 384
         encoder = tokenizer.encode_plus(text,
                                         max_length=max_length,
@@ -37,15 +44,36 @@ class TextToQuestion:
 
     @staticmethod
     def __filter_same_sense(sense: str, words: List[str]) -> List[str]:
+        """
+        Filters a list of words using a base sense.
+
+        Arguments:
+            sense {str} The base sense to use
+            words {List[str]} The list of words to filter
+
+        Returns:
+            {List[str]} The input ids and the attention mask
+        """
         def process_word(word: str) -> str:
             return word[0].split("|")[0].replace("_", " ").title().strip()
 
-        base_sense = sense.split("|")[1]
+        sense = sense.split("|")[1]
         
-        return [process_word(word) for word in words if word[0].split("|")[1] == base_sense]
+        return [process_word(word) for word in words if word[0].split("|")[1] == sense]
 
     @staticmethod
     def __maximum_similarity_score(word: str, words: List[str]):
+        """
+        Retrieves the maximum similarity score using a word and
+        a list of words.
+
+        Arguments:
+            word {str} The base word to compare to
+            words {List[str]} The list of words to compare to
+
+        Returns:
+            {List[str]} The input ids and the attention mask
+        """
         return max([Levenshtein.normalized_distance(w.lower(), word.lower()) for w in words])
 
     @staticmethod
@@ -64,7 +92,19 @@ class TextToQuestion:
         return distractors[1:]
     
     @staticmethod
-    def get_mcq_question(text: str, options=4, type: str="sense2vec") -> dict:
+    def get_mcq_question(text: str, options: int = 4, type: str="transformer") -> dict:
+        """
+        Generates MCQ questions for a text input.
+
+        Arguments:
+            text {str} The base word to compare to
+            options {int} The number of options to use in the MCQ
+            type {str} The type of method used to generate distractors
+
+        Returns:
+            {dict} The mapping of a question to the distractors and the answer
+                   to the MCQ question.
+        """
         question_list = TextToQuestion.get_question(text)
         mcq_mapping = {}
         for question, answer in question_list:
@@ -85,6 +125,15 @@ class TextToQuestion:
 
     @staticmethod
     def get_question(context: str) -> List[Tuple[str, str]]:
+        """
+        Generates questions using a given text input
+
+        Arguments:
+            context {str} The input text used to generate questions from
+
+        Returns:
+            {List[Tuple[str, str]]} A list of questions and answers
+        """
         summarized_text = TextSummarization.summarize(context)
         keywords = KeywordExtraction.get_keywords(context)
         question_list = []

@@ -19,6 +19,16 @@ model = model.to(device)
 class TextSummarization:
     @staticmethod
     def __postprocess_text(text: str) -> str:
+        """
+        Performs post processing on the input text and
+        returns the processed text.
+
+        Arguments:
+            text {str} The input text to be processed
+
+        Returns:
+            {str} The processed text
+        """
         processed_text = ""
         sentences = sent_tokenize(text)
 
@@ -34,6 +44,17 @@ class TextSummarization:
     
     @staticmethod
     def __get_input_ids_attention_mask(text: str):
+        """
+        The input text is first preprocessed and encoded
+        using the tokenizer. Then the input ids and 
+        attention mask is extracted.
+
+        Arguments:
+            text {str} The input text to be encoded
+
+        Returns:
+            {tuple()} The input ids and the attention mask
+        """
         text = TextSummarization.__preprocess_text(text)
         max_length = 512
         encoder = tokenizer.encode_plus(text, 
@@ -45,7 +66,20 @@ class TextSummarization:
         return encoder["input_ids"], encoder["attention_mask"]
     
     @staticmethod
-    def summarize(text) -> str:
+    def summarize(text: str) -> str:
+        """
+        Performs text summarization on the input text. First the
+        input ids and attention mask is retreived. Then the T5
+        model is used to generated a summarized text. The model
+        output is then decoded and processed to retreive the
+        summarized text.
+
+        Arguments:
+            text {str} The input text to be summarized.
+
+        Returns:
+            {str} The summarized text
+        """
         input_ids, attention_mask = TextSummarization.__get_input_ids_attention_mask(text)
 
         model_output = model.generate(input_ids=input_ids,

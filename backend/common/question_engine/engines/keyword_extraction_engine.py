@@ -28,7 +28,17 @@ class KeywordExtraction:
             alpha=alpha, threshold=threshold, method=method)
         return extractor
 
-    def __get_nouns(text: str, n_best=15) -> List[str]:
+    def __get_nouns(text: str, n_best: int = 15) -> List[str]:
+        """
+        Extracts nouns from a input text
+
+        Arguments:
+            text {str} The input text to get nouns from
+            n_best {int} The number of keyphrases the extractor should retrieve
+
+        Returns:
+            {List[str]} The keyphrases extracted from a text
+        """
         try:
             extractor = KeywordExtraction.__create_extractor(text, {'PROPN', 'NOUN'})
             best_keyphrases = extractor.get_n_best(n=n_best)
@@ -37,6 +47,16 @@ class KeywordExtraction:
             raise Exception("ERROR! Unable to extract keyphrases")
 
     def __get_summarized_keywords(keywords: List[str], summarized_text: str) -> List[str]:
+        """
+        Extracts nouns from a summarized text
+
+        Arguments:
+            keywords {List[str]} The keywords from the original text
+            summarized_text {str} The summarized input text
+
+        Returns:
+            {List[str]} The keyphrases extracted from a summarized text
+        """
         processor = KeywordProcessor()
         for keyword in keywords:
             processor.add_keyword(keyword)
@@ -45,7 +65,17 @@ class KeywordExtraction:
         
     
     @staticmethod
-    def get_keywords(text: str, top=4):
+    def get_keywords(text: str, top: int = 4):
+        """
+        Extracts keywords from an input text.
+
+        Arguments:
+            text {str} The input text to extract keywords from
+            top {int} The maximum number of keywords to retrieve
+
+        Returns:
+            {List[str]} The keyphrases extracted from a summarized text
+        """
         nouns = KeywordExtraction.__get_nouns(text)
         summarized_text = TextSummarization.summarize(text)
         summarized_keywords = KeywordExtraction.__get_summarized_keywords(nouns, summarized_text)
