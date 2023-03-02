@@ -26,7 +26,7 @@ export const isRegisterDetailsValid = (
 
 export const isLoginDetailsValid = (
   email: string,
-  password: string,
+  password: string
 ): Boolean => {
   if (!(email && password)) {
     toast.error('Please fill in all details.');
@@ -35,4 +35,3 @@ export const isLoginDetailsValid = (
 
   return true;
 };
-

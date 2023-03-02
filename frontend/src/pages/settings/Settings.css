@@ -1,2 +1,16 @@
+@import '../../assets/Constants.css';
+
 .settings {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.settings-link {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

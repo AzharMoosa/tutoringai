@@ -13,8 +13,8 @@ export interface ChatbotResponse {
     message: string;
     isAnswering: boolean;
     currentQuestion: string | undefined;
-    questionList: Question[] | undefined
-    questionIndex: string | undefined
+    questionList: Question[] | undefined;
+    questionIndex: string | undefined;
   };
 }
 
