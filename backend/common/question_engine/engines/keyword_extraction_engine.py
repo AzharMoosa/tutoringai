@@ -28,6 +28,7 @@ class KeywordExtraction:
             alpha=alpha, threshold=threshold, method=method)
         return extractor
 
+    @staticmethod
     def __get_keyphrases(text: str, n_best: int = 15, pos: dict = {'PROPN', 'NOUN'}) -> List[str]:
         """
         Extracts keyphrases from a input text
@@ -47,6 +48,7 @@ class KeywordExtraction:
         except:
             raise Exception("ERROR! Unable to extract keyphrases")
 
+    @staticmethod
     def __get_summarized_keywords(keywords: List[str], summarized_text: str) -> List[str]:
         """
         Extracts nouns from a summarized text
