@@ -66,7 +66,7 @@ class TextSummarization:
         return encoder["input_ids"], encoder["attention_mask"]
     
     @staticmethod
-    def summarize(text: str) -> str:
+    def summarize(text: str, min_length=75, max_length=300) -> str:
         """
         Performs text summarization on the input text. First the
         input ids and attention mask is retreived. Then the T5
@@ -88,12 +88,12 @@ class TextSummarization:
                                       num_beams=3,
                                       num_return_sequences=1,
                                       no_repeat_ngram_size=2,
-                                      min_length=75,
-                                      max_length=300)
+                                      min_length=min_length,
+                                      max_length=max_length)
         
         decoded_output = [tokenizer.decode(id, skip_special_tokens=True) for id in model_output]
         
         return TextSummarization.__postprocess_text(decoded_output[0]).strip()
 
 if __name__ == "__main__":
-    print(TextSummarization.summarize("A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his nap, the Lion laid his huge paw angrily on the tiny creature to kill her.  \"Spare me!\" begged the poor Mouse. \"Please let me go and some day I will surely repay you.\"  The Lion was much amused to think that a Mouse could ever help him. But he was generous and finally let the Mouse go.  Some days later, while stalking his prey in the forest, the Lion was caught in the toils of a hunter's net. Unable to free himself, he filled the forest with his angry roaring. The Mouse knew the voice and quickly found the Lion struggling in the net. Running to one of the great ropes that bound him, she gnawed it until it parted, and soon the Lion was free. \"You laughed when I said I would repay you,\" said the Mouse. \"Now you see that even a Mouse can help a Lion."))
+    print(TextSummarization.summarize("John, Joe, Sarah are playing football. John has 3 apple and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?", min_length=50, max_length=50))

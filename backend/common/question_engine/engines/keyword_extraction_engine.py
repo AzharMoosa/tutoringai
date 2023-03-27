@@ -28,19 +28,20 @@ class KeywordExtraction:
             alpha=alpha, threshold=threshold, method=method)
         return extractor
 
-    def __get_nouns(text: str, n_best: int = 15) -> List[str]:
+    def __get_keyphrases(text: str, n_best: int = 15, pos: dict = {'PROPN', 'NOUN'}) -> List[str]:
         """
-        Extracts nouns from a input text
+        Extracts keyphrases from a input text
 
         Arguments:
-            text {str} The input text to get nouns from
+            text {str} The input text to get keyphrases from
             n_best {int} The number of keyphrases the extractor should retrieve
+            pos {dict} The types of words to look for
 
         Returns:
             {List[str]} The keyphrases extracted from a text
         """
         try:
-            extractor = KeywordExtraction.__create_extractor(text, {'PROPN', 'NOUN'})
+            extractor = KeywordExtraction.__create_extractor(text, pos)
             best_keyphrases = extractor.get_n_best(n=n_best)
             return [phrase[0] for phrase in best_keyphrases]
         except:
@@ -65,23 +66,24 @@ class KeywordExtraction:
         
     
     @staticmethod
-    def get_keywords(text: str, top: int = 4):
+    def get_keywords(text: str, top: int = 4, pos: dict = {'PROPN', 'NOUN'}):
         """
         Extracts keywords from an input text.
 
         Arguments:
             text {str} The input text to extract keywords from
             top {int} The maximum number of keywords to retrieve
+            pos {dict} The types of words to look for
 
         Returns:
             {List[str]} The keyphrases extracted from a summarized text
         """
-        nouns = KeywordExtraction.__get_nouns(text)
+        keyphrases = KeywordExtraction.__get_keyphrases(text, pos=pos)
         summarized_text = TextSummarization.summarize(text)
-        summarized_keywords = KeywordExtraction.__get_summarized_keywords(nouns, summarized_text)
+        summarized_keywords = KeywordExtraction.__get_summarized_keywords(keyphrases, summarized_text)
         keywords = []
 
-        for keyword in nouns:
+        for keyword in keyphrases:
             if keyword in summarized_keywords:
                 keywords.append(keyword)
         
@@ -89,4 +91,4 @@ class KeywordExtraction:
 
 
 if __name__ == "__main__":
-    print(KeywordExtraction.get_keywords("A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his nap, the Lion laid his huge paw angrily on the tiny creature to kill her.  \"Spare me!\" begged the poor Mouse. \"Please let me go and some day I will surely repay you.\"  The Lion was much amused to think that a Mouse could ever help him. But he was generous and finally let the Mouse go.  Some days later, while stalking his prey in the forest, the Lion was caught in the toils of a hunter's net. Unable to free himself, he filled the forest with his angry roaring. The Mouse knew the voice and quickly found the Lion struggling in the net. Running to one of the great ropes that bound him, she gnawed it until it parted, and soon the Lion was free. \"You laughed when I said I would repay you,\" said the Mouse. \"Now you see that even a Mouse can help a Lion."))     
+    print(KeywordExtraction.get_keywords("John, Joe, Sarah are playing football. John has 3 apple and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?"))     
