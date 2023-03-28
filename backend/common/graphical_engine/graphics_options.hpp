@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_OPTIONS_H
 #define GRAPHICS_OPTIONS_H
 
+#include <cmath>
 #include <iostream>
 #include <string>
 using std::string;
@@ -48,15 +49,41 @@ class GraphicsOptions {
 
 class RectangleOptions : public GraphicsOptions {
  private:
-  int verticalLength;
-  int horizontalLength;
+  double verticalLength;
+  double horizontalLength;
 
  public:
   RectangleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
-                   int verticalLength, int horizontalLength);
+                   double verticalLength, double horizontalLength);
 
-  int getVerticalLength();
-  int getHorizontalLength();
+  double getVerticalLength();
+  double getHorizontalLength();
+};
+
+class TriangleOptions : public GraphicsOptions {
+ private:
+  double lengthOne;
+  double lengthTwo;
+  double lengthThree;
+
+ public:
+  TriangleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
+                  double lengthOne, double lengthTwo, double lengthThree);
+
+  double getLengthOne();
+  double getLengthTwo();
+  double getLengthThree();
+};
+
+class CircleOptions : public GraphicsOptions {
+ private:
+  double radius;
+
+ public:
+  CircleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
+                double radius);
+
+  double getRadius();
 };
 
 #endif

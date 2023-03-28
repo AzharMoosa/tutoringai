@@ -35,10 +35,32 @@ ShapeOptions GraphicsOptions::getShapeOptions() { return shapeOptions; }
 
 RectangleOptions::RectangleOptions(CanvasOptions& canvasOptions,
                                    ShapeOptions& shapeOptions,
-                                   int verticalLength, int horizontalLength)
+                                   double verticalLength,
+                                   double horizontalLength)
     : GraphicsOptions(canvasOptions, shapeOptions) {
   this->verticalLength = verticalLength;
   this->horizontalLength = horizontalLength;
 }
-int RectangleOptions::getVerticalLength() { return verticalLength; }
-int RectangleOptions::getHorizontalLength() { return horizontalLength; }
+double RectangleOptions::getVerticalLength() { return verticalLength; }
+double RectangleOptions::getHorizontalLength() { return horizontalLength; }
+
+TriangleOptions::TriangleOptions(CanvasOptions& canvasOptions,
+                                 ShapeOptions& shapeOptions, double lengthOne,
+                                 double lengthTwo, double lengthThree)
+    : GraphicsOptions(canvasOptions, shapeOptions) {
+  this->lengthOne = lengthOne;
+  this->lengthTwo = lengthTwo;
+  this->lengthThree = lengthThree;
+}
+
+double TriangleOptions::getLengthOne() { return lengthOne; }
+double TriangleOptions::getLengthTwo() { return lengthTwo; }
+double TriangleOptions::getLengthThree() { return lengthThree; }
+
+CircleOptions::CircleOptions(CanvasOptions& canvasOptions,
+                             ShapeOptions& shapeOptions, double radius)
+    : GraphicsOptions(canvasOptions, shapeOptions) {
+  this->radius = radius;
+}
+
+double CircleOptions::getRadius() { return radius; }
