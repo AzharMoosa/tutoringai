@@ -1,37 +1,36 @@
-#include <Magick++.h>
-
-#include <iostream>
-#include <list>
-#include <string>
+#include "graphical_engine.hpp"
 
 class GraphicalEngine {
+ private:
+  Image generateImageCanvas(CanvasOptions canvasOptions) {
+    int imageWidth = canvasOptions.getWidth();
+    int imageHeight = canvasOptions.getHeight();
+    string backgroundColor = canvasOptions.getBackgroundColor();
+    return Image(Geometry(imageWidth, imageHeight), Color(backgroundColor));
+  }
+
  public:
-  void drawRectangle(std::string strokeColor, int strokeWidth,
-                     std::string fillColor, int verticalLength,
-                     int horizontalLength, int imageWidth, int imageHeight,
-                     std::string backgroundColor) {
+  void drawRectangle(RectangleOptions options) {
     try {
-      // Create Image
-      Magick::Image image(Magick::Geometry(200, 200), Magick::Color("white"));
+      Image image = generateImageCanvas(options.getCanvasOptions());
 
-      // Construct drawing list
-      std::list<Magick::Drawable> drawList;
+      std::list<Drawable> drawList;
 
-      // Add some drawing options to drawing list
       drawList.push_back(
-          Magick::DrawableStrokeColor("black"));               // Outline color
-      drawList.push_back(Magick::DrawableStrokeWidth(2));      // Stroke width
-      drawList.push_back(Magick::DrawableFillColor("white"));  // Fill color
+          DrawableStrokeColor(options.getShapeOptions().getStrokeColor()));
+      drawList.push_back(
+          DrawableStrokeWidth(options.getShapeOptions().getStrokeWidth()));
+      drawList.push_back(
+          DrawableFillColor(options.getShapeOptions().getFillColor()));
 
-      // Add a Rectangle to drawing list
-      drawList.push_back(Magick::DrawableRectangle(10, 50, 110, 150));
-      drawList.push_back(Magick::DrawableText(10, 50, "1cm"));
+      // TODO - Add Labels Correctly
+      drawList.push_back(DrawableRectangle(10, 50, 110, 150));
+      drawList.push_back(DrawableText(
+          10, 50, std::to_string(options.getHorizontalLength()) + "cm"));
 
-      // Draw everything using completed drawing list
       image.draw(drawList);
 
-      // Display the result
-      image.write("a.png");
+      image.write("rectangle.png");
     } catch (std::exception &error_) {
       std::cout << "Error Creating Rectangle" << error_.what() << "\n";
     }
@@ -39,10 +38,15 @@ class GraphicalEngine {
 };
 
 int main(int argc, char **argv) {
-  Magick::InitializeMagick(*argv);
+  InitializeMagick(*argv);
   GraphicalEngine engine = GraphicalEngine();
+  CanvasOptions canvasOptions = CanvasOptions(200, 200, "white");
+  ShapeOptions shapeOptions = ShapeOptions("black", 2, "white");
 
-  engine.drawRectangle("black", 2, "white", 2, 2, 200, 200, "white");
+  RectangleOptions rectangleOptions =
+      RectangleOptions(canvasOptions, shapeOptions, 2, 2);
+
+  engine.drawRectangle(rectangleOptions);
 
   return 0;
 }
