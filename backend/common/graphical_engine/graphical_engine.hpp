@@ -3,6 +3,7 @@
 
 #include <Magick++.h>
 
+#include <concepts>
 #include <iostream>
 #include <list>
 #include <string>
@@ -25,6 +26,11 @@ using Magick::Image;
 using Magick::InitializeMagick;
 using std::string;
 
+template <typename T>
+concept GraphicsOptionsTypes = std::is_same<T, RectangleOptions>::value ||
+                               std::is_same<T, TriangleOptions>::value ||
+                               std::is_same<T, CircleOptions>::value;
+
 class GraphicalEngine {
  private:
   Image generateImageCanvas(CanvasOptions canvasOptions);
@@ -32,9 +38,26 @@ class GraphicalEngine {
   std::list<Drawable> initialiseDrawableList(ShapeOptions shapeOptions);
 
  public:
-  void drawRectangle(RectangleOptions options);
-  void drawCircle(CircleOptions options);
-  void drawTriangle(TriangleOptions options);
+  Shape drawShape(RectangleOptions options, std::list<Drawable> &drawList);
+  Shape drawShape(CircleOptions options, std::list<Drawable> &drawList);
+  Shape drawShape(TriangleOptions options, std::list<Drawable> &drawList);
+
+  template <GraphicsOptionsTypes T>
+  void draw(T options, FileType fileType = FileType::PNG) {
+    try {
+      Image image = generateImageCanvas(options.getCanvasOptions());
+
+      std::list<Drawable> drawList =
+          initialiseDrawableList(options.getShapeOptions());
+
+      Shape shape = drawShape(options, drawList);
+
+      image.draw(drawList);
+      image.write(shapeMapping[shape] + fileTypeMapping[fileType]);
+    } catch (std::exception &error_) {
+      std::cout << "Error Creating Shape" << error_.what() << "\n";
+    }
+  }
 };
 
 #endif

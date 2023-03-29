@@ -18,58 +18,30 @@ std::list<Drawable> GraphicalEngine::initialiseDrawableList(
   return drawList;
 }
 
-void GraphicalEngine::drawRectangle(RectangleOptions options) {
-  try {
-    Image image = generateImageCanvas(options.getCanvasOptions());
+Shape GraphicalEngine::drawShape(RectangleOptions options,
+                                 std::list<Drawable> &drawList) {
+  drawList.push_back(DrawableRectangle(10, 50, 110, 150));
+  drawList.push_back(DrawableText(
+      10, 50, precision_to_string(options.getHorizontalLength()) + "cm"));
 
-    std::list<Drawable> drawList =
-        initialiseDrawableList(options.getShapeOptions());
-
-    // TODO - Add Labels Correctly
-    drawList.push_back(DrawableRectangle(10, 50, 110, 150));
-    drawList.push_back(DrawableText(
-        10, 50, precision_to_string(options.getHorizontalLength()) + "cm"));
-    image.draw(drawList);
-
-    image.write("rectangle.png");
-  } catch (std::exception &error_) {
-    std::cout << "Error Creating Rectangle" << error_.what() << "\n";
-  }
+  return Shape::Rectangle;
 }
 
-void GraphicalEngine::drawCircle(CircleOptions options) {
-  try {
-    Image image = generateImageCanvas(options.getCanvasOptions());
+Shape GraphicalEngine::drawShape(CircleOptions options,
+                                 std::list<Drawable> &drawList) {
+  drawList.push_back(DrawableCircle(50, 50, 80, 80));
 
-    std::list<Drawable> drawList =
-        initialiseDrawableList(options.getShapeOptions());
-
-    drawList.push_back(DrawableCircle(50, 50, 80, 80));
-
-    image.draw(drawList);
-    image.write("circle.png");
-  } catch (std::exception &error_) {
-    std::cout << "Error Creating Circle" << error_.what() << "\n";
-  }
+  return Shape::Circle;
 }
 
-void GraphicalEngine::drawTriangle(TriangleOptions options) {
-  try {
-    Image image = generateImageCanvas(options.getCanvasOptions());
+Shape GraphicalEngine::drawShape(TriangleOptions options,
+                                 std::list<Drawable> &drawList) {
+  std::list<Coordinate> coordinates{Coordinate(50, 50), Coordinate(50, 10),
+                                    Coordinate(90, 50)};
 
-    std::list<Drawable> drawList =
-        initialiseDrawableList(options.getShapeOptions());
+  drawList.push_back(DrawablePolygon(coordinates));
 
-    std::list<Coordinate> coordinates{Coordinate(50, 50), Coordinate(50, 10),
-                                      Coordinate(90, 50)};
-
-    drawList.push_back(DrawablePolygon(coordinates));
-    image.draw(drawList);
-
-    image.write("triangle.png");
-  } catch (std::exception &error_) {
-    std::cout << "Error Creating Triangle" << error_.what() << "\n";
-  }
+  return Shape::Triangle;
 }
 
 int main(int argc, char **argv) {
@@ -86,9 +58,9 @@ int main(int argc, char **argv) {
   TriangleOptions triangleOptions =
       TriangleOptions(canvasOptions, shapeOptions, 1, 2, 3);
 
-  engine.drawRectangle(rectangleOptions);
-  engine.drawCircle(circleOptions);
-  engine.drawTriangle(triangleOptions);
+  engine.draw(rectangleOptions);
+  engine.draw(circleOptions);
+  engine.draw(triangleOptions);
 
   return 0;
 }
