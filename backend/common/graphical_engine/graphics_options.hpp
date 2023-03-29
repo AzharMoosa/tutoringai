@@ -8,81 +8,163 @@ using std::string;
 
 class CanvasOptions {
  private:
-  int imageWidth;
-  int imageHeight;
+  /**
+   * The image width, height, and background color of the canvas.
+   */
+  int imageWidth, imageHeight;
   string backgroundColor;
 
  public:
+  /// Defines the options for the canvas in which shapes are drawn on.
+  /// @brief Constructor.
+  /// @param imageWidth The width of the canvas.
+  /// @param imageHeight The height of the canvas.
+  /// @param backgroundColor The background color of the canvas.
   CanvasOptions(int imageWidth, int imageHeight, string backgroundColor);
 
+  /// @brief Gets the width of the canvas.
+  /// @return The width of the canvas.
   int getWidth();
+
+  /// @brief Gets the height of the canvas.
+  /// @return The height of the canvas.
   int getHeight();
+
+  /// @brief Gets the background color of the canvas.
+  /// @return The background color of the canvas.
   string getBackgroundColor();
 };
 
 class ShapeOptions {
  private:
-  string strokeColor;
+  /**
+   * The strokeColor, strokeWidth, and fillColor of the shape.
+   */
+  string strokeColor, fillColor;
   int strokeWidth;
-  string fillColor;
 
  public:
+  /// Defines the visual options of the shape that is drawn onto a canvas.
+  /// @brief Constructor
+  /// @param strokeColor The outline color of the shape.
+  /// @param strokeWidth The width of the shape outline.
+  /// @param fillColor The color of the shape.
   ShapeOptions(string strokeColor, int strokeWidth, string fillColor);
 
+  /// @brief Gets the outline color of the shape.
+  /// @return The color of the outline as a string.
   string getStrokeColor();
+
+  /// @brief Gets the width of the shape outline.
+  /// @return The width of the outline.
   int getStrokeWidth();
+
+  /// @brief Gets the color of the shape.
+  /// @return The color that the shape will be filled in with.
   string getFillColor();
 };
 
 class GraphicsOptions {
  private:
+  /**
+   * The canvas and shape options used when generating the graphical output.
+   */
   CanvasOptions& canvasOptions;
   ShapeOptions& shapeOptions;
 
  public:
+  /// Defines the canvas and shape options of the image.
+  /// @brief Constructor
+  /// @param canvasOptions
+  /// @param shapeOptions
   GraphicsOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions);
 
+  /// @brief Gets the canvas options.
+  /// @return The canvas options specified.
   CanvasOptions getCanvasOptions();
 
+  /// @brief Gets the shape options.
+  /// @return The shape options specified.
   ShapeOptions getShapeOptions();
 };
 
 class RectangleOptions : public GraphicsOptions {
  private:
-  double verticalLength;
-  double horizontalLength;
+  /**
+   * The vertical and horizontal length of the rectangles.
+   */
+  double verticalLength, horizontalLength;
 
  public:
+  /// Creates the options required to generate a rectangle with the specified
+  /// vertical and horizontal lengths.
+  /// @brief Constructor
+  /// @param canvasOptions
+  /// @param shapeOptions
+  /// @param verticalLength
+  /// @param horizontalLength
   RectangleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
                    double verticalLength, double horizontalLength);
 
+  /// @brief Gets the vertical length of the rectangle.
+  /// @return The vertical length of the rectangle.
   double getVerticalLength();
+
+  /// @brief Gets the horizontal length of the rectangle.
+  /// @return The horizontal length of the rectangle.
   double getHorizontalLength();
 };
 
 class TriangleOptions : public GraphicsOptions {
  private:
-  double lengthOne;
-  double lengthTwo;
-  double lengthThree;
+  /**
+   * Defines the side lengths of the triangle.
+   */
+  double sideA, sideB, sideC;
 
  public:
+  /// Creates the options required to generate a triangle of side lengths A, B,
+  /// C.
+  /// @brief Constructor
+  /// @param canvasOptions The canvas options in which the triangle is drawn on.
+  /// @param shapeOptions The shape options of the triangle that is being drawn.
+  /// @param sideA The length of triangle side a.
+  /// @param sideB The length of triangle side b.
+  /// @param sideC The length of triangle side c.
   TriangleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
-                  double lengthOne, double lengthTwo, double lengthThree);
+                  double sideA, double sideB, double sideC);
 
-  double getLengthOne();
-  double getLengthTwo();
-  double getLengthThree();
+  /// @brief Gets the length of a.
+  /// @return The side length a.
+  double getSideA();
+
+  /// @brief Gets the length of b.
+  /// @return The side length b.
+  double getSideB();
+
+  /// @brief Gets the length of c.
+  /// @return The side length c.
+  double getSideC();
 };
 
 class CircleOptions : public GraphicsOptions {
  private:
+  /**
+   * The radius of the circle.
+   */
   double radius;
 
  public:
+  /// Creates the options required to generate a circle with a specified radius.
+  /// @brief Constructor
+  /// @param canvasOptions The canvas options in which the circle is drawn on.
+  /// @param shapeOptions The shape options of the circle that is being drawn.
+  /// @param radius The radius of the circle.
   CircleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
                 double radius);
 
+  /// @brief Gets the radius of the circle.
+  /// @return The radius of the circle.
   double getRadius();
 };
 

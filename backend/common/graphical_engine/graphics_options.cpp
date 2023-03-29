@@ -45,17 +45,17 @@ double RectangleOptions::getVerticalLength() { return verticalLength; }
 double RectangleOptions::getHorizontalLength() { return horizontalLength; }
 
 TriangleOptions::TriangleOptions(CanvasOptions& canvasOptions,
-                                 ShapeOptions& shapeOptions, double lengthOne,
-                                 double lengthTwo, double lengthThree)
+                                 ShapeOptions& shapeOptions, double sideA,
+                                 double sideB, double sideC)
     : GraphicsOptions(canvasOptions, shapeOptions) {
-  this->lengthOne = lengthOne;
-  this->lengthTwo = lengthTwo;
-  this->lengthThree = lengthThree;
+  this->sideA = sideA;
+  this->sideB = sideB;
+  this->sideC = sideC;
 }
 
-double TriangleOptions::getLengthOne() { return lengthOne; }
-double TriangleOptions::getLengthTwo() { return lengthTwo; }
-double TriangleOptions::getLengthThree() { return lengthThree; }
+double TriangleOptions::getSideA() { return sideA; }
+double TriangleOptions::getSideB() { return sideB; }
+double TriangleOptions::getSideC() { return sideC; }
 
 CircleOptions::CircleOptions(CanvasOptions& canvasOptions,
                              ShapeOptions& shapeOptions, double radius)
