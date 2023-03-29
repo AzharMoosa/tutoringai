@@ -3,6 +3,7 @@
 
 #include <Magick++.h>
 
+#include <algorithm>
 #include <concepts>
 #include <iostream>
 #include <list>
@@ -21,6 +22,7 @@ using Magick::DrawableRectangle;
 using Magick::DrawableStrokeColor;
 using Magick::DrawableStrokeWidth;
 using Magick::DrawableText;
+using Magick::DrawableTextAntialias;
 using Magick::Geometry;
 using Magick::Image;
 using Magick::InitializeMagick;
@@ -36,6 +38,12 @@ class GraphicalEngine {
   Image generateImageCanvas(CanvasOptions canvasOptions);
 
   std::list<Drawable> initialiseDrawableList(ShapeOptions shapeOptions);
+
+  void drawArrowCircle(std::list<Drawable> &drawList, double radius,
+                       double centreX, double centreY, double perimX,
+                       double perimY, double sf, string unit, bool textAlias,
+                       int strokeWidth, string strokeColor,
+                       string strokeFillColor);
 
  public:
   Shape drawShape(RectangleOptions options, std::list<Drawable> &drawList);
