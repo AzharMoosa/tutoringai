@@ -34,15 +34,87 @@ CanvasOptions GraphicsOptions::getCanvasOptions() { return canvasOptions; }
 ShapeOptions GraphicsOptions::getShapeOptions() { return shapeOptions; }
 
 RectangleOptions::RectangleOptions(CanvasOptions& canvasOptions,
-                                   ShapeOptions& shapeOptions,
-                                   double verticalLength,
-                                   double horizontalLength)
+                                   ShapeOptions& shapeOptions, double width,
+                                   double height)
     : GraphicsOptions(canvasOptions, shapeOptions) {
-  this->verticalLength = verticalLength;
-  this->horizontalLength = horizontalLength;
+  this->height = height;
+  this->width = width;
 }
-double RectangleOptions::getVerticalLength() { return verticalLength; }
-double RectangleOptions::getHorizontalLength() { return horizontalLength; }
+double RectangleOptions::getHeight() { return height; }
+double RectangleOptions::getWidth() { return width; }
+
+std::pair<double, double> RectangleOptions::getScaledRectangleLengths() {
+  double imageWidth = getCanvasOptions().getWidth();
+  double imageHeight = getCanvasOptions().getHeight();
+
+  double heightScaleFactor = (imageHeight / pow(height, 1.3));
+  double widthScaleFactor = (imageWidth / pow(width, 1.3));
+  double rectangleHeight = height * heightScaleFactor;
+  double rectangleWidth = width * widthScaleFactor;
+
+  return {rectangleWidth, rectangleHeight};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleCentrePoint() {
+  double imageWidth = getCanvasOptions().getWidth();
+  double imageHeight = getCanvasOptions().getHeight();
+
+  return {imageWidth / 2, imageHeight / 2};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleUpperLeft() {
+  auto centrePoint = getRectangleCentrePoint();
+  auto scaledRectangleLengths = getScaledRectangleLengths();
+  double rectangleWidth = scaledRectangleLengths.first;
+  double rectangleHeight = scaledRectangleLengths.second;
+
+  return {centrePoint.first - (rectangleHeight / 2),
+          centrePoint.second - (rectangleWidth / 2)};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleLowerRight() {
+  auto centrePoint = getRectangleCentrePoint();
+  auto scaledRectangleLengths = getScaledRectangleLengths();
+  double rectangleWidth = scaledRectangleLengths.first;
+  double rectangleHeight = scaledRectangleLengths.second;
+
+  return {centrePoint.first + (rectangleHeight / 2),
+          centrePoint.second + (rectangleWidth / 2)};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleUpperRight() {
+  auto centrePoint = getRectangleCentrePoint();
+  auto scaledRectangleLengths = getScaledRectangleLengths();
+  double rectangleWidth = scaledRectangleLengths.first;
+  double rectangleHeight = scaledRectangleLengths.second;
+
+  return {centrePoint.first + (rectangleHeight / 2),
+          centrePoint.second - (rectangleWidth / 2)};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleLowerLeft() {
+  auto centrePoint = getRectangleCentrePoint();
+  auto scaledRectangleLengths = getScaledRectangleLengths();
+  double rectangleWidth = scaledRectangleLengths.first;
+  double rectangleHeight = scaledRectangleLengths.second;
+
+  return {centrePoint.first - (rectangleHeight / 2),
+          centrePoint.second + (rectangleWidth / 2)};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleTextWidth() {
+  auto upperRight = getRectangleUpperRight();
+  auto upperLeft = getRectangleUpperLeft();
+
+  return {(upperLeft.first + upperRight.first) / 2 - 20, upperLeft.second - 5};
+}
+
+std::pair<double, double> RectangleOptions::getRectangleTextHeight() {
+  auto upperLeft = getRectangleUpperLeft();
+  auto lowerLeft = getRectangleLowerLeft();
+
+  return {lowerLeft.first + 5, (lowerLeft.second + upperLeft.second) / 2};
+}
 
 TriangleOptions::TriangleOptions(CanvasOptions& canvasOptions,
                                  ShapeOptions& shapeOptions, double sideA,

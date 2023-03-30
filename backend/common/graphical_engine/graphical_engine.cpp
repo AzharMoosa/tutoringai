@@ -40,9 +40,22 @@ void GraphicalEngine::drawArrowCircle(
 
 Shape GraphicalEngine::drawShape(RectangleOptions options,
                                  std::list<Drawable> &drawList) {
-  drawList.push_back(DrawableRectangle(10, 50, 110, 150));
-  drawList.push_back(DrawableText(
-      10, 50, precision_to_string(options.getHorizontalLength()) + "cm"));
+  auto upperLeft = options.getRectangleUpperLeft();
+  auto lowerRight = options.getRectangleLowerRight();
+
+  drawList.push_back(DrawableRectangle(upperLeft.first, upperLeft.second,
+                                       lowerRight.first, lowerRight.second));
+
+  auto textWidthPoint = options.getRectangleTextWidth();
+  auto textHeightPoint = options.getRectangleTextHeight();
+
+  drawList.push_back(
+      DrawableText(textWidthPoint.first, textWidthPoint.second,
+                   precision_to_string(options.getWidth()) + "cm"));
+
+  drawList.push_back(
+      DrawableText(textHeightPoint.first, textHeightPoint.second,
+                   precision_to_string(options.getHeight()) + "cm"));
 
   return Shape::Rectangle;
 }
@@ -87,14 +100,14 @@ int main(int argc, char **argv) {
   ShapeOptions shapeOptions = ShapeOptions("black", 2, "white");
 
   RectangleOptions rectangleOptions =
-      RectangleOptions(canvasOptions, shapeOptions, 2, 2);
+      RectangleOptions(canvasOptions, shapeOptions, 2, 3);
 
   CircleOptions circleOptions = CircleOptions(canvasOptions, shapeOptions, 1);
 
   TriangleOptions triangleOptions =
       TriangleOptions(canvasOptions, shapeOptions, 1, 2, 3);
 
-  // engine.draw(rectangleOptions);
+  engine.draw(rectangleOptions);
   engine.draw(circleOptions);
   // engine.draw(triangleOptions);
 

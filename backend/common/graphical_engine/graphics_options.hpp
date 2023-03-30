@@ -93,26 +93,44 @@ class RectangleOptions : public GraphicsOptions {
   /**
    * The vertical and horizontal length of the rectangles.
    */
-  double verticalLength, horizontalLength;
+  double height, width;
 
  public:
   /// Creates the options required to generate a rectangle with the specified
   /// vertical and horizontal lengths.
   /// @brief Constructor
-  /// @param canvasOptions
-  /// @param shapeOptions
-  /// @param verticalLength
-  /// @param horizontalLength
+  /// @param canvasOptions The canvas options in which the rectangle is drawn
+  /// on.
+  /// @param shapeOptions The shape options of the rectangle that is being
+  /// drawn.
+  /// @param width The width of the rectangle.
+  /// @param height The height of the rectangle.
   RectangleOptions(CanvasOptions& canvasOptions, ShapeOptions& shapeOptions,
-                   double verticalLength, double horizontalLength);
+                   double width, double height);
 
-  /// @brief Gets the vertical length of the rectangle.
-  /// @return The vertical length of the rectangle.
-  double getVerticalLength();
+  /// @brief Gets the height of the rectangle.
+  /// @return The height of the rectangle.
+  double getHeight();
 
-  /// @brief Gets the horizontal length of the rectangle.
-  /// @return The horizontal length of the rectangle.
-  double getHorizontalLength();
+  /// @brief Gets the width of the rectangle.
+  /// @return The width of the rectangle.
+  double getWidth();
+
+  std::pair<double, double> getScaledRectangleLengths();
+
+  std::pair<double, double> getRectangleCentrePoint();
+
+  std::pair<double, double> getRectangleUpperLeft();
+
+  std::pair<double, double> getRectangleLowerRight();
+
+  std::pair<double, double> getRectangleUpperRight();
+
+  std::pair<double, double> getRectangleLowerLeft();
+
+  std::pair<double, double> getRectangleTextWidth();
+
+  std::pair<double, double> getRectangleTextHeight();
 };
 
 class TriangleOptions : public GraphicsOptions {
