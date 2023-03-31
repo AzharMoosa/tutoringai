@@ -85,8 +85,7 @@ Shape GraphicalEngine::drawShape(CircleOptions options,
 
 Shape GraphicalEngine::drawShape(TriangleOptions options,
                                  std::list<Drawable> &drawList) {
-  std::list<Coordinate> coordinates{Coordinate(50, 50), Coordinate(50, 10),
-                                    Coordinate(90, 50)};
+  auto coordinates = options.getCoordinates();
 
   drawList.push_back(DrawablePolygon(coordinates));
 
@@ -105,11 +104,11 @@ int main(int argc, char **argv) {
   CircleOptions circleOptions = CircleOptions(canvasOptions, shapeOptions, 1);
 
   TriangleOptions triangleOptions =
-      TriangleOptions(canvasOptions, shapeOptions, 1, 2, 3);
+      TriangleOptions(canvasOptions, shapeOptions, 2, 1, 2);
 
   engine.draw(rectangleOptions);
   engine.draw(circleOptions);
-  // engine.draw(triangleOptions);
+  engine.draw(triangleOptions);
 
   return 0;
 }

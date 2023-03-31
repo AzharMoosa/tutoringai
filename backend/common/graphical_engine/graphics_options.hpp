@@ -1,11 +1,17 @@
 #ifndef GRAPHICS_OPTIONS_H
 #define GRAPHICS_OPTIONS_H
 
+#include <Magick++.h>
+
 #include <cmath>
 #include <iostream>
+#include <list>
 #include <string>
-using std::string;
 
+#define CM_TO_PIXEL(x) (x * 37.7952755906)
+
+using Magick::Coordinate;
+using std::string;
 class CanvasOptions {
  private:
   /**
@@ -29,6 +35,8 @@ class CanvasOptions {
   /// @brief Gets the height of the canvas.
   /// @return The height of the canvas.
   int getHeight();
+
+  std::pair<double, double> getCentrePoint();
 
   /// @brief Gets the background color of the canvas.
   /// @return The background color of the canvas.
@@ -118,8 +126,6 @@ class RectangleOptions : public GraphicsOptions {
 
   std::pair<double, double> getScaledRectangleLengths();
 
-  std::pair<double, double> getRectangleCentrePoint();
-
   std::pair<double, double> getRectangleUpperLeft();
 
   std::pair<double, double> getRectangleLowerRight();
@@ -133,6 +139,8 @@ class RectangleOptions : public GraphicsOptions {
   std::pair<double, double> getRectangleTextHeight();
 };
 
+enum TriangleType { Equilateral, Scalene, Isosceles };
+
 class TriangleOptions : public GraphicsOptions {
  private:
   /**
@@ -140,12 +148,20 @@ class TriangleOptions : public GraphicsOptions {
    */
   double sideA, sideB, sideC;
 
+  std::list<Coordinate> getCoordinatesEquilateral();
+
+  std::list<Coordinate> getCoordinatesScalene();
+
+  std::list<Coordinate> getCoordinatesIsosceles();
+
  public:
-  /// Creates the options required to generate a triangle of side lengths A, B,
-  /// C.
+  /// Creates the options required to generate a triangle of side lengths A,
+  /// B, C.
   /// @brief Constructor
-  /// @param canvasOptions The canvas options in which the triangle is drawn on.
-  /// @param shapeOptions The shape options of the triangle that is being drawn.
+  /// @param canvasOptions The canvas options in which the triangle is drawn
+  /// on.
+  /// @param shapeOptions The shape options of the triangle that is being
+  /// drawn.
   /// @param sideA The length of triangle side a.
   /// @param sideB The length of triangle side b.
   /// @param sideC The length of triangle side c.
@@ -163,6 +179,16 @@ class TriangleOptions : public GraphicsOptions {
   /// @brief Gets the length of c.
   /// @return The side length c.
   double getSideC();
+
+  double getAngleA(double a, double b, double c);
+
+  double getAngleB(double a, double b, double c);
+
+  double getAngleC(double a, double b, double c);
+
+  TriangleType getTriangleType();
+
+  std::list<Coordinate> getCoordinates();
 };
 
 class CircleOptions : public GraphicsOptions {
