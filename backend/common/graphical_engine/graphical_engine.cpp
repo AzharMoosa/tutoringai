@@ -46,6 +46,8 @@ Shape GraphicalEngine::drawShape(RectangleOptions options,
   drawList.push_back(DrawableRectangle(upperLeft.first, upperLeft.second,
                                        lowerRight.first, lowerRight.second));
 
+  drawList.push_back(DrawableTextAntialias(true));
+
   auto textWidthPoint = options.getRectangleTextWidth();
   auto textHeightPoint = options.getRectangleTextHeight();
 
@@ -85,9 +87,18 @@ Shape GraphicalEngine::drawShape(CircleOptions options,
 
 Shape GraphicalEngine::drawShape(TriangleOptions options,
                                  std::list<Drawable> &drawList) {
-  auto coordinates = options.getCoordinates();
+  auto coordinates = options.getCoordinateList();
+  auto textCoordinates = options.getTextCoordinates();
+  drawList.push_back(DrawableTextAntialias(true));
 
   drawList.push_back(DrawablePolygon(coordinates));
+
+  for (auto textCoordinate : textCoordinates) {
+    auto coordinate = textCoordinate.getCoordinate();
+    auto label = textCoordinate.getLabel();
+    drawList.push_back(
+        DrawableText(coordinate.first, coordinate.second, label));
+  }
 
   return Shape::Triangle;
 }
@@ -104,7 +115,7 @@ int main(int argc, char **argv) {
   CircleOptions circleOptions = CircleOptions(canvasOptions, shapeOptions, 1);
 
   TriangleOptions triangleOptions =
-      TriangleOptions(canvasOptions, shapeOptions, 2, 1, 2);
+      TriangleOptions(canvasOptions, shapeOptions, 1, 2, 3);
 
   engine.draw(rectangleOptions);
   engine.draw(circleOptions);

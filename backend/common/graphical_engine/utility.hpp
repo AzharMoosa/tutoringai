@@ -19,4 +19,6 @@ static const string fileTypeMapping[] = {".png", ".jpeg"};
 enum Shape { Rectangle, Triangle, Circle };
 static const string shapeMapping[] = {"rectangle", "triangle", "circle"};
 
+double middleOfThree(double a, double b, double c);
+
 #endif

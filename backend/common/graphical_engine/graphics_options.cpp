@@ -146,7 +146,20 @@ TriangleType TriangleOptions::getTriangleType() {
   }
 }
 
-std::list<Coordinate> TriangleOptions::getCoordinatesEquilateral() {
+std::list<Coordinate> TriangleOptions::getCoordinateList() {
+  auto coordinateList = getCoordinates();
+  auto coordinateA = coordinateList[0];
+  auto coordinateB = coordinateList[1];
+  auto coordinateC = coordinateList[2];
+
+  return std::list<Coordinate>{
+      Coordinate(coordinateA.first, coordinateA.second),
+      Coordinate(coordinateB.first, coordinateB.second),
+      Coordinate(coordinateC.first, coordinateC.second)};
+}
+
+std::vector<std::pair<double, double>>
+TriangleOptions::getCoordinatesEquilateral() {
   double imageHeight = getCanvasOptions().getHeight();
   double imageWidth = getCanvasOptions().getWidth();
   auto centrePoint = getCanvasOptions().getCentrePoint();
@@ -162,13 +175,12 @@ std::list<Coordinate> TriangleOptions::getCoordinatesEquilateral() {
   std::pair<double, double> coordinateC{centrePoint.first - (s / 2),
                                         centrePoint.second + (sqrt(3) / 6) * s};
 
-  return std::list<Coordinate>{
-      Coordinate(coordinateA.first, coordinateA.second),
-      Coordinate(coordinateB.first, coordinateB.second),
-      Coordinate(coordinateC.first, coordinateC.second)};
+  return std::vector<std::pair<double, double>>{coordinateA, coordinateB,
+                                                coordinateC};
 }
 
-std::list<Coordinate> TriangleOptions::getCoordinatesScalene() {
+std::vector<std::pair<double, double>>
+TriangleOptions::getCoordinatesScalene() {
   double imageHeight = getCanvasOptions().getHeight();
   double imageWidth = getCanvasOptions().getWidth();
   auto centrePoint = getCanvasOptions().getCentrePoint();
@@ -192,14 +204,12 @@ std::list<Coordinate> TriangleOptions::getCoordinatesScalene() {
   std::pair<double, double> coordinateC{
       centrePoint.first - (b / 2) * cos(angleC),
       centrePoint.second + (b / 2) * sin(angleC)};
-
-  return std::list<Coordinate>{
-      Coordinate(coordinateA.first, coordinateA.second),
-      Coordinate(coordinateB.first, coordinateB.second),
-      Coordinate(coordinateC.first, coordinateC.second)};
+  return std::vector<std::pair<double, double>>{coordinateA, coordinateB,
+                                                coordinateC};
 }
 
-std::list<Coordinate> TriangleOptions::getCoordinatesIsosceles() {
+std::vector<std::pair<double, double>>
+TriangleOptions::getCoordinatesIsosceles() {
   double imageHeight = getCanvasOptions().getHeight();
   double imageWidth = getCanvasOptions().getWidth();
   auto centrePoint = getCanvasOptions().getCentrePoint();
@@ -214,13 +224,11 @@ std::list<Coordinate> TriangleOptions::getCoordinatesIsosceles() {
 
   std::pair<double, double> coordinateC{centrePoint.first + (b / 2), h};
 
-  return std::list<Coordinate>{
-      Coordinate(coordinateA.first, coordinateA.second),
-      Coordinate(coordinateB.first, coordinateB.second),
-      Coordinate(coordinateC.first, coordinateC.second)};
+  return std::vector<std::pair<double, double>>{coordinateA, coordinateB,
+                                                coordinateC};
 }
 
-std::list<Coordinate> TriangleOptions::getCoordinates() {
+std::vector<std::pair<double, double>> TriangleOptions::getCoordinates() {
   TriangleType triangleType = getTriangleType();
 
   switch (triangleType) {
@@ -230,6 +238,115 @@ std::list<Coordinate> TriangleOptions::getCoordinates() {
       return getCoordinatesScalene();
     case TriangleType::Isosceles:
       return getCoordinatesIsosceles();
+    default:
+      throw std::invalid_argument("Triangle Type Not Found");
+  }
+}
+
+std::list<TriangleTextCoordinate>
+TriangleOptions::getTextCoordinatesIsosceles() {
+  auto coordinateList = getCoordinates();
+  auto coordinateA = coordinateList[0];
+  auto coordinateB = coordinateList[1];
+  auto coordinateC = coordinateList[2];
+
+  double sameLength, otherLength;
+
+  if (sideA == sideB) {
+    sameLength = sideA;
+    otherLength = sideC;
+  } else if (sideA == sideC) {
+    sameLength = sideA;
+    otherLength = sideB;
+  } else {
+    sameLength = sideB;
+    otherLength = sideA;
+  }
+
+  auto textCoordinateA =
+      TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 50,
+                             (coordinateA.second + coordinateB.second) / 2,
+                             precision_to_string(sameLength) + " cm");
+
+  auto textCoordinateB =
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
+                             (coordinateB.second + coordinateC.second) / 2 + 20,
+                             precision_to_string(otherLength) + " cm");
+
+  auto textCoordinateC =
+      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 + 10,
+                             (coordinateA.second + coordinateC.second) / 2,
+                             precision_to_string(sameLength) + " cm");
+
+  return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
+                                           textCoordinateC};
+}
+
+std::list<TriangleTextCoordinate>
+TriangleOptions::getTextCoordinatesEquilateral() {
+  auto coordinateList = getCoordinates();
+  auto coordinateA = coordinateList[0];
+  auto coordinateB = coordinateList[1];
+  auto coordinateC = coordinateList[2];
+
+  auto textCoordinateA =
+      TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 + 10,
+                             (coordinateA.second + coordinateB.second) / 2,
+                             precision_to_string(sideA) + " cm");
+
+  auto textCoordinateB =
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
+                             (coordinateB.second + coordinateC.second) / 2 + 20,
+                             precision_to_string(sideB) + " cm");
+
+  auto textCoordinateC =
+      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
+                             (coordinateA.second + coordinateC.second) / 2,
+                             precision_to_string(sideC) + " cm");
+
+  return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
+                                           textCoordinateC};
+}
+
+std::list<TriangleTextCoordinate> TriangleOptions::getTextCoordinatesScalene() {
+  auto coordinateList = getCoordinates();
+  auto coordinateA = coordinateList[0];
+  auto coordinateB = coordinateList[1];
+  auto coordinateC = coordinateList[2];
+
+  double longestLength = std::max(std::max(sideA, sideB), sideC);
+  double middleLength = middleOfThree(sideA, sideB, sideC);
+  double shortestLength = std::min(std::min(sideA, sideB), sideC);
+
+  auto textCoordinateA =
+      TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 20,
+                             (coordinateA.second + coordinateB.second) / 2 - 5,
+                             precision_to_string(shortestLength) + " cm");
+
+  auto textCoordinateB =
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 + 10,
+                             (coordinateB.second + coordinateC.second) / 2,
+                             precision_to_string(middleLength) + " cm");
+
+  auto textCoordinateC =
+      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
+                             (coordinateA.second + coordinateC.second) / 2,
+                             precision_to_string(longestLength) + " cm");
+
+  return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
+                                           textCoordinateC};
+}
+
+std::list<TriangleTextCoordinate> TriangleOptions::getTextCoordinates() {
+  TriangleType triangleType = getTriangleType();
+
+  switch (triangleType) {
+    case TriangleType::Equilateral:
+      return getTextCoordinatesEquilateral();
+    case TriangleType::Scalene:
+      return getTextCoordinatesScalene();
+    case TriangleType::Isosceles:
+      return getTextCoordinatesIsosceles();
     default:
       throw std::invalid_argument("Triangle Type Not Found");
   }

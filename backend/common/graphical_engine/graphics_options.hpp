@@ -8,6 +8,8 @@
 #include <list>
 #include <string>
 
+#include "utility.hpp"
+
 #define CM_TO_PIXEL(x) (x * 37.7952755906)
 
 using Magick::Coordinate;
@@ -141,6 +143,25 @@ class RectangleOptions : public GraphicsOptions {
 
 enum TriangleType { Equilateral, Scalene, Isosceles };
 
+class TriangleTextCoordinate {
+ private:
+  double x, y;
+  string label;
+
+ public:
+  TriangleTextCoordinate(double x, double y, string label) {
+    this->x = x;
+    this->y = y;
+    this->label = label;
+  }
+
+  std::pair<double, double> getCoordinate() {
+    return std::pair{this->x, this->y};
+  }
+
+  string getLabel() { return this->label; }
+};
+
 class TriangleOptions : public GraphicsOptions {
  private:
   /**
@@ -148,11 +169,17 @@ class TriangleOptions : public GraphicsOptions {
    */
   double sideA, sideB, sideC;
 
-  std::list<Coordinate> getCoordinatesEquilateral();
+  std::vector<std::pair<double, double>> getCoordinatesEquilateral();
 
-  std::list<Coordinate> getCoordinatesScalene();
+  std::vector<std::pair<double, double>> getCoordinatesScalene();
 
-  std::list<Coordinate> getCoordinatesIsosceles();
+  std::vector<std::pair<double, double>> getCoordinatesIsosceles();
+
+  std::list<TriangleTextCoordinate> getTextCoordinatesIsosceles();
+
+  std::list<TriangleTextCoordinate> getTextCoordinatesEquilateral();
+
+  std::list<TriangleTextCoordinate> getTextCoordinatesScalene();
 
  public:
   /// Creates the options required to generate a triangle of side lengths A,
@@ -188,7 +215,11 @@ class TriangleOptions : public GraphicsOptions {
 
   TriangleType getTriangleType();
 
-  std::list<Coordinate> getCoordinates();
+  std::vector<std::pair<double, double>> getCoordinates();
+
+  std::list<TriangleTextCoordinate> getTextCoordinates();
+
+  std::list<Coordinate> getCoordinateList();
 };
 
 class CircleOptions : public GraphicsOptions {
