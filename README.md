@@ -2,5 +2,8 @@
 
 # Tasks
 
-- Design & Implement Chatbot With More Functionalities
-- Design & Implement ChatRoom
+- Combine Question Engines
+- Populate Question Bank
+- Improve Chatbot Conversation Engine
+- Connect Graphical Engine
+- Populate Question Bank With Graphics Questions
