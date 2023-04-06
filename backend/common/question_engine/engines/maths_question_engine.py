@@ -6,12 +6,13 @@ from keyword_extraction_engine import KeywordExtraction
 from mcq_engine import MCQEngine
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from solving_engine import SolvingEngine
 model_name = "humarin/chatgpt_paraphraser_on_T5_base"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(device)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
-
+import inflect
 from difflib import SequenceMatcher
 
 class MathsQuestions:
@@ -57,10 +58,19 @@ class MathsQuestions:
         return { "names" : names, "nouns": nouns }
 
     @staticmethod
-    def generate_questions(template: str) -> List[str]:
-        template_info = MathsQuestions.parse_template(template)
+    def normalise_numbers(text: str) -> str:
+        p = inflect.engine()
+        numbers = re.findall(r'\d+', text)
+        for num in set(numbers):
+            word = p.number_to_words(num)
+            text = text.replace(num, word)
 
-        question = template
+        return text
+
+    @staticmethod
+    def generate_questions(template: dict) -> List[str]:
+        template_info = MathsQuestions.parse_template(template["sentence"])
+        question = MathsQuestions.normalise_numbers(template["sentence"])
 
         # Replace Names
         for name in template_info["names"]:
@@ -84,11 +94,19 @@ class MathsQuestions:
             s = [item[min(i, len(item) - 1)] for item in sentence_list]
             res.add(" ".join(s))
 
-        return list(res)
+        return { "questions": list(res), "answer": SolvingEngine.solve(template["sentence"], template["type"]) }
 
 if __name__ == "__main__":
-    sentence = "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John currently has 3 apples in his lunchbox and Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
-    sentences = MathsQuestions.generate_questions(sentence)
-    for s in sentences:
+    template = { "type": "additive", "sentence" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
+ }
+    questions = MathsQuestions.generate_questions(template)
+    for s in questions["questions"]:
         print(s)
         print()
+    
+    print(questions["answer"])
+
+    template = { "type": "additive", "sentence" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 6 apples in his lunchbox. Joe has 7 apples in his lunchbox. Joe is feeling generous and gives 4 apples to John. Sarah also has 3 apples in her lunchbox. John is full and gives 2 apples to Sarah. How many apples does John now have?"
+ }
+    questions = MathsQuestions.generate_questions(template)
+    print(questions["answer"])
