@@ -66,47 +66,60 @@ class MathsQuestions:
             text = text.replace(num, word)
 
         return text
+    
+    @staticmethod
+    def __randomize_numbers(text: str):
+        numbers = re.findall(r'\d+', text)
+
+        for number in numbers:
+            new_number = str(random.randint(1, 10))
+            text = text.replace(number, new_number)
+        
+        return text
 
     @staticmethod
-    def generate_questions(template: dict) -> List[str]:
-        template_info = MathsQuestions.parse_template(template["sentence"])
-        question = MathsQuestions.normalise_numbers(template["sentence"])
+    def generate_questions(template: dict, variants: int = 10) -> List[str]:
+        text = template["text"]
+        template_info = MathsQuestions.parse_template(text)
+        questions = []
 
-        # Replace Names
-        for name in template_info["names"]:
-            question = re.sub(name, names.get_first_name(), question, flags=re.IGNORECASE)
+        for _ in range(variants):
+            question = MathsQuestions.normalise_numbers(text)
+            answer = SolvingEngine.solve(text, template["type"])
+            # Replace Names
+            for name in template_info["names"]:
+                question = re.sub(name, names.get_first_name(), question, flags=re.IGNORECASE)
 
-        for noun in template_info["nouns"][:1]:
-            a = MCQEngine("S", noun).generate_distractors_transformer()
-            question = re.sub(noun, random.choice(a).lower(), question, flags=re.IGNORECASE)
+            for noun in template_info["nouns"][:1]:
+                a = MCQEngine("S", noun).generate_distractors_transformer()
+                question = re.sub(noun, random.choice(a).lower(), question, flags=re.IGNORECASE)
 
-        sentences = question.split(".")
+            sentences = question.split(".")
 
-        sentence_list = []
+            sentence_list = []
 
-        for sentence in sentences:
-            new_sentences = MathsQuestions.__paraphrase_sentence(sentence)
-            filtered_sentence = MathsQuestions.__filter_sentences(new_sentences, sentence)
-            sentence_list.append(filtered_sentence)
+            for sentence in sentences:
+                new_sentences = MathsQuestions.__paraphrase_sentence(sentence)
+                filtered_sentence = MathsQuestions.__filter_sentences(new_sentences, sentence)
+                sentence_list.append(filtered_sentence)
 
-        res = set()
-        for i in range(len(sentence_list)):
-            s = [item[min(i, len(item) - 1)] for item in sentence_list]
-            res.add(" ".join(s))
+            res = set()
+            for i in range(len(sentence_list)):
+                s = [item[min(i, len(item) - 1)] for item in sentence_list]
+                res.add(" ".join(s))
 
-        return { "questions": list(res), "answer": SolvingEngine.solve(template["sentence"], template["type"]) }
+            questions.extend([(question, answer) for question in res])
+
+            text = MathsQuestions.__randomize_numbers(text)
+
+        return questions
 
 if __name__ == "__main__":
-    template = { "type": "additive", "sentence" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
+    template = { "type": "additive", "text" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
  }
     questions = MathsQuestions.generate_questions(template)
-    for s in questions["questions"]:
-        print(s)
+    for question, answer in questions:
+        print(question)
+        print(answer)
         print()
     
-    print(questions["answer"])
-
-    template = { "type": "additive", "sentence" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 6 apples in his lunchbox. Joe has 7 apples in his lunchbox. Joe is feeling generous and gives 4 apples to John. Sarah also has 3 apples in her lunchbox. John is full and gives 2 apples to Sarah. How many apples does John now have?"
- }
-    questions = MathsQuestions.generate_questions(template)
-    print(questions["answer"])
