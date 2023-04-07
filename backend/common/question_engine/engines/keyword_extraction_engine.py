@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from flashtext import KeywordProcessor
 import string
 import pke
-from summarization_engine import TextSummarization
+from engines.summarization_engine import TextSummarization
 
 class KeywordExtraction:
     @staticmethod

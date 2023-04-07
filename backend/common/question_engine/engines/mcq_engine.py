@@ -14,17 +14,19 @@ from typing import List, Tuple
 import itertools
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-
+import os
 nltk.download("wordnet")
 
 model = SentenceTransformer('all-MiniLM-L12-v2')
 
+__location__ = os.path.realpath(os.path.join(
+    os.getcwd(), os.path.dirname(__file__)))
 
 class MCQEngine:
     def __init__(self, question: str, answer: str) -> None:
         self.question = question
         self.answer = answer
-        self.s2v = Sense2Vec().from_disk("s2v")
+        self.s2v = Sense2Vec().from_disk(f"{__location__}/s2v")
 
     def __get_synset(self, word: str):
         """

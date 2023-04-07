@@ -2,11 +2,11 @@ import names
 import re
 from typing import List
 import random
-from keyword_extraction_engine import KeywordExtraction
-from mcq_engine import MCQEngine
+from engines.keyword_extraction_engine import KeywordExtraction
+from engines.mcq_engine import MCQEngine
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from solving_engine import SolvingEngine
+from engines.solving_engine import SolvingEngine
 model_name = "humarin/chatgpt_paraphraser_on_T5_base"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(device)
@@ -78,7 +78,7 @@ class MathsQuestions:
         return text
 
     @staticmethod
-    def generate_questions(template: dict, variants: int = 10) -> List[str]:
+    def generate_questions(template: dict, variants: int = 10) -> List[tuple]:
         text = template["text"]
         template_info = MathsQuestions.parse_template(text)
         questions = []

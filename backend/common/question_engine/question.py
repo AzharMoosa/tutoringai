@@ -1,17 +1,30 @@
 from json import JSONEncoder
-
+from typing import Any, List
 
 class Question:
-    def __init__(self, question, context, answer, category, type,  *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, topic: str, *args, **kwargs) -> None:
         self.question = question
-        self.context = context
-        self.answer = answer
         self.category = category
-        self.type = type
+        self.topic = topic
 
-    def is_correct(self, user_answer):
+    def __str__(self) -> str:
+        return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "category": self.category,
+            "topic": self.topic,
+        }
+
+class NumericalQuestion(Question):
+    def __init__(self, question: str, category: str, topic: str, answer: int, *args, **kwargs) -> None:
+        super().__init__(question, category, topic)
+        self.answer = answer
+
+    def is_correct(self, user_answer: int):
         try:
-            return int(self.answer) == int(user_answer)
+            return self.answer == user_answer
         except ValueError:
             return False
 
@@ -21,10 +34,33 @@ class Question:
     def serialize(self):
         return {
             "question": self.question,
-            "context": self.context,
             "answer": self.answer,
             "category": self.category,
-            "type": self.type
+            "topic": self.topic,
+        }
+
+class MultipleChoiceQuestion(Question):
+    def __init__(self, question: str, category: str, topic: str, answer: int, options: List[str], *args, **kwargs) -> None:
+        super().__init__(question, category, topic)
+        self.answer = answer
+        self.options = options
+
+    def is_correct(self, user_answer: str):
+        try:
+            return self.answer == user_answer
+        except ValueError:
+            return False
+
+    def __str__(self) -> str:
+        return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "answer": self.answer,
+            "category": self.category,
+            "topic": self.topic,
+            "options": self.options
         }
 
 
