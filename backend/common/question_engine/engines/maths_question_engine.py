@@ -29,7 +29,7 @@ class MathsQuestions:
         return filtered_sentence
     
     @staticmethod
-    def __paraphrase_sentence(text, max_length=128, num_return_sequences=5, num_beams=25, temperature=0.7, repetition_penalty=1.5, no_repeat_ngram_size=5):
+    def paraphrase_sentence(text, max_length=128, num_return_sequences=5, num_beams=25, temperature=0.7, repetition_penalty=1.5, no_repeat_ngram_size=5):
         input_ids = tokenizer(
             f'paraphrase: {text}',
             return_tensors="pt", 
@@ -99,7 +99,7 @@ class MathsQuestions:
             sentence_list = []
 
             for sentence in sentences:
-                new_sentences = MathsQuestions.__paraphrase_sentence(sentence)
+                new_sentences = MathsQuestions.paraphrase_sentence(sentence)
                 filtered_sentence = MathsQuestions.__filter_sentences(new_sentences, sentence)
                 sentence_list.append(filtered_sentence)
 

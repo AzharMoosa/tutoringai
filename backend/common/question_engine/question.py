@@ -69,6 +69,28 @@ class MultipleChoiceQuestion(Question):
             "question_type": self.question_type
         }
 
+class TrueOrFalseQuestion(Question):
+    def __init__(self, question: str, category: str, topic: str, true_option: str, false_option: str, *args, **kwargs) -> None:
+        super().__init__(question, category, topic)
+        self.true_option = true_option
+        self.false_option = false_option
+        self.question_type = "true-or-false"
+
+    def is_correct(self, user_answer: str):
+        pass
+
+    def __str__(self) -> str:
+        return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "category": self.category,
+            "topic": self.topic,
+            "true_option": self.true_option,
+            "false_option": self.false_option,
+            "question_type": self.question_type
+        }
 
 class QuestionEncoder(JSONEncoder):
     def default(self, o):

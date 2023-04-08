@@ -8,6 +8,7 @@ from nltk import tokenize
 from nltk.tree import Tree
 import tensorflow as tf
 from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
+from engines.maths_question_engine import MathsQuestions
 
 NOUN_PHRASE = "NP"
 VERB_PHRASE = "VP"
@@ -27,13 +28,8 @@ GPT2_MODEL = TFGPT2LMHeadModel.from_pretrained(
 
 
 class TrueOrFalseEngine:
-    def __init__(self, statement: str) -> None:
-        self.statement = statement
-        self.cleaned_statement = statement.rstrip("?:!.,;")
-        parsed_statement = predictor.predict(sentence=self.cleaned_statement)
-        self.tree = Tree.fromstring(parsed_statement["trees"])
-
-    def __flatten_tree(self, tree: Tree) -> str:
+    @staticmethod
+    def __flatten_tree(tree: Tree) -> str:
         """
         Flattens the incoming tree into a string.
 
@@ -50,7 +46,9 @@ class TrueOrFalseEngine:
 
         return " ".join(statements)
 
-    def __get_verb_noun_phrase(self, tree: Tree, verb_phrase: str = None, noun_phrase: str = None) -> Tuple[str, str]:
+
+    @staticmethod
+    def __get_verb_noun_phrase(tree: Tree, verb_phrase: str = None, noun_phrase: str = None) -> Tuple[str, str]:
         """
         Gets the rightmost verb and noun phrase from a sentence.
         The function traverses the tree using the right most
@@ -75,9 +73,10 @@ class TrueOrFalseEngine:
         elif right_tree.label() == NOUN_PHRASE:
             noun_phrase = right_tree
 
-        return self.__get_verb_noun_phrase(right_tree, verb_phrase, noun_phrase)
+        return TrueOrFalseEngine.__get_verb_noun_phrase(right_tree, verb_phrase, noun_phrase)
 
-    def __remove_phrase(self, sentence: str, phrase: str) -> str:
+    @staticmethod
+    def __remove_phrase(sentence: str, phrase: str) -> str:
         """
         Locates the phrase in a sentence and removes it to
         return a partial sentence with the phrase removed.
@@ -102,7 +101,8 @@ class TrueOrFalseEngine:
 
         return ""
 
-    def __process_phrase(self, phrase: str) -> str:
+    @staticmethod
+    def __process_phrase(phrase: str) -> str:
         """
         Replaces any left or right brackets from the string.
 
@@ -116,7 +116,8 @@ class TrueOrFalseEngine:
         phrase = re.sub(r" -RRB-", ")", phrase)
         return phrase
 
-    def __get_partial_sentence(self) -> str:
+    @staticmethod
+    def __get_partial_sentence(statement: str) -> str:
         """
         The algorithm first starts by find the rightmost verb
         and noun phrase. Then the tree is flattened into a
@@ -127,23 +128,26 @@ class TrueOrFalseEngine:
             {str} The partial sentence with either the verb or
                   noun phrase removed.
         """
-        verb_phrase, noun_phrase = self.__get_verb_noun_phrase(self.tree)
-        verb_phrase, noun_phrase = self.__flatten_tree(
-            verb_phrase), self.__flatten_tree(noun_phrase)
+        cleaned_statement = statement.rstrip("?:!.,;")
+        parsed_statement = predictor.predict(sentence=cleaned_statement)
+        tree = Tree.fromstring(parsed_statement["trees"])
+        verb_phrase, noun_phrase = TrueOrFalseEngine.__get_verb_noun_phrase(tree)
+        verb_phrase, noun_phrase = TrueOrFalseEngine.__flatten_tree(
+            verb_phrase), TrueOrFalseEngine.__flatten_tree(noun_phrase)
         phrase = max(verb_phrase, noun_phrase, key=len)
-        phrase = self.__process_phrase(phrase)
-        partial_sentence = self.__remove_phrase(
-            self.cleaned_statement, phrase)
+        phrase = TrueOrFalseEngine.__process_phrase(phrase)
+        partial_sentence = TrueOrFalseEngine.__remove_phrase(cleaned_statement, phrase)
 
         return partial_sentence
 
-    def __generate_sentences(self, partial_sentence: str,
+    @staticmethod
+    def __generate_sentences(partial_sentence: str,
                              additional_characters: int = 40,
                              do_sample: bool = True,
                              top_p: float = 0.8,
                              top_k: int = 30,
                              repetition_penalty: float = 10.0,
-                             num_return_sequences: int = 10) -> tf.float32:
+                             num_return_sequences: int = 3) -> tf.float32:
         """
         Generates sentences using GPT2 based on the incoming partial
         sentence.
@@ -176,7 +180,8 @@ class TrueOrFalseEngine:
             num_return_sequences=num_return_sequences
         )
 
-    def __decode_sentence(self, sentence: tf.float32) -> str:
+    @staticmethod
+    def __decode_sentence(sentence: tf.float32) -> str:
         """
         Decodes the sentence into a string.
 
@@ -190,7 +195,9 @@ class TrueOrFalseEngine:
             sentence, skip_special_tokens=True)
         return tokenize.sent_tokenize(decoded_sentence)[0]
 
-    def generate_false_options(self) -> List[str]:
+
+    @staticmethod
+    def generate_false_options(statement: str) -> List[Tuple[str, str]]:
         """
         Generates false statements using the original true
         statement. First the sentence is split into a partial
@@ -200,19 +207,19 @@ class TrueOrFalseEngine:
         Returns:
             {List[str]} The list of false statements.
         """
+        true_statement = MathsQuestions.paraphrase_sentence(statement)
+
         # Get Partial Sentence With Verb or Noun Phrase Removed
-        partial_sentence = self.__get_partial_sentence()
+        partial_sentence = TrueOrFalseEngine.__get_partial_sentence(statement)
 
         # Generate Sentences Using GPT-2
-        generated_sentences = self.__generate_sentences(partial_sentence)
+        generated_sentences = TrueOrFalseEngine.__generate_sentences(partial_sentence)
 
-        false_options = [self.__decode_sentence(
-            sentence) for sentence in generated_sentences]
+        false_options = [(true_statement, TrueOrFalseEngine.__decode_sentence(
+            sentence)) for sentence in generated_sentences]
 
         return false_options
 
 
 if __name__ == "__main__":
-    t = TrueOrFalseEngine(
-        "The old woman was sitting under a tree and sipping coffee.")
-    print(t.generate_false_options())
+    TrueOrFalseEngine.generate_false_options("John, Joe, Sarah are in the park playing football and enjoying the sunny weather.")

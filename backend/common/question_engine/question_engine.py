@@ -4,7 +4,8 @@ from typing import List, Tuple
 from json import JSONEncoder
 import os
 from engines.text_to_question_engine import TextToQuestion
-from question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion
+from engines.true_false_engine import TrueOrFalseEngine
+from question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
 from engines.maths_question_engine import MathsQuestions
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -37,14 +38,19 @@ class QuestionEngine:
  }]
     
     @staticmethod
-    def __parse_mcq_text(text: str) -> str:
+    def __remove_question_statement(text: str) -> str:
         return ".".join([line for line in text.split(".") if "?" not in line]) + "."
 
     
     @staticmethod
     def __get_multiple_choice_questions(text: str) -> dict:
-        text = QuestionEngine.__parse_mcq_text(text)
+        text = QuestionEngine.__remove_question_statement(text)
         return TextToQuestion.get_mcq_question(text)
+    
+    @staticmethod
+    def get_true_false_questions(text: str) -> List[Tuple[str, str]]:
+        text = QuestionEngine.__remove_question_statement(text)
+        return sum([TrueOrFalseEngine.generate_false_options(line) for line in text.split(".") if line], [])
     
     @staticmethod
     def generate_questions():
@@ -59,16 +65,19 @@ class QuestionEngine:
 
             # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
             numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions]
-            mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__parse_mcq_text(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()]
+            mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__remove_question_statement(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()]
+            true_or_false_questions = [TrueOrFalseQuestion(text, template["category"], template["type"], true_option, false_option) for text, _ in questions for true_option, false_option in QuestionEngine.get_true_false_questions(text)]
 
             print(f"Generated {len(numerical_questions)} Numerical Questions")
             print(f"Generated {len(mcq_questions)} MCQ Questions")
+            print(f"Generated {len(true_or_false_questions)} True Or False Questions")
 
             # 3 - Combine All And Push To Question Bank
             QuestionEngine.__push_to_question_bank(numerical_questions)
             QuestionEngine.__push_to_question_bank(mcq_questions)
+            QuestionEngine.__push_to_question_bank(true_or_false_questions)
 
-            print(f"Successfully Added {len(numerical_questions) + len(mcq_questions)} Questions!")
+            print(f"Successfully Added {len(numerical_questions) + len(mcq_questions) + len(true_or_false_questions)} Questions!")
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
     
 if __name__ == "__main__":
