@@ -21,6 +21,7 @@ class NumericalQuestion(Question):
     def __init__(self, question: str, category: str, topic: str, answer: int, *args, **kwargs) -> None:
         super().__init__(question, category, topic)
         self.answer = answer
+        self.question_type = "numerical"
 
     def is_correct(self, user_answer: int):
         try:
@@ -37,13 +38,16 @@ class NumericalQuestion(Question):
             "answer": self.answer,
             "category": self.category,
             "topic": self.topic,
+            "question_type": self.question_type
         }
 
 class MultipleChoiceQuestion(Question):
-    def __init__(self, question: str, category: str, topic: str, answer: int, options: List[str], *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, topic: str, answer: int, options: List[str], text: str, *args, **kwargs) -> None:
         super().__init__(question, category, topic)
         self.answer = answer
         self.options = options
+        self.text = text
+        self.question_type = "mcq"
 
     def is_correct(self, user_answer: str):
         try:
@@ -60,7 +64,9 @@ class MultipleChoiceQuestion(Question):
             "answer": self.answer,
             "category": self.category,
             "topic": self.topic,
-            "options": self.options
+            "options": self.options,
+            "text": self.text,
+            "question_type": self.question_type
         }
 
 

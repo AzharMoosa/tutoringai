@@ -1,8 +1,9 @@
 import re
 import json
-from typing import List
+from typing import List, Tuple
 from json import JSONEncoder
 import os
+from engines.text_to_question_engine import TextToQuestion
 from question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion
 from engines.maths_question_engine import MathsQuestions
 from pymongo import MongoClient
@@ -34,7 +35,17 @@ class QuestionEngine:
         # TODO: Add To DB And Fetch
         return [{ "type": "additive", "category": "arithmetic", "text" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
  }]
+    
+    @staticmethod
+    def __parse_mcq_text(text: str) -> str:
+        return ".".join([line for line in text.split(".") if "?" not in line]) + "."
 
+    
+    @staticmethod
+    def __get_multiple_choice_questions(text: str) -> dict:
+        text = QuestionEngine.__parse_mcq_text(text)
+        return TextToQuestion.get_mcq_question(text)
+    
     @staticmethod
     def generate_questions():
         templates = QuestionEngine.__get_templates()
@@ -48,13 +59,16 @@ class QuestionEngine:
 
             # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
             numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions]
+            mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__parse_mcq_text(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()]
 
             print(f"Generated {len(numerical_questions)} Numerical Questions")
+            print(f"Generated {len(mcq_questions)} MCQ Questions")
 
             # 3 - Combine All And Push To Question Bank
             QuestionEngine.__push_to_question_bank(numerical_questions)
+            QuestionEngine.__push_to_question_bank(mcq_questions)
 
-            print(f"Successfully Added {len(numerical_questions)} Questions!")
+            print(f"Successfully Added {len(numerical_questions) + len(mcq_questions)} Questions!")
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
     
 if __name__ == "__main__":

@@ -175,6 +175,9 @@ class MCQEngine:
         answer = answer.replace(" ", "_")
 
         best_sense = self.s2v.get_best_sense(answer)
+        if not best_sense:
+            return []
+        
         most_similar = self.s2v.most_similar(best_sense, n=20)
 
         distractors = [self.__process_s2v_word(
