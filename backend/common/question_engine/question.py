@@ -7,6 +7,9 @@ class Question:
         self.category = category
         self.topic = topic
 
+    def is_correct(self, user_answer: int):
+        raise "ERROR: Method Access"
+
     def __str__(self) -> str:
         return self.question
     

@@ -7,7 +7,6 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 import os
-from backend.common.question_engine.question_generation import retrieve_questions_by_category
 from backend.common.conversation_engine.response_engine import ResponseEngine
 
 lemmatizer = WordNetLemmatizer()

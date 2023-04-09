@@ -1,23 +1,26 @@
-import json
 from backend.common.question_engine.question import NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
 from backend.resources.db import client
-import os
 
-__location__ = os.path.realpath(os.path.join(
-    os.getcwd(), os.path.dirname(__file__)))
 
-def retrieve_questions_by_type(t):
-    questions_list = retrieve_questions()
-    return list(filter(lambda x: x.type == t, questions_list))
+db = client["Questions"]
+question_bank = db["question_bank"].find()
 
-def retrieve_questions_by_category(category):
-    questions_list = retrieve_questions()
-    return {k : list(filter(lambda x: x.category == category, v)) for k, v in questions_list.items()}
+def numerical_questions():
+    return [NumericalQuestion(**question) for question in question_bank if question["question_type"] == "numerical"]
 
-def retrieve_questions():
-    db = client["Questions"]
-    question_bank = db["question_bank"].find()
+def multiple_choice_questions():
+    return [MultipleChoiceQuestion(**question) for question in question_bank if question["question_type"] == "mcq"]
 
-    return {"numerical": [NumericalQuestion(**question) for question in question_bank if question["question_type"] == "numerical"], 
-            "mcq": [MultipleChoiceQuestion(**question) for question in question_bank if question["question_type"] == "mcq"], 
-            "true-or-false": [TrueOrFalseQuestion(**question) for question in question_bank if question["question_type"] == "true-or-false"] }
+def true_or_false_questions():
+    return [TrueOrFalseQuestion(**question) for question in question_bank if question["question_type"] == "true-or-false"]
+
+questions_list = { "numerical": numerical_questions(), "mcq": multiple_choice_questions(), "true-or-false": true_or_false_questions() }
+
+class QuestionGenerator:
+    @staticmethod
+    def retrieve_questions_by_type(t):
+        return {k : list(filter(lambda x: x.type == t, v)) for k, v in questions_list.items()}
+
+    @staticmethod
+    def retrieve_questions_by_category(category):
+        return {k : list(filter(lambda x: x.category == category, v)) for k, v in questions_list.items()}
