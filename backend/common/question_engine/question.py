@@ -70,9 +70,9 @@ class MultipleChoiceQuestion(Question):
         }
 
 class TrueOrFalseQuestion(Question):
-    def __init__(self, question: str, category: str, topic: str, true_option: str, false_option: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, topic: str, true_options: List[str], false_option: str, *args, **kwargs) -> None:
         super().__init__(question, category, topic)
-        self.true_option = true_option
+        self.true_options = true_options
         self.false_option = false_option
         self.question_type = "true-or-false"
 
@@ -87,7 +87,7 @@ class TrueOrFalseQuestion(Question):
             "question": self.question,
             "category": self.category,
             "topic": self.topic,
-            "true_option": self.true_option,
+            "true_options": self.true_options,
             "false_option": self.false_option,
             "question_type": self.question_type
         }
