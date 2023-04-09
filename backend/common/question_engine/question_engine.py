@@ -86,10 +86,10 @@ class QuestionEngine:
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
     
 if __name__ == "__main__":
-    include_numerical_questions = False
+    include_numerical_questions = True
     include_mcq_questions = False
-    include_true_or_false_questions = True
-    clear_db = True
+    include_true_or_false_questions = False
+    clear_db = False
 
     if include_true_or_false_questions:
         from engines.true_false_engine import TrueOrFalseEngine

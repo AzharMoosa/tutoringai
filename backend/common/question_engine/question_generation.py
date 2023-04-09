@@ -1,5 +1,5 @@
 import json
-from backend.common.question_engine.question import Question
+from backend.common.question_engine.question import NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
 from backend.resources.db import client
 import os
 
@@ -12,9 +12,12 @@ def retrieve_questions_by_type(t):
 
 def retrieve_questions_by_category(category):
     questions_list = retrieve_questions()
-    return list(filter(lambda x: x.category == category, questions_list))
+    return {k : list(filter(lambda x: x.category == category, v)) for k, v in questions_list.items()}
 
 def retrieve_questions():
     db = client["Questions"]
-    all_questions = db.all_questions.find()
-    return [Question(**question) for question in all_questions]
+    question_bank = db["question_bank"].find()
+
+    return {"numerical": [NumericalQuestion(**question) for question in question_bank if question["question_type"] == "numerical"], 
+            "mcq": [MultipleChoiceQuestion(**question) for question in question_bank if question["question_type"] == "mcq"], 
+            "true-or-false": [TrueOrFalseQuestion(**question) for question in question_bank if question["question_type"] == "true-or-false"] }
