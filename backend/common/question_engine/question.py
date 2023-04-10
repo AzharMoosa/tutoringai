@@ -38,10 +38,10 @@ class NumericalQuestion(Question):
     def serialize(self):
         return {
             "question": self.question,
-            "answer": self.answer,
             "category": self.category,
             "topic": self.topic,
-            "question_type": self.question_type
+            "answer": self.answer,
+            "questionType": self.question_type
         }
 
 class MultipleChoiceQuestion(Question):
@@ -64,12 +64,12 @@ class MultipleChoiceQuestion(Question):
     def serialize(self):
         return {
             "question": self.question,
-            "answer": self.answer,
             "category": self.category,
             "topic": self.topic,
+            "answer": self.answer,
             "options": self.options,
             "text": self.text,
-            "question_type": self.question_type
+            "questionType": self.question_type
         }
 
 class TrueOrFalseQuestion(Question):
@@ -90,9 +90,9 @@ class TrueOrFalseQuestion(Question):
             "question": self.question,
             "category": self.category,
             "topic": self.topic,
-            "true_options": self.true_options,
-            "false_option": self.false_option,
-            "question_type": self.question_type
+            "trueOptions": self.true_options,
+            "falseOption": self.false_option,
+            "questionType": self.question_type
         }
 
 class QuestionEncoder(JSONEncoder):

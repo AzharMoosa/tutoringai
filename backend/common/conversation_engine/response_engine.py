@@ -63,9 +63,9 @@ class ResponseEngine:
     @staticmethod
     def generate_question_list(message_content, tag):
         question_list = QuestionGenerator.retrieve_questions_by_category(tag)
-        first_question = question_list["numerical"][0].question
+        first_question = question_list["numerical"][0]
         return {"message": f"{message_content}\n{first_question}", 
                 "isAnswering": True, 
-                "currentQuestion": first_question, 
+                "currentQuestion": first_question.serialize(), 
                 "questionList": [q.serialize() for q in question_list["numerical"]],
                 "questionIndex": "0" }

@@ -17,12 +17,10 @@ __location__ = os.path.realpath(os.path.join(
 
 class QuestionEngine:
     @staticmethod
-    def __push_to_question_bank(questions: List[Question], clear_db: bool) -> None:
+    def __push_to_question_bank(questions: List[Question]) -> None:
         questions_json = json.dumps(questions, indent=4, cls=QuestionEncoder)
         db = client["Questions"]
         question_bank = db["question_bank"]
-        if clear_db:
-            question_bank.drop()
         question_bank.insert_many(json.loads(questions_json))
 
     @staticmethod
@@ -56,6 +54,11 @@ class QuestionEngine:
     def generate_questions(include_numerical_questions: bool = True, include_mcq_questions: bool = True, include_true_or_false_questions: bool = True, clear_db: bool = False):
         templates = QuestionEngine.__get_templates()
 
+        if clear_db:
+            db = client["Questions"]
+            question_bank = db["question_bank"]
+            question_bank.drop()
+
         for i, template in enumerate(templates):
             print(f"============ PARSING TEMPLATE {i} ============")
             # 1 - Parse Template & Generate Question Variants
@@ -74,13 +77,13 @@ class QuestionEngine:
 
             # 3 - Push To Question Bank
             if numerical_questions:
-                QuestionEngine.__push_to_question_bank(numerical_questions, clear_db)
+                QuestionEngine.__push_to_question_bank(numerical_questions)
             
             if mcq_questions:
-                QuestionEngine.__push_to_question_bank(mcq_questions, clear_db)
+                QuestionEngine.__push_to_question_bank(mcq_questions)
             
             if true_or_false_questions:
-                QuestionEngine.__push_to_question_bank(true_or_false_questions, clear_db)
+                QuestionEngine.__push_to_question_bank(true_or_false_questions)
 
             print(f"Successfully Added {len(numerical_questions) + len(mcq_questions) + len(true_or_false_questions)} Questions!")
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
@@ -89,7 +92,7 @@ if __name__ == "__main__":
     include_numerical_questions = True
     include_mcq_questions = False
     include_true_or_false_questions = False
-    clear_db = False
+    clear_db = True
 
     if include_true_or_false_questions:
         from engines.true_false_engine import TrueOrFalseEngine

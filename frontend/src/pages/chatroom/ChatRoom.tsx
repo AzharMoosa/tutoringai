@@ -13,7 +13,10 @@ import {
   ChatbotResponse,
   startDefaultListeners,
   initialiseChatRoom,
-  Question
+  Question,
+  TrueOrFalseQuestion,
+  MultipleChoiceQuestion,
+  NumericalQuestion
 } from '../../utils/chatRoomUtils';
 import MainContainer from '../../components/shared/MainContainer';
 import { Page } from '../../data/pageConstants';
@@ -21,9 +24,9 @@ import { Page } from '../../data/pageConstants';
 const ChatRoom = () => {
   const socket = useSocket(WEB_SOCKET_URI, WEB_SOCKET_CONFIG);
   const [isAnswering, setIsAnswering] = useState<boolean>(false);
-  const [currentQuestion, setCurrentQuestion] = useState<string | undefined>(
-    undefined
-  );
+  const [currentQuestion, setCurrentQuestion] = useState<
+    NumericalQuestion | MultipleChoiceQuestion | TrueOrFalseQuestion | undefined
+  >(undefined);
   const [questionList, setQuestionList] = useState<Question[] | undefined>(
     undefined
   );
@@ -31,7 +34,11 @@ const ChatRoom = () => {
     undefined
   );
   const [messageList, setMessageList] = useState<Array<Message>>([
-    { messageContent: DEFAULT_MESSAGE, fromChatbot: true }
+    {
+      messageContent: DEFAULT_MESSAGE,
+      fromChatbot: true,
+      question: undefined
+    }
   ]);
 
   const updateMessageList = (response: ChatbotResponse) => {
@@ -50,7 +57,11 @@ const ChatRoom = () => {
 
     setMessageList([
       ...messageList,
-      { messageContent: response.state.message, fromChatbot: true }
+      {
+        messageContent: response.state.message,
+        fromChatbot: true,
+        question: response.state.currentQuestion
+      }
     ]);
   };
 
@@ -64,7 +75,10 @@ const ChatRoom = () => {
   }, [messageList]);
 
   const sendMessage = (messageContent: string) => {
-    setMessageList([...messageList, { messageContent, fromChatbot: false }]);
+    setMessageList([
+      ...messageList,
+      { messageContent, fromChatbot: false, question: undefined }
+    ]);
     socket.emit('message', {
       username: 'test',
       room: '1',
