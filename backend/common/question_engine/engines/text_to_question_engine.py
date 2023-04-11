@@ -96,7 +96,7 @@ class TextToQuestion:
         return distractors[1:]
     
     @staticmethod
-    def get_mcq_question(text: str, options: int = 4, type: str="transformer") -> dict:
+    def get_mcq_question(text: str, options: int = 4, type: str="sense2vec") -> dict:
         """
         Generates MCQ questions for a text input.
 
@@ -116,6 +116,7 @@ class TextToQuestion:
                 distractors = MCQEngine(question, answer).generate_distractors_wordnet()
             elif type == "sense2vec":
                 distractors = MCQEngine(question, answer).generate_distractors_sense2vec()
+                # distractors = TextToQuestion.__generate_distractors_sense2vec(answer, question)
             elif type == "transformer":
                 distractors = MCQEngine(question, answer).generate_distractors_transformer()
             else:

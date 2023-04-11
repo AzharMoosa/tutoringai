@@ -9,3 +9,29 @@
   margin: 0.8rem 0;
   font-size: 15px;
 }
+
+.mcq-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.mcq-options {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.mcq-option {
+  background-color: var(--dark-blue);
+  padding: 0.5rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.mcq-option:hover {
+  background-color: var(--blue);
+  transition: all 0.5s ease-in;
+}

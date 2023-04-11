@@ -53,3 +53,5 @@ __pycache__
 .history/
 
 s2v/
+
+venv_old/

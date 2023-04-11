@@ -3,7 +3,7 @@ from backend.resources.db import client
 
 
 db = client["Questions"]
-question_bank = db["question_bank"].find()
+question_bank = list(db["question_bank"].find())
 
 def numerical_questions():
     return [NumericalQuestion(**question) for question in question_bank if question["question_type"] == "numerical"]
@@ -24,3 +24,9 @@ class QuestionGenerator:
     @staticmethod
     def retrieve_questions_by_category(category):
         return {k : list(filter(lambda x: x.category == category, v)) for k, v in questions_list.items()}
+    
+    @staticmethod
+    def retrieve_question_set_by_category(t):
+        question_options = QuestionGenerator.retrieve_questions_by_category(t)
+
+        return question_options["numerical"] + question_options["mcq"] + question_options["true-or-false"]

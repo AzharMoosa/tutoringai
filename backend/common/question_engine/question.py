@@ -59,11 +59,11 @@ class MultipleChoiceQuestion(Question):
             return False
 
     def __str__(self) -> str:
-        return self.question
+        return f"{self.text}. {self.question}"
     
     def serialize(self):
         return {
-            "question": self.question,
+            "question": f"{self.text}. {self.question}",
             "category": self.category,
             "topic": self.topic,
             "answer": self.answer,

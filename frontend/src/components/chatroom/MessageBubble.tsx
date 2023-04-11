@@ -66,9 +66,16 @@ const MultipleChoiceMessageBubble = ({
 }) => (
   <>
     <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>
-        {messageContent} {question.options}
-      </p>
+      <p>{question.question}</p>
+      <div className="mcq-container">
+        <div className="mcq-options">
+          {question.options.map((option) => (
+            <div key={Math.random()} className="mcq-option">
+              {option}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   </>
 );

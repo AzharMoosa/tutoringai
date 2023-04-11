@@ -89,10 +89,10 @@ class QuestionEngine:
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
     
 if __name__ == "__main__":
-    include_numerical_questions = True
-    include_mcq_questions = False
+    include_numerical_questions = False
+    include_mcq_questions = True
     include_true_or_false_questions = False
-    clear_db = True
+    clear_db = False
 
     if include_true_or_false_questions:
         from engines.true_false_engine import TrueOrFalseEngine
@@ -102,6 +102,7 @@ if __name__ == "__main__":
 
     if include_mcq_questions:
         from engines.text_to_question_engine import TextToQuestion
+        from engines.maths_question_engine import MathsQuestions
 
     QuestionEngine.generate_questions(include_numerical_questions=include_numerical_questions, 
                                       include_mcq_questions=include_mcq_questions, 
