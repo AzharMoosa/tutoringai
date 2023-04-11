@@ -49,8 +49,9 @@ class ResponseEngine:
     def generate_answer_response(state: dict):
         question_index = int(state["questionIndex"])
         users_answer = state["message"]
+        question_set = QuestionGenerator.retrieve_question_set_by_category("arithmetic")
 
-        if not QuestionGenerator.retrieve_question_set_by_category("arithmetic")[question_index].is_correct(int(users_answer)):
+        if not question_set[question_index].is_correct(users_answer):
             return ResponseEngine.generate_incorrect_response(state)
         
         question_index += 1

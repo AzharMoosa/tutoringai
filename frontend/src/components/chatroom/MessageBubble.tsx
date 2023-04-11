@@ -7,6 +7,9 @@ import {
 } from '../../utils/chatRoomUtils';
 import './MessageBubble.css';
 
+type handleSendMessageFunction = () => void;
+type setMessageContentFunction = (messageContent: string) => void;
+
 const messageBubbleStyle = (fromChatbot: boolean) => ({
   backgroundColor: fromChatbot ? PURPLE : BLUE
 });
@@ -58,27 +61,41 @@ const TrueOrFalseMessageBubble = ({
 const MultipleChoiceMessageBubble = ({
   messageContent,
   fromChatbot,
-  question
+  question,
+  handleSendMessage,
+  setMessageContent
 }: {
   messageContent: string;
   fromChatbot: boolean;
   question: MultipleChoiceQuestion;
-}) => (
-  <>
-    <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{question.question}</p>
-      <div className="mcq-container">
-        <div className="mcq-options">
-          {question.options.map((option) => (
-            <div key={Math.random()} className="mcq-option">
-              {option}
-            </div>
-          ))}
+  handleSendMessage: handleSendMessageFunction;
+  setMessageContent: setMessageContentFunction;
+}) => {
+  const selectOption = (option: string) => {
+    setMessageContent(option);
+  };
+
+  return (
+    <>
+      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+        <p>{messageContent}</p>
+        <div className="mcq-container">
+          <div className="mcq-options">
+            {question.options.map((option) => (
+              <div
+                onClick={() => selectOption(option)}
+                key={Math.random()}
+                className="mcq-option"
+              >
+                {option}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
+};
 
 const messageBubbleLayout = (
   messageContent: string,
@@ -87,7 +104,9 @@ const messageBubbleLayout = (
     | NumericalQuestion
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
-    | undefined
+    | undefined,
+  handleSendMessage: handleSendMessageFunction,
+  setMessageContent: setMessageContentFunction
 ) => {
   switch (question?.questionType) {
     case QuestionType.Numerical:
@@ -111,6 +130,8 @@ const messageBubbleLayout = (
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question as MultipleChoiceQuestion}
+          handleSendMessage={handleSendMessage}
+          setMessageContent={setMessageContent}
         />
       );
     default:
@@ -126,7 +147,9 @@ const messageBubbleLayout = (
 const MessageBubble = ({
   messageContent,
   fromChatbot,
-  question
+  question,
+  handleSendMessage,
+  setMessageContent
 }: {
   messageContent: string;
   fromChatbot: boolean;
@@ -135,6 +158,15 @@ const MessageBubble = ({
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
     | undefined;
-}) => messageBubbleLayout(messageContent, fromChatbot, question);
+  handleSendMessage: handleSendMessageFunction;
+  setMessageContent: setMessageContentFunction;
+}) =>
+  messageBubbleLayout(
+    messageContent,
+    fromChatbot,
+    question,
+    handleSendMessage,
+    setMessageContent
+  );
 
 export default MessageBubble;

@@ -40,6 +40,7 @@ const ChatRoom = () => {
       question: undefined
     }
   ]);
+  const [messageContent, setMessageContent] = useState<string>('');
 
   const updateMessageList = (response: ChatbotResponse) => {
     setIsAnswering(response.state.isAnswering);
@@ -92,11 +93,34 @@ const ChatRoom = () => {
     });
   };
 
+  const handleSendMessage = () => {
+    if (messageContent !== '') {
+      sendMessage(messageContent);
+      setMessageContent('');
+    }
+  };
+
+  const handleEnterSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.shiftKey === false) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <MainContainer current={Page.CHATROOM}>
       <div className="chatroom">
-        <MessageList messageList={messageList} />
-        <MessageBox sendMessage={sendMessage} />
+        <MessageList
+          messageList={messageList}
+          handleSendMessage={handleSendMessage}
+          setMessageContent={setMessageContent}
+        />
+        <MessageBox
+          handleSendMessage={handleSendMessage}
+          messageContent={messageContent}
+          setMessageContent={setMessageContent}
+          handleEnterSubmit={handleEnterSubmit}
+        />
       </div>
     </MainContainer>
   );

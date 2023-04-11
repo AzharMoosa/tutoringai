@@ -26,9 +26,9 @@ class NumericalQuestion(Question):
         self.answer = answer
         self.question_type = "numerical"
 
-    def is_correct(self, user_answer: int):
+    def is_correct(self, user_answer: str):
         try:
-            return self.answer == user_answer
+            return self.answer == int(user_answer)
         except ValueError:
             return False
 
@@ -45,7 +45,7 @@ class NumericalQuestion(Question):
         }
 
 class MultipleChoiceQuestion(Question):
-    def __init__(self, question: str, category: str, topic: str, answer: int, options: List[str], text: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, topic: str, answer: str, options: List[str], text: str, *args, **kwargs) -> None:
         super().__init__(question, category, topic)
         self.answer = answer
         self.options = options
@@ -54,12 +54,12 @@ class MultipleChoiceQuestion(Question):
 
     def is_correct(self, user_answer: str):
         try:
-            return self.answer == user_answer
+            return self.answer.lower() == user_answer.lower() 
         except ValueError:
             return False
 
     def __str__(self) -> str:
-        return f"{self.text}. {self.question}"
+        return f"{self.text} {self.question}"
     
     def serialize(self):
         return {

@@ -3,7 +3,18 @@ import MessageBubble from './MessageBubble';
 import './MessageList.css';
 import { Message } from './types';
 
-const MessageList = ({ messageList }: { messageList: Array<Message> }) => {
+type handleSendMessageFunction = () => void;
+type setMessageContentFunction = (messageContent: string) => void;
+
+const MessageList = ({
+  messageList,
+  handleSendMessage,
+  setMessageContent
+}: {
+  messageList: Array<Message>;
+  handleSendMessage: handleSendMessageFunction;
+  setMessageContent: setMessageContentFunction;
+}) => {
   const scrollRef = useRef<any>(null);
 
   const scrollToBottom = () => {
@@ -20,6 +31,8 @@ const MessageList = ({ messageList }: { messageList: Array<Message> }) => {
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question}
+          handleSendMessage={handleSendMessage}
+          setMessageContent={setMessageContent}
         />
       ))}
       <div ref={scrollRef} />
