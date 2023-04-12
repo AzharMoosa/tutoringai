@@ -29,4 +29,4 @@ class QuestionGenerator:
     def retrieve_question_set_by_category(t):
         question_options = QuestionGenerator.retrieve_questions_by_category(t)
 
-        return question_options["numerical"] + question_options["mcq"] + question_options["true-or-false"]
+        return question_options["numerical"][:1] + question_options["mcq"][:1] + question_options["true-or-false"]

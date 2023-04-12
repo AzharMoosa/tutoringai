@@ -35,6 +35,8 @@ const MessageBox = ({
 }) => {
   const textAreaRef = useRef<any>(null);
   const messageInputRef = useRef<any>(null);
+  const currentQuestionType: QuestionType | undefined =
+    currentQuestion && getQuestionType(currentQuestion.questionType);
 
   useEffect(() => {
     // Resets To Original Height
@@ -55,9 +57,9 @@ const MessageBox = ({
           onChange={(e) => setMessageContent(e.target.value)}
           onKeyDown={(e) => handleEnterSubmit(e)}
           disabled={
-            currentQuestion &&
-            getQuestionType(currentQuestion.questionType) ===
-              QuestionType.MultipleChoice
+            (currentQuestionType &&
+              currentQuestionType === QuestionType.MultipleChoice) ||
+            currentQuestionType === QuestionType.TrueOrFalse
           }
         />
         <div className="send-btn">

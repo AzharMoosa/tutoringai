@@ -44,18 +44,42 @@ const NumericalMessageBubble = ({
 const TrueOrFalseMessageBubble = ({
   messageContent,
   fromChatbot,
-  question
+  question,
+  setMessageContent,
+  isLatestMessage
 }: {
   messageContent: string;
   fromChatbot: boolean;
   question: TrueOrFalseQuestion;
-}) => (
-  <>
-    <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{messageContent} true-or-false</p>
-    </div>
-  </>
-);
+  setMessageContent: setMessageContentFunction;
+  isLatestMessage: boolean;
+}) => {
+  const selectOption = (option: string) => {
+    setMessageContent(option);
+  };
+
+  return (
+    <>
+      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+        <p>{messageContent}</p>
+        <div className="true-or-false-container">
+          <p>{question.statement}</p>
+          <div className="true-or-false-options">
+            {['True', 'False'].map((option) => (
+              <div
+                onClick={() => isLatestMessage && selectOption(option)}
+                key={Math.random()}
+                className="mcq-option"
+              >
+                {option}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const MultipleChoiceMessageBubble = ({
   messageContent,
@@ -121,6 +145,8 @@ const messageBubbleLayout = (
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question as TrueOrFalseQuestion}
+          setMessageContent={setMessageContent}
+          isLatestMessage={isLatestMessage}
         />
       );
     case QuestionType.MultipleChoice:

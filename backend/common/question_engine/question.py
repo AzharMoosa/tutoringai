@@ -1,5 +1,6 @@
 from json import JSONEncoder
 from typing import Any, List
+import random
 
 class Question:
     def __init__(self, question: str, category: str, topic: str, *args, **kwargs) -> None:
@@ -73,14 +74,14 @@ class MultipleChoiceQuestion(Question):
         }
 
 class TrueOrFalseQuestion(Question):
-    def __init__(self, question: str, category: str, topic: str, true_options: List[str], false_option: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, topic: str, answer: bool, statement: str, *args, **kwargs) -> None:
         super().__init__(question, category, topic)
-        self.true_options = true_options
-        self.false_option = false_option
+        self.answer = answer
+        self.statement = statement
         self.question_type = "true-or-false"
 
     def is_correct(self, user_answer: str):
-        pass
+        return self.answer if user_answer in ('True', 'true') else not self.answer
 
     def __str__(self) -> str:
         return self.question
@@ -90,8 +91,8 @@ class TrueOrFalseQuestion(Question):
             "question": self.question,
             "category": self.category,
             "topic": self.topic,
-            "trueOptions": self.true_options,
-            "falseOption": self.false_option,
+            "answer": self.answer,
+            "statement": self.statement,
             "questionType": self.question_type
         }
 

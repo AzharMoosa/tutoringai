@@ -19,8 +19,8 @@ export interface MultipleChoiceQuestion extends Question {
 }
 
 export interface TrueOrFalseQuestion extends Question {
-  trueOptions: string[];
-  falseOptions: string[];
+  answer: boolean;
+  statement: string;
   questionType: string;
 }
 

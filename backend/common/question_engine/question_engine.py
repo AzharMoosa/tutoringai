@@ -69,7 +69,17 @@ class QuestionEngine:
             # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
             numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions] if include_numerical_questions else []
             mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__remove_question_statement(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()] if include_mcq_questions else []
-            true_or_false_questions = [TrueOrFalseQuestion(text, template["category"], template["type"], true_option, false_option) for text, _ in questions for true_option, false_option in QuestionEngine.get_true_false_questions(text)] if include_true_or_false_questions else []
+            true_or_false_questions = []
+
+            for text, _ in questions:
+                options = QuestionEngine.get_true_false_questions(text)
+                for true_options, false_option in options:
+                    answer = random.choice([True, False])
+                    if (answer):
+                        statement = random.choice(true_options)
+                    else:
+                        statement = false_option
+                    true_or_false_questions.append(TrueOrFalseQuestion(QuestionEngine.__remove_question_statement(text), template["category"], template["type"], answer, statement))
 
             print(f"Generated {len(numerical_questions)} Numerical Questions")
             print(f"Generated {len(mcq_questions)} MCQ Questions")
@@ -90,8 +100,8 @@ class QuestionEngine:
     
 if __name__ == "__main__":
     include_numerical_questions = False
-    include_mcq_questions = True
-    include_true_or_false_questions = False
+    include_mcq_questions = False
+    include_true_or_false_questions = True
     clear_db = False
 
     if include_true_or_false_questions:
