@@ -7,7 +7,6 @@ import {
 } from '../../utils/chatRoomUtils';
 import './MessageBubble.css';
 
-type handleSendMessageFunction = () => void;
 type setMessageContentFunction = (messageContent: string) => void;
 
 const messageBubbleStyle = (fromChatbot: boolean) => ({
@@ -62,14 +61,14 @@ const MultipleChoiceMessageBubble = ({
   messageContent,
   fromChatbot,
   question,
-  handleSendMessage,
-  setMessageContent
+  setMessageContent,
+  isLatestMessage
 }: {
   messageContent: string;
   fromChatbot: boolean;
   question: MultipleChoiceQuestion;
-  handleSendMessage: handleSendMessageFunction;
   setMessageContent: setMessageContentFunction;
+  isLatestMessage: boolean;
 }) => {
   const selectOption = (option: string) => {
     setMessageContent(option);
@@ -83,7 +82,7 @@ const MultipleChoiceMessageBubble = ({
           <div className="mcq-options">
             {question.options.map((option) => (
               <div
-                onClick={() => selectOption(option)}
+                onClick={() => isLatestMessage && selectOption(option)}
                 key={Math.random()}
                 className="mcq-option"
               >
@@ -105,8 +104,8 @@ const messageBubbleLayout = (
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
     | undefined,
-  handleSendMessage: handleSendMessageFunction,
-  setMessageContent: setMessageContentFunction
+  setMessageContent: setMessageContentFunction,
+  isLatestMessage: boolean
 ) => {
   switch (question?.questionType) {
     case QuestionType.Numerical:
@@ -130,8 +129,8 @@ const messageBubbleLayout = (
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question as MultipleChoiceQuestion}
-          handleSendMessage={handleSendMessage}
           setMessageContent={setMessageContent}
+          isLatestMessage={isLatestMessage}
         />
       );
     default:
@@ -148,8 +147,8 @@ const MessageBubble = ({
   messageContent,
   fromChatbot,
   question,
-  handleSendMessage,
-  setMessageContent
+  setMessageContent,
+  isLatestMessage
 }: {
   messageContent: string;
   fromChatbot: boolean;
@@ -158,15 +157,15 @@ const MessageBubble = ({
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
     | undefined;
-  handleSendMessage: handleSendMessageFunction;
   setMessageContent: setMessageContentFunction;
+  isLatestMessage: boolean;
 }) =>
   messageBubbleLayout(
     messageContent,
     fromChatbot,
     question,
-    handleSendMessage,
-    setMessageContent
+    setMessageContent,
+    isLatestMessage
   );
 
 export default MessageBubble;

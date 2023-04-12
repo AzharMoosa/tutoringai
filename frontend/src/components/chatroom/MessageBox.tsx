@@ -2,6 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import './MessageBox.css';
+import {
+  MultipleChoiceQuestion,
+  NumericalQuestion,
+  QuestionType,
+  TrueOrFalseQuestion,
+  getQuestionType
+} from '../../utils/chatRoomUtils';
 
 type handleSendMessageFunction = () => void;
 type setMessageContentFunction = (messageContent: string) => void;
@@ -13,12 +20,18 @@ const MessageBox = ({
   handleSendMessage,
   messageContent,
   setMessageContent,
-  handleEnterSubmit
+  handleEnterSubmit,
+  currentQuestion
 }: {
   handleSendMessage: handleSendMessageFunction;
   messageContent: string;
   setMessageContent: setMessageContentFunction;
   handleEnterSubmit: handleEnterSubmitFunction;
+  currentQuestion:
+    | NumericalQuestion
+    | MultipleChoiceQuestion
+    | TrueOrFalseQuestion
+    | undefined;
 }) => {
   const textAreaRef = useRef<any>(null);
   const messageInputRef = useRef<any>(null);
@@ -41,6 +54,11 @@ const MessageBox = ({
           value={messageContent}
           onChange={(e) => setMessageContent(e.target.value)}
           onKeyDown={(e) => handleEnterSubmit(e)}
+          disabled={
+            currentQuestion &&
+            getQuestionType(currentQuestion.questionType) ===
+              QuestionType.MultipleChoice
+          }
         />
         <div className="send-btn">
           <FontAwesomeIcon

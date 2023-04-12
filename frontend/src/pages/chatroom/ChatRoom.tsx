@@ -112,7 +112,6 @@ const ChatRoom = () => {
       <div className="chatroom">
         <MessageList
           messageList={messageList}
-          handleSendMessage={handleSendMessage}
           setMessageContent={setMessageContent}
         />
         <MessageBox
@@ -120,6 +119,7 @@ const ChatRoom = () => {
           messageContent={messageContent}
           setMessageContent={setMessageContent}
           handleEnterSubmit={handleEnterSubmit}
+          currentQuestion={currentQuestion}
         />
       </div>
     </MainContainer>

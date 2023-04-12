@@ -3,16 +3,13 @@ import MessageBubble from './MessageBubble';
 import './MessageList.css';
 import { Message } from './types';
 
-type handleSendMessageFunction = () => void;
 type setMessageContentFunction = (messageContent: string) => void;
 
 const MessageList = ({
   messageList,
-  handleSendMessage,
   setMessageContent
 }: {
   messageList: Array<Message>;
-  handleSendMessage: handleSendMessageFunction;
   setMessageContent: setMessageContentFunction;
 }) => {
   const scrollRef = useRef<any>(null);
@@ -25,14 +22,14 @@ const MessageList = ({
 
   return (
     <div className="message-list">
-      {messageList.map(({ messageContent, fromChatbot, question }) => (
+      {messageList.map(({ messageContent, fromChatbot, question }, index) => (
         <MessageBubble
           key={Math.random()}
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question}
-          handleSendMessage={handleSendMessage}
           setMessageContent={setMessageContent}
+          isLatestMessage={index === messageList.length - 1}
         />
       ))}
       <div ref={scrollRef} />
