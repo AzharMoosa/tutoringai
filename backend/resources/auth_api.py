@@ -31,7 +31,7 @@ class LoginAPI(Resource):
                 return {'error': "User does not exist!"}, 403
 
             # Generate JWT Token
-            token = create_access_token(identity=user["email"])
+            token = create_access_token(identity=str(user["_id"]), expires_delta=datetime.timedelta(days=30))
 
             encrypted_password = encrypt_password(password)
 
@@ -69,7 +69,7 @@ class RegisterAPI(Resource):
                 {"createdDate": current_date, "email": email, "fullName": full_name, "password": hashed_password})
 
             # Generate JWT Token
-            token = create_access_token(identity=email)
+            token = create_access_token(identity=str(created_user.inserted_id), expires_delta=datetime.timedelta(days=30))
 
             return make_response(jsonify({"email": email, "fullName": full_name, "token": token, "_id": str(created_user.inserted_id)}), 200)
         except Exception:

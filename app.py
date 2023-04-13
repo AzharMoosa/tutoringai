@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from backend.resources.chatbot_api import ChatbotAPI
 from backend.resources.chatroom_api import ChatRoomAPI
 from backend.resources.auth_api import LoginAPI, RegisterAPI
+from backend.resources.user_api import UserAPI
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from backend.common.chatbot import Chatbot
 from flask_jwt_extended import JWTManager
@@ -62,6 +63,7 @@ def serve(path):
 
 api.add_resource(LoginAPI, "/api/auth/login")
 api.add_resource(RegisterAPI, "/api/auth/register")
+api.add_resource(UserAPI, "/api/users")
 api.add_resource(ChatbotAPI, "/api/chatbot")
 api.add_resource(ChatRoomAPI, "/api/chatroom")
 
