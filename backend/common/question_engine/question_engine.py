@@ -4,7 +4,7 @@ import json
 from typing import List, Tuple
 from json import JSONEncoder
 import os
-from question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
+from question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion, QuestionSet
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -62,47 +62,44 @@ class QuestionEngine:
         for i, template in enumerate(templates):
             print(f"============ PARSING TEMPLATE {i} ============")
             # 1 - Parse Template & Generate Question Variants
-            questions = QuestionEngine.__parse_template(template)
+            question_variants = QuestionEngine.__parse_template(template)
 
-            print(f"Generated {len(questions)} Question Variants")
+            print(f"Generated {len(question_variants)} Question Variants")
 
-            # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
-            numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions] if include_numerical_questions else []
-            mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__remove_question_statement(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()] if include_mcq_questions else []
-            true_or_false_questions = []
+            question_sets = []
 
-            for text, _ in questions:
-                options = QuestionEngine.get_true_false_questions(text)
-                for true_options, false_option in options:
-                    answer = random.choice([True, False])
-                    if (answer):
-                        statement = random.choice(true_options)
-                    else:
-                        statement = false_option
-                    true_or_false_questions.append(TrueOrFalseQuestion(QuestionEngine.__remove_question_statement(text), template["category"], template["type"], answer, statement))
+            for questions in question_variants:
+                # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
+                numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions] if include_numerical_questions else []
+                mcq_questions = [MultipleChoiceQuestion(key, template["category"], template["type"], value[1], value[0], QuestionEngine.__remove_question_statement(text)) for text, _ in questions for key, value in QuestionEngine.__get_multiple_choice_questions(text).items()] if include_mcq_questions else []
+                true_or_false_questions = []
 
-            print(f"Generated {len(numerical_questions)} Numerical Questions")
-            print(f"Generated {len(mcq_questions)} MCQ Questions")
-            print(f"Generated {len(true_or_false_questions)} True Or False Questions")
+                if include_true_or_false_questions:
+                    for text, _ in questions:
+                        options = QuestionEngine.get_true_false_questions(text)
+                        for true_options, false_option in options:
+                            answer = random.choice([True, False])
+                            if (answer):
+                                statement = random.choice(true_options)
+                            else:
+                                statement = false_option
+                            true_or_false_questions.append(TrueOrFalseQuestion(QuestionEngine.__remove_question_statement(text), template["category"], template["type"], answer, statement))
+                
+                question_sets.append(QuestionSet(numerical_questions + mcq_questions + true_or_false_questions, template["category"]))
+
+            print(f"Generated {len(question_sets)} Question Sets")
 
             # 3 - Push To Question Bank
-            if numerical_questions:
-                QuestionEngine.__push_to_question_bank(numerical_questions)
-            
-            if mcq_questions:
-                QuestionEngine.__push_to_question_bank(mcq_questions)
-            
-            if true_or_false_questions:
-                QuestionEngine.__push_to_question_bank(true_or_false_questions)
+            QuestionEngine.__push_to_question_bank(question_sets)
 
-            print(f"Successfully Added {len(numerical_questions) + len(mcq_questions) + len(true_or_false_questions)} Questions!")
+            print(f"Successfully Added {len(question_sets)} Questions Sets!")
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
     
 if __name__ == "__main__":
-    include_numerical_questions = False
-    include_mcq_questions = False
+    include_numerical_questions = True
+    include_mcq_questions = True
     include_true_or_false_questions = True
-    clear_db = False
+    clear_db = True
 
     if include_true_or_false_questions:
         from engines.true_false_engine import TrueOrFalseEngine

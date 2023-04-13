@@ -20,6 +20,17 @@ class Question:
             "category": self.category,
             "topic": self.topic,
         }
+    
+class QuestionSet:
+    def __init__(self, questions: List[Question], category: str, *args, **kwargs) -> None:
+        self.questions = questions
+        self.category = category
+    
+    def serialize(self):
+        return {
+            "questions": self.questions,
+            "category": self.category,
+        }
 
 class NumericalQuestion(Question):
     def __init__(self, question: str, category: str, topic: str, answer: int, *args, **kwargs) -> None:
