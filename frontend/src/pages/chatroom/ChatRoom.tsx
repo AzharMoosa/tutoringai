@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import './ChatRoom.css';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { getUser } from '../../features/user/userSlice';
+
 import MessageBox from '../../components/chatroom/MessageBox';
 import MessageList from '../../components/chatroom/MessageList';
 import { Message } from '../../components/chatroom/types';
@@ -22,6 +25,15 @@ import MainContainer from '../../components/shared/MainContainer';
 import { Page } from '../../data/pageConstants';
 
 const ChatRoom = () => {
+  const userDetails = useAppSelector((state) => state.user.userDetails);
+  const loading = useAppSelector((state) => state.user.loading);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch, loading]);
+
   const socket = useSocket(WEB_SOCKET_URI, WEB_SOCKET_CONFIG);
   const [isAnswering, setIsAnswering] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] = useState<
@@ -71,9 +83,11 @@ const ChatRoom = () => {
 
     startDefaultListeners(socket);
 
-    initialiseChatRoom(socket, updateMessageList);
+    if (!loading) {
+      initialiseChatRoom(socket, updateMessageList, userDetails);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageList]);
+  }, [messageList, userDetails]);
 
   const sendMessage = (messageContent: string) => {
     setMessageList([
@@ -81,8 +95,8 @@ const ChatRoom = () => {
       { messageContent, fromChatbot: false, question: undefined }
     ]);
     socket.emit('message', {
-      username: 'test',
-      room: '1',
+      username: `${userDetails?.fullName ?? 'unknown'}`,
+      room: `${userDetails?._id ?? 'unknown'}`,
       state: {
         message: messageContent,
         isAnswering,

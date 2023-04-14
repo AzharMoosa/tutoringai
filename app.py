@@ -33,6 +33,7 @@ except Exception:
 def on_join(data):
     username, room = data["username"], data["room"]
     join_room(room)
+    # TODO: Create New Room In Database (If Not Exist)
     print(f"{username} has joined the {room}!")
     emit("joined", {"message": f"{username} has joined room"}, to=room)
 
@@ -41,6 +42,7 @@ def on_join(data):
 def on_leave(data):
     username, room = data["username"], data["room"]
     leave_room(room)
+    # TODO: Delete Room In Database (If Exist)
     print(f"{username} has left the {room}!")
     emit("left", {"message": f"{username} has left room"}, to=room)
 
@@ -49,6 +51,7 @@ def on_leave(data):
 def on_message(data):
     username, state, room = data["username"], data["state"], data["room"]
     print(f"{username} sent a message to room: {room}!")
+    # TODO: Update State In Database (If Room Exists)
     response_message = Chatbot.generate_response(state)
     emit("received_message", {
          "state": response_message}, to=room)
