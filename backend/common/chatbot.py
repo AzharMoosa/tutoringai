@@ -96,6 +96,6 @@ class Chatbot:
         response = ResponseEngine.get_response(intents, tag)
 
         if tag in topics:
-            return ResponseEngine.generate_question_list(response, tag)
+            return ResponseEngine.generate_question_list(response, tag, state["room_id"])
 
         return ResponseEngine.generate_message(response, state["isAnswering"])

@@ -1,6 +1,7 @@
 from backend.common.question_engine.question import NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
 from backend.resources.db import client
 import random
+from bson import ObjectId
 
 db = client["Questions"]
 question_bank = list(db["question_bank"].find())
@@ -14,8 +15,18 @@ def get_multiple_choice_questions(questions):
 def get_true_or_false_questions(questions):
     return [TrueOrFalseQuestion(**question) for question in questions if question["question_type"] == "true-or-false"]
 
-# Move To Chatroom DB
-question_list = {}
+def deserialise_questions(questions):
+    deserialised = []
+
+    for question in questions:
+        if question["questionType"] == "numerical":
+            deserialised.append(NumericalQuestion(**question))
+        elif question["questionType"] == "mcq":
+            deserialised.append(MultipleChoiceQuestion(**question))
+        elif question["questionType"] == "true-or-false":
+            deserialised.append(TrueOrFalseQuestion(**question))
+
+    return deserialised
 
 class QuestionGenerator:
     @staticmethod
@@ -23,9 +34,17 @@ class QuestionGenerator:
         return [question_set for question_set in question_bank if question_set["category"] == category]
     
     @staticmethod
-    def __generate_question_set_by_category(t):
-        if (t in question_list):
-            return question_list[t]
+    def __generate_question_set_by_category(t, room_id: str):
+        db = client["ChatRooms"]
+        all_chatrooms = db["all_chatrooms"]
+
+        chatroom = all_chatrooms.find_one({ "_id" : ObjectId(room_id) })
+
+        if not chatroom:
+            print("Chatroom Does Not Exist")
+
+        if (t in chatroom["questionSetMapping"]):
+            return deserialise_questions(chatroom["questionSetMapping"][t])
 
         question_options = QuestionGenerator.retrieve_questions_by_category(t)
 
@@ -47,10 +66,16 @@ class QuestionGenerator:
         
         random.shuffle(generated_questions)
 
-        question_list[t] = generated_questions
+        all_chatrooms.update_one({
+            '_id': ObjectId(room_id)
+        }, {
+            '$set': {
+                f"questionSetMapping.{t}": [q.serialize() for q in generated_questions]
+            }
+        }, upsert=False)
 
         return generated_questions
     
     @staticmethod
-    def retrieve_question_set_by_category(t):
-        return QuestionGenerator.__generate_question_set_by_category(t)
+    def retrieve_question_set_by_category(t, room_id: str):
+        return QuestionGenerator.__generate_question_set_by_category(t, room_id)

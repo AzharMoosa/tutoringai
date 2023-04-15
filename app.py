@@ -9,6 +9,8 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from backend.common.chatbot import Chatbot
 from flask_jwt_extended import JWTManager
 import os
+from bson import ObjectId
+from datetime import datetime
 
 app = Flask(__name__, static_folder='frontend/build/static',
             template_folder='frontend/build')
@@ -32,29 +34,91 @@ except Exception:
 @socketio.on('join')
 def on_join(data):
     username, room = data["username"], data["room"]
+    if room == "unknown":
+        return
+
     join_room(room)
     # TODO: Create New Room In Database (If Not Exist)
-    print(f"{username} has joined the {room}!")
-    emit("joined", {"message": f"{username} has joined room"}, to=room)
 
+    try:
+        db = client["ChatRooms"]
+        all_chatrooms = db["all_chatrooms"]
+
+        room_id = str(data["room"])
+
+        chatroom = all_chatrooms.find_one({ "_id" : ObjectId(room_id) })
+
+        if not chatroom:
+            print(f"{username} has joined the {room}!")
+            all_chatrooms.insert_one({ 
+                "_id" : ObjectId(room_id), 
+                "fullName": data["username"], 
+                "roomCreated": datetime.utcnow(),
+                "currentMessage": None,
+                "isAnswering": False,
+                "currentQuestion": None,
+                "questionList": None,
+                "questionIndex": None,
+                "questionSetMapping": {}
+            })
+            emit("joined", {"message": f"{username} has joined room"}, to=room)
+    except:
+        pass
 
 @socketio.on('leave')
 def on_leave(data):
     username, room = data["username"], data["room"]
+    if room == "unknown":
+        return
     leave_room(room)
     # TODO: Delete Room In Database (If Exist)
-    print(f"{username} has left the {room}!")
-    emit("left", {"message": f"{username} has left room"}, to=room)
+    db = client["ChatRooms"]
+    all_chatrooms = db["all_chatrooms"]
 
+    room_id = str(data["room"])
+
+    chatroom = all_chatrooms.find_one({ "_id" : ObjectId(room_id) })
+
+    if chatroom:
+        print(f"{username} has left the {room}!")
+        all_chatrooms.delete_one({ "_id" : ObjectId(room_id)})
+        emit("left", {"message": f"{username} has left room"}, to=room)
+    else:
+        print(f"Unable to leave {room} as it does not exist!")
 
 @socketio.on('message')
 def on_message(data):
     username, state, room = data["username"], data["state"], data["room"]
+    if room == "unknown":
+        return
     print(f"{username} sent a message to room: {room}!")
+
     # TODO: Update State In Database (If Room Exists)
-    response_message = Chatbot.generate_response(state)
-    emit("received_message", {
-         "state": response_message}, to=room)
+    db = client["ChatRooms"]
+    all_chatrooms = db["all_chatrooms"]
+
+    room_id = str(data["room"])
+
+    chatroom = all_chatrooms.find_one({ "_id" : ObjectId(room_id) })
+
+    if chatroom:
+        state["room_id"] = room_id
+        response_message = Chatbot.generate_response(state)
+        all_chatrooms.update_one({
+            '_id': ObjectId(room_id)
+        }, {
+            '$set': {
+                "currentMessage": response_message["message"] if "message" in response_message else None,
+                "isAnswering": response_message["isAnswering"] if "isAnswering" in response_message else None,
+                "currentQuestion": response_message["currentQuestion"] if "currentQuestion" in response_message else None,
+                "questionList": response_message["questionList"] if "questionList" in response_message else None,
+                "questionIndex": response_message["questionIndex"] if "questionIndex" in response_message else None,
+            }
+        }, upsert=False)
+
+        emit("received_message", { "state": response_message }, to=room)
+    else:
+        print(f"Cannot send message to {room} as it does not exist!")
 
 
 @app.route('/', defaults={'path': ''})

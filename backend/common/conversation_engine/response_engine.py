@@ -49,7 +49,7 @@ class ResponseEngine:
     def generate_answer_response(state: dict):
         question_index = int(state["questionIndex"])
         users_answer = state["message"]
-        question_set = QuestionGenerator.retrieve_question_set_by_category("arithmetic")
+        question_set = QuestionGenerator.retrieve_question_set_by_category("arithmetic", state["room_id"])
 
         if not question_set[question_index].is_correct(users_answer):
             return ResponseEngine.generate_incorrect_response(state)
@@ -62,8 +62,8 @@ class ResponseEngine:
             return ResponseEngine.generate_finish_answering_response()
 
     @staticmethod
-    def generate_question_list(message_content, tag):
-        question_list = QuestionGenerator.retrieve_question_set_by_category(tag)
+    def generate_question_list(message_content, tag, room_id):
+        question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
         first_question = question_list[0]
         return {"message": f"{message_content}\n{first_question}", 
                 "isAnswering": True, 
