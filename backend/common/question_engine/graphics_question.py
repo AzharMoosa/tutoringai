@@ -14,7 +14,7 @@ class Shape:
         raise Exception("Cannot Get String Representation of Shape")
 
 class Triangle(Shape):
-    def __init__(self, a: float, b: float, c: float) -> None:
+    def __init__(self, a: float, b: float, c: float, *args, **kwargs) -> None:
         super().__init__()
         self.a = a
         self.b = b
@@ -36,7 +36,7 @@ class Triangle(Shape):
         }
 
 class Rectangle(Shape):
-    def __init__(self, width: float, height: float) -> None:
+    def __init__(self, width: float, height: float, *args, **kwargs) -> None:
         super().__init__()
         self.width = width
         self.height = height
@@ -54,7 +54,7 @@ class Rectangle(Shape):
         }
 
 class Circle(Shape):
-    def __init__(self, radius: float) -> None:
+    def __init__(self, radius: float, *args, **kwargs) -> None:
         super().__init__()
         self.radius = radius
 
@@ -101,10 +101,11 @@ class GraphicalQuestionSet:
         }
     
 class TriangleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, triangle: Triangle, question_type: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, triangle: Triangle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.triangle = triangle
         self.question_type = question_type
+        self.topic = topic
         self.answer = answer
         self.image_url = image_url
 
@@ -117,21 +118,29 @@ class TriangleQuestion(GraphicalQuestion):
     def __str__(self) -> str:
         return self.question
     
+    def get_triangle_properties(self):
+        try:
+            return self.triangle.serialize()
+        except:
+            return Triangle(**self.triangle).serialize()
+    
     def serialize(self):
         return {
             "question": self.question,
             "category": self.category,
-            "triangle": self.triangle.serialize(),
+            "triangle": self.get_triangle_properties(),
             "questionType": self.question_type,
+            "topic": self.topic,
             "answer": self.answer,
             "imageUrl": self.image_url
         }
     
 class RectangleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, rectangle: Rectangle, question_type: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, rectangle: Rectangle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.rectangle = rectangle
         self.question_type = question_type
+        self.topic = topic
         self.answer = answer
         self.image_url = image_url
 
@@ -144,21 +153,29 @@ class RectangleQuestion(GraphicalQuestion):
     def __str__(self) -> str:
         return self.question
     
+    def get_rectangle_properties(self):
+        try:
+            return self.rectangle.serialize()
+        except:
+            return Rectangle(**self.rectangle).serialize()
+    
     def serialize(self):
         return {
             "question": self.question,
             "category": self.category,
-            "rectangle": self.rectangle.serialize(),
+            "rectangle": self.get_rectangle_properties(),
             "questionType": self.question_type,
+            "topic": self.topic,
             "answer": self.answer,
             "imageUrl": self.image_url
         }
     
 class CircleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, circle: Circle, question_type: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, circle: Circle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.circle = circle
         self.question_type = question_type
+        self.topic = topic
         self.answer = answer
         self.image_url = image_url
 
@@ -171,12 +188,19 @@ class CircleQuestion(GraphicalQuestion):
     def __str__(self) -> str:
         return self.question
     
+    def get_circle_properties(self):
+        try:
+            return self.circle.serialize()
+        except:
+            return Circle(**self.circle).serialize()
+    
     def serialize(self):
         return {
             "question": self.question,
             "category": self.category,
-            "circle": self.circle.serialize(),
+            "circle": self.get_circle_properties(),
             "questionType": self.question_type,
+            "topic": self.topic,
             "answer": self.answer,
             "imageUrl": self.image_url
         }

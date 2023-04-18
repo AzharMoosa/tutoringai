@@ -53,7 +53,7 @@ class TextToGraphicsQuestion:
                 triangle = Triangle(A, B, C)
                 area = triangle.calculate_area()
                 image_url = TextToGraphicsQuestion.__generate_shape_image(triangle)
-                questions.append(TriangleQuestion(question, "trigonometry", triangle, "area", area, image_url))
+                questions.append(TriangleQuestion(question, "trigonometry", triangle, "graphical", "area", area, image_url))
         
         return questions
     
@@ -67,7 +67,7 @@ class TextToGraphicsQuestion:
             rectangle = Rectangle(WIDTH, HEIGHT)
             area = rectangle.calculate_area()
             image_url = TextToGraphicsQuestion.__generate_shape_image(rectangle)
-            questions.append(RectangleQuestion(question, "rectangle", rectangle, "area", area, image_url))
+            questions.append(RectangleQuestion(question, "rectangle", rectangle, "graphical", "area", area, image_url))
         
         return questions
     
@@ -81,7 +81,7 @@ class TextToGraphicsQuestion:
             circle = Circle(numbers[0])
             area = circle.calculate_area()
             image_url = TextToGraphicsQuestion.__generate_shape_image(circle)
-            questions.append(CircleQuestion(question, "circle", circle, "area", area, image_url))
+            questions.append(CircleQuestion(question, "circle", circle, "graphical", "area", area, image_url))
         
         for _ in range(circumference_questions):
             question = TextToGraphicsQuestion.__randomize_numbers(text) + " What is the circumference of the circle?"
@@ -89,7 +89,7 @@ class TextToGraphicsQuestion:
             circle = Circle(numbers[0])
             circumference = circle.calculate_circumference()
             image_url = TextToGraphicsQuestion.__generate_shape_image(circle)
-            questions.append(CircleQuestion(question, "circle", circle, "circumference", circumference, image_url))
+            questions.append(CircleQuestion(question, "circle", circle, "graphical", "circumference", circumference, image_url))
 
         return questions
 

@@ -17,7 +17,7 @@ intents = json.loads(
 words = pickle.load(open(f"{__location__}/model/words.pkl", "rb"))
 classes = pickle.load(open(f"{__location__}/model/classes.pkl", "rb"))
 model = load_model(f"{__location__}/model/chatbotmodel.h5")
-topics = ["arithmetic"]
+topics = ["arithmetic", "trigonometry", "rectangle", "circle"]
 UNCERTAIN_THRESHOLD = 0.4
 
 def parse_text(text):

@@ -3,7 +3,10 @@ import {
   NumericalQuestion,
   MultipleChoiceQuestion,
   TrueOrFalseQuestion,
-  QuestionType
+  QuestionType,
+  TriangleQuestion,
+  RectangleQuestion,
+  CircleQuestion
 } from '../../utils/chatRoomUtils';
 import './MessageBubble.css';
 
@@ -120,6 +123,27 @@ const MultipleChoiceMessageBubble = ({
   );
 };
 
+const GraphicalQuestionMessageBubble = ({
+  messageContent,
+  fromChatbot,
+  question
+}: {
+  messageContent: string;
+  fromChatbot: boolean;
+  question: TriangleQuestion | RectangleQuestion | CircleQuestion;
+}) => {
+  return (
+    <>
+      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+        <p>{messageContent}</p>
+        <div className="graphics-image-container">
+          <img src={question.imageUrl} alt="shape" />
+        </div>
+      </div>
+    </>
+  );
+};
+
 const messageBubbleLayout = (
   messageContent: string,
   fromChatbot: boolean,
@@ -127,6 +151,7 @@ const messageBubbleLayout = (
     | NumericalQuestion
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
+    | TriangleQuestion
     | undefined,
   setMessageContent: setMessageContentFunction,
   isLatestMessage: boolean
@@ -159,6 +184,14 @@ const messageBubbleLayout = (
           isLatestMessage={isLatestMessage}
         />
       );
+    case QuestionType.Graphical:
+      return (
+        <GraphicalQuestionMessageBubble
+          messageContent={messageContent}
+          fromChatbot={fromChatbot}
+          question={question as TriangleQuestion}
+        />
+      );
     default:
       return (
         <DefaultMessageBubble
@@ -182,6 +215,7 @@ const MessageBubble = ({
     | NumericalQuestion
     | MultipleChoiceQuestion
     | TrueOrFalseQuestion
+    | TriangleQuestion
     | undefined;
   setMessageContent: setMessageContentFunction;
   isLatestMessage: boolean;

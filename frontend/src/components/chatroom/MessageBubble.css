@@ -54,3 +54,10 @@
   background-color: var(--blue);
   transition: all 0.5s ease-in;
 }
+
+.graphics-image-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 1rem 0;
+}

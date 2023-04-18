@@ -17,7 +17,7 @@ class GraphicsQuestionEngine:
     def __push_to_question_bank(questions: List[GraphicalQuestion]) -> None:
         questions_json = json.dumps(questions, indent=4, cls=GraphicQuestionEncoder)
         db = client["Questions"]
-        question_bank = db["graphics_question_bank"]
+        question_bank = db["question_bank"]
         question_bank.insert_many(json.loads(questions_json))
 
     @staticmethod
@@ -48,7 +48,7 @@ class GraphicsQuestionEngine:
 
         if clear_db:
             db = client["Questions"]
-            question_bank = db["graphics_question_bank"]
+            question_bank = db["question_bank"]
             question_bank.drop()
 
         for i, template in enumerate(templates):
@@ -67,7 +67,9 @@ class GraphicsQuestionEngine:
 
             print(f"Successfully Added {len(question_sets)} Questions Sets!")
             print(f"==== GENERATED QUESTIONS FOR TEMPLATE {i} ====")
+        
+        os.system("make clean")
 
 if __name__ == "__main__":
     GraphicsQuestionEngine.create_graphics_engine()
-    GraphicsQuestionEngine.generate_graphical_questions(True)
+    GraphicsQuestionEngine.generate_graphical_questions()

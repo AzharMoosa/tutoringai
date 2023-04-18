@@ -25,6 +25,50 @@ export interface TrueOrFalseQuestion extends Question {
   questionType: string;
 }
 
+export interface GraphicalQuestion {
+  question: string;
+  category: string;
+}
+
+export interface Triangle {
+  a: number;
+  b: number;
+  c: number;
+}
+
+export interface Rectangle {
+  width: number;
+  height: number;
+}
+
+export interface Circle {
+  radius: number;
+}
+
+export interface TriangleQuestion extends GraphicalQuestion {
+  triangle: Triangle
+  questionType: string;
+  topic: string;
+  answer: number;
+  imageUrl: string
+}
+
+export interface RectangleQuestion extends GraphicalQuestion {
+  rectangle: Rectangle;
+  questionType: string;
+  topic: string;
+  answer: number;
+  imageUrl: string
+}
+
+export interface CircleQuestion extends GraphicalQuestion {
+  circle: Circle;
+  questionType: string;
+  topic: string;
+  answer: number;
+  imageUrl: string
+}
+
 export interface ChatbotResponse {
   state: {
     message: string;
@@ -41,10 +85,18 @@ export interface ChatbotResponse {
   };
 }
 
+export enum GraphicalType {
+  Triangle = "trigonometry",
+  Rectangle = "rectangles",
+  Circle = "circles",
+  Undefined = "undefined"
+}
+
 export enum QuestionType {
   Numerical = 'numerical',
   TrueOrFalse = 'true-or-false',
   MultipleChoice = 'mcq',
+  Graphical = 'graphical',
   Undefined = 'undefined'
 }
 
@@ -79,6 +131,19 @@ export const initialiseChatRoom = (
   socket.on('received_message', messageListener);
 };
 
+export const getGraphicsType = (category: string): GraphicalType => {
+  switch (category) {
+    case 'trigonometry':
+      return GraphicalType.Triangle;
+    case 'rectangles':
+      return GraphicalType.Rectangle;
+    case 'circles':
+      return GraphicalType.Circle;
+    default:
+      return GraphicalType.Undefined;
+  }
+}
+
 export const getQuestionType = (questionType: string): QuestionType => {
   switch (questionType) {
     case 'numerical':
@@ -87,6 +152,8 @@ export const getQuestionType = (questionType: string): QuestionType => {
       return QuestionType.TrueOrFalse;
     case 'mcq':
       return QuestionType.MultipleChoice;
+    case 'graphical':
+      return QuestionType.Graphical;
     default:
       return QuestionType.Undefined;
   }

@@ -98,6 +98,71 @@
         "Great. Let's begin by looking at some arithmetic problems."
       ],
       "context_set": ""
+    },
+    {
+      "tag": "trigonometry",
+      "patterns": [
+        "trigonometry",
+        "i need help with trigonometry",
+        "i am struggling with trigonometry",
+        "i need help triangles",
+        "i need help triangle",
+        "i need help with right angle triangles",
+        "i need help with isosceles triangle",
+        "i need help with scalene triangle",
+        "how do you calculate area of triangle",
+        "how do you calculate area of this triangle",
+        "triangle",
+        "triangles"
+      ],
+      "responses": [
+        "I can help you with trigonometry. Let's work through a question together.",
+        "Let's get started revising trigonometry. We can work through a question together.",
+        "Great. Let's begin by looking at some trigonometry problems."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "rectangle",
+      "patterns": [
+        "rectangles",
+        "i need help with rectangles",
+        "i am struggling with rectangles",
+        "i need help rectangles",
+        "i need help rectangle",
+        "i need help with rectangles",
+        "i need help with rectangle",
+        "how do you calculate area of rectangle",
+        "how do you calculate area of this rectangles",
+        "rectangle"
+      ],
+      "responses": [
+        "I can help you with rectangles. Let's work through a question together.",
+        "Let's get started revising rectangles. We can work through a question together.",
+        "Great. Let's begin by looking at some rectangles problems."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "circle",
+      "patterns": [
+        "circles",
+        "i need help with circles",
+        "i am struggling with circles",
+        "i need help circles",
+        "i need help rectangle",
+        "i need help with circles",
+        "i need help with circle",
+        "how do you calculate area of circle",
+        "how do you calculate area of this circles",
+        "circle"
+      ],
+      "responses": [
+        "I can help you with circles. Let's work through a question together.",
+        "Let's get started revising circles. We can work through a question together.",
+        "Great. Let's begin by looking at some circles problems."
+      ],
+      "context_set": ""
     }
   ]
 }
