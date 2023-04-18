@@ -27,7 +27,9 @@ class GraphicsQuestionEngine:
     @staticmethod
     def __get_templates():
         # TODO: Add To DB And Fetch
-        return [{ "category" : "trigonometry", "text" : "A triangle has side lengths 1cm, 2cm, 3cm." }]
+        return [{ "category" : "trigonometry", "text" : "A triangle has side lengths 1cm, 2cm, 3cm." },
+                { "category" : "rectangle", "text" : "A rectangle has width 2cm and height 3cm." },
+                { "category" : "circle", "text" : "A circle has radius 2cm." }]
     
     @staticmethod
     def create_graphics_engine():

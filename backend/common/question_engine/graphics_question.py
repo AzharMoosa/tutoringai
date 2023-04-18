@@ -43,6 +43,15 @@ class Rectangle(Shape):
 
     def __str__(self) -> str:
         return "rectangle"
+    
+    def calculate_area(self):
+        return self.width * self.height
+
+    def serialize(self):
+        return {
+            "width": self.width,
+            "height": self.height,
+        }
 
 class Circle(Shape):
     def __init__(self, radius: float) -> None:
@@ -51,6 +60,17 @@ class Circle(Shape):
 
     def __str__(self) -> str:
         return "circle"
+    
+    def calculate_area(self):
+        return math.pi * math.pow(self.radius, 2.0)
+    
+    def calculate_circumference(self):
+        return 2.0 * math.pi * self.radius
+
+    def serialize(self):
+        return {
+            "radius": self.radius,
+        }
     
 class GraphicalQuestion:
     def __init__(self, question: str, category: str, *args, **kwargs) -> None:
@@ -102,6 +122,60 @@ class TriangleQuestion(GraphicalQuestion):
             "question": self.question,
             "category": self.category,
             "triangle": self.triangle.serialize(),
+            "questionType": self.question_type,
+            "answer": self.answer,
+            "imageUrl": self.image_url
+        }
+    
+class RectangleQuestion(GraphicalQuestion):
+    def __init__(self, question: str, category: str, rectangle: Rectangle, question_type: str, answer: float, image_url: str, *args, **kwargs) -> None:
+        super().__init__(question, category, *args, **kwargs)
+        self.rectangle = rectangle
+        self.question_type = question_type
+        self.answer = answer
+        self.image_url = image_url
+
+    def is_correct(self, user_answer: str):
+        try:
+            return self.answer == float(user_answer)
+        except ValueError:
+            return False
+
+    def __str__(self) -> str:
+        return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "category": self.category,
+            "rectangle": self.rectangle.serialize(),
+            "questionType": self.question_type,
+            "answer": self.answer,
+            "imageUrl": self.image_url
+        }
+    
+class CircleQuestion(GraphicalQuestion):
+    def __init__(self, question: str, category: str, circle: Circle, question_type: str, answer: float, image_url: str, *args, **kwargs) -> None:
+        super().__init__(question, category, *args, **kwargs)
+        self.circle = circle
+        self.question_type = question_type
+        self.answer = answer
+        self.image_url = image_url
+
+    def is_correct(self, user_answer: str):
+        try:
+            return self.answer == float(user_answer)
+        except ValueError:
+            return False
+
+    def __str__(self) -> str:
+        return self.question
+    
+    def serialize(self):
+        return {
+            "question": self.question,
+            "category": self.category,
+            "circle": self.circle.serialize(),
             "questionType": self.question_type,
             "answer": self.answer,
             "imageUrl": self.image_url

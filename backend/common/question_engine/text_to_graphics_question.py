@@ -58,13 +58,49 @@ class TextToGraphicsQuestion:
         return questions
     
     @staticmethod
+    def __generate_rectangle_questions(text, area_questions=10):
+        questions = []
+        # Generate Area Questions
+        for _ in range(area_questions):
+            question = TextToGraphicsQuestion.__randomize_numbers(text) + " What is the area of the rectangle?"
+            WIDTH, HEIGHT = TextToGraphicsQuestion.__find_numbers(question)
+            rectangle = Rectangle(WIDTH, HEIGHT)
+            area = rectangle.calculate_area()
+            image_url = TextToGraphicsQuestion.__generate_shape_image(rectangle)
+            questions.append(RectangleQuestion(question, "rectangle", rectangle, "area", area, image_url))
+        
+        return questions
+    
+    @staticmethod
+    def __generate_circle_questions(text, area_questions=10, circumference_questions=10):
+        questions = []
+        # Generate Area Questions
+        for _ in range(area_questions):
+            question = TextToGraphicsQuestion.__randomize_numbers(text) + " What is the area of the circle?"
+            numbers = TextToGraphicsQuestion.__find_numbers(question)
+            circle = Circle(numbers[0])
+            area = circle.calculate_area()
+            image_url = TextToGraphicsQuestion.__generate_shape_image(circle)
+            questions.append(CircleQuestion(question, "circle", circle, "area", area, image_url))
+        
+        for _ in range(circumference_questions):
+            question = TextToGraphicsQuestion.__randomize_numbers(text) + " What is the circumference of the circle?"
+            numbers = TextToGraphicsQuestion.__find_numbers(question)
+            circle = Circle(numbers[0])
+            circumference = circle.calculate_circumference()
+            image_url = TextToGraphicsQuestion.__generate_shape_image(circle)
+            questions.append(CircleQuestion(question, "circle", circle, "circumference", circumference, image_url))
+
+        return questions
+
+    @staticmethod
     def generate_questions(text: str, category: str) -> List[GraphicalQuestion]:
         if (category == "trigonometry"):
             return TextToGraphicsQuestion.__generate_triangle_questions(text)
-        
-if __name__ == "__main__":
-    res = TextToGraphicsQuestion.generate_questions("A triangle has side lengths 1cm, 2cm, 3cm.", "trigonometry")
-    q = res[0].question
-    a = res[0].answer
-    print(f"Question: {q}, Answer: {a}")
+        elif (category == "rectangle"):
+            return TextToGraphicsQuestion.__generate_rectangle_questions(text)
+        elif (category == "circle"):
+            return TextToGraphicsQuestion.__generate_circle_questions(text)
+        else:
+            raise Exception(f"Graphical Question Type {category} Not Defined")
 
