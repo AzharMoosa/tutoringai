@@ -2,8 +2,7 @@
 
 # Tasks
 
-- Combine Question Engines
-- Populate Question Bank
 - Improve Chatbot Conversation Engine
+- Populate Question Bank
 - Connect Graphical Engine
 - Populate Question Bank With Graphics Questions

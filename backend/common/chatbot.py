@@ -57,7 +57,7 @@ def generate_bag_of_words(text):
 def predict_class(sentence):
     bag_of_words = generate_bag_of_words(sentence)
     result = model.predict(np.array([bag_of_words]), verbose=0)[0]
-    ERROR_THRESHOLD = 0.2
+    ERROR_THRESHOLD = 0.4
     result = [(i, r) for i, r in enumerate(result) if r > ERROR_THRESHOLD]
 
     if not result:
@@ -89,7 +89,7 @@ class Chatbot:
 
         if state["isAnswering"]:
             return ResponseEngine.generate_answer_response(state)
-
+        
         if prob < UNCERTAIN_THRESHOLD:
             return ResponseEngine.generate_uncertain_response()
 
