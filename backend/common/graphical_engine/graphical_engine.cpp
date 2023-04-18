@@ -109,17 +109,37 @@ int main(int argc, char **argv) {
   CanvasOptions canvasOptions = CanvasOptions(200, 200, "white");
   ShapeOptions shapeOptions = ShapeOptions("black", 2, "white");
 
-  RectangleOptions rectangleOptions =
-      RectangleOptions(canvasOptions, shapeOptions, 2, 3);
+  std::string shape(argv[1]);
 
-  CircleOptions circleOptions = CircleOptions(canvasOptions, shapeOptions, 1);
+  if (shape == "triangle") {
+    std::string a(argv[2]);
+    std::string b(argv[3]);
+    std::string c(argv[4]);
 
-  TriangleOptions triangleOptions =
-      TriangleOptions(canvasOptions, shapeOptions, 1, 2, 3);
+    TriangleOptions triangleOptions = TriangleOptions(
+        canvasOptions, shapeOptions, std::stod(a), std::stod(b), std::stod(c));
 
-  engine.draw(rectangleOptions);
-  engine.draw(circleOptions);
-  engine.draw(triangleOptions);
+    engine.draw(triangleOptions);
+  }
+
+  if (shape == "rectangle") {
+    std::string width(argv[2]);
+    std::string height(argv[3]);
+
+    RectangleOptions rectangleOptions = RectangleOptions(
+        canvasOptions, shapeOptions, std::stod(width), std::stod(height));
+
+    engine.draw(rectangleOptions);
+  }
+
+  if (shape == "circle") {
+    std::string radius(argv[2]);
+
+    CircleOptions circleOptions =
+        CircleOptions(canvasOptions, shapeOptions, std::stod(radius));
+
+    engine.draw(circleOptions);
+  }
 
   return 0;
 }
