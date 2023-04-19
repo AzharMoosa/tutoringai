@@ -26,6 +26,13 @@ def deserialise_questions(questions):
             deserialised.append(MultipleChoiceQuestion(**question))
         elif question["questionType"] == "true-or-false":
             deserialised.append(TrueOrFalseQuestion(**question))
+        elif question["questionType"] == "graphical":
+            if question["category"] == "trigonometry":
+                deserialised.append(TriangleQuestion(**question))
+            elif question["category"] == "rectangle":
+                deserialised.append(RectangleQuestion(**question))
+            elif question["category"] == "circle":
+                deserialised.append(CircleQuestion(**question))
 
     return deserialised
 

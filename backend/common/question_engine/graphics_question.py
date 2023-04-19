@@ -101,17 +101,17 @@ class GraphicalQuestionSet:
         }
     
 class TriangleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, triangle: Triangle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, triangle: Triangle, topic: str, answer: float, imageUrl: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.triangle = triangle
-        self.question_type = question_type
+        self.question_type = "graphical"
         self.topic = topic
         self.answer = answer
-        self.image_url = image_url
+        self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
         try:
-            return self.answer == float(user_answer)
+            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -132,21 +132,21 @@ class TriangleQuestion(GraphicalQuestion):
             "questionType": self.question_type,
             "topic": self.topic,
             "answer": self.answer,
-            "imageUrl": self.image_url
+            "imageUrl": self.imageUrl
         }
     
 class RectangleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, rectangle: Rectangle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, rectangle: Rectangle, topic: str, answer: float, imageUrl: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.rectangle = rectangle
-        self.question_type = question_type
+        self.question_type = "graphical"
         self.topic = topic
         self.answer = answer
-        self.image_url = image_url
+        self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
         try:
-            return self.answer == float(user_answer)
+            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -167,21 +167,21 @@ class RectangleQuestion(GraphicalQuestion):
             "questionType": self.question_type,
             "topic": self.topic,
             "answer": self.answer,
-            "imageUrl": self.image_url
+            "imageUrl": self.imageUrl
         }
     
 class CircleQuestion(GraphicalQuestion):
-    def __init__(self, question: str, category: str, circle: Circle, question_type: str, topic: str, answer: float, image_url: str, *args, **kwargs) -> None:
+    def __init__(self, question: str, category: str, circle: Circle, topic: str, answer: float, imageUrl: str, *args, **kwargs) -> None:
         super().__init__(question, category, *args, **kwargs)
         self.circle = circle
-        self.question_type = question_type
+        self.question_type = "graphical"
         self.topic = topic
         self.answer = answer
-        self.image_url = image_url
+        self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
         try:
-            return self.answer == float(user_answer)
+            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -202,5 +202,5 @@ class CircleQuestion(GraphicalQuestion):
             "questionType": self.question_type,
             "topic": self.topic,
             "answer": self.answer,
-            "imageUrl": self.image_url
+            "imageUrl": self.imageUrl
         }
