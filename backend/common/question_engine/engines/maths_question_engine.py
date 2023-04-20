@@ -2,11 +2,11 @@ import names
 import re
 from typing import List
 import random
-from engines.keyword_extraction_engine import KeywordExtraction
-from engines.mcq_engine import MCQEngine
+from backend.common.question_engine.engines.keyword_extraction_engine import KeywordExtraction
+from backend.common.question_engine.engines.mcq_engine import MCQEngine
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from engines.solving_engine import SolvingEngine
+from backend.common.question_engine.engines.solving_engine import SolvingEngine
 model_name = "humarin/chatgpt_paraphraser_on_T5_base"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(device)

@@ -8,7 +8,7 @@ from nltk import tokenize
 from nltk.tree import Tree
 import tensorflow as tf
 from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
-from engines.maths_question_engine import MathsQuestions
+from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
 
 NOUN_PHRASE = "NP"
 VERB_PHRASE = "VP"

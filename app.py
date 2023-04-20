@@ -36,10 +36,8 @@ def on_join(data):
     username, room = data["username"], data["room"]
     if room == "unknown":
         return
-
     join_room(room)
-    # TODO: Create New Room In Database (If Not Exist)
-
+    # Create New Room In Database (If Not Exist)
     try:
         db = client["ChatRooms"]
         all_chatrooms = db["all_chatrooms"]
@@ -71,7 +69,7 @@ def on_leave(data):
     if room == "unknown":
         return
     leave_room(room)
-    # TODO: Delete Room In Database (If Exist)
+    # Delete Room In Database (If Exist)
     db = client["ChatRooms"]
     all_chatrooms = db["all_chatrooms"]
 
@@ -92,8 +90,7 @@ def on_message(data):
     if room == "unknown":
         return
     print(f"{username} sent a message to room: {room}!")
-
-    # TODO: Update State In Database (If Room Exists)
+    # Update State In Database (If Room Exists)
     db = client["ChatRooms"]
     all_chatrooms = db["all_chatrooms"]
 

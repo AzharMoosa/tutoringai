@@ -1,13 +1,13 @@
 from typing import Tuple, List
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
-from engines.keyword_extraction_engine import KeywordExtraction
-from engines.summarization_engine import TextSummarization
+from backend.common.question_engine.engines.keyword_extraction_engine import KeywordExtraction
+from backend.common.question_engine.engines.summarization_engine import TextSummarization
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from sense2vec import Sense2Vec
 import random
 from rapidfuzz.distance import Levenshtein
-from engines.mcq_engine import MCQEngine
+from backend.common.question_engine.engines.mcq_engine import MCQEngine
 import nltk
 import os
 nltk.download('omw-1.4')

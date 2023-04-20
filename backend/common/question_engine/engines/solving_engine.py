@@ -80,5 +80,5 @@ class SolvingEngine:
             return SolvingEngine.__solve_additive(question)
 
 if __name__ == "__main__":
-    q =  "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
+    q =  "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
     print(SolvingEngine.solve(q, "additive"))

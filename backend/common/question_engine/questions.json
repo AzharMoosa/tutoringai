@@ -1,9 +1,27 @@
 [
-    {
-        "question": "John, Joe, Sarah are playing football. John has 5 apples and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?",
-        "context": "John, Joe, Sarah are playing football. John has 5 apples and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah.",
-        "answer": "3",
-        "category": "arithmetic",
-        "type": "addition"
-    }
+  {
+    "type": "additive",
+    "category": "arithmetic",
+    "text": "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "A library currently has 10 books. The librarian orders 20 more books. How many books does the library have?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "There are 25 birds that are currently sitting on a tree. It starts to rain and 10 of them fly away. How many birds are there left on the tree?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "John has £30 in his wallet. He is hungry and buys food from the restaurant for £10. How much money does he have in his wallet?"
+  }
 ]

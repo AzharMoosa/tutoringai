@@ -30,9 +30,8 @@ class QuestionEngine:
     
     @staticmethod
     def __get_templates():
-        # TODO: Add To DB And Fetch
-        return [{ "type": "additive", "category": "arithmetic", "text" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
- }]
+        with open("questions.json", 'r') as f:
+            return json.load(f)
     
     @staticmethod
     def __remove_question_statement(text: str) -> str:
@@ -102,14 +101,14 @@ if __name__ == "__main__":
     clear_db = True
 
     if include_true_or_false_questions:
-        from engines.true_false_engine import TrueOrFalseEngine
+        from backend.common.question_engine.engines.true_false_engine import TrueOrFalseEngine
 
     if include_numerical_questions or include_true_or_false_questions:
-        from engines.maths_question_engine import MathsQuestions
+        from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
 
     if include_mcq_questions:
-        from engines.text_to_question_engine import TextToQuestion
-        from engines.maths_question_engine import MathsQuestions
+        from backend.common.question_engine.engines.text_to_question_engine import TextToQuestion
+        from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
 
     QuestionEngine.generate_questions(include_numerical_questions=include_numerical_questions, 
                                       include_mcq_questions=include_mcq_questions, 
