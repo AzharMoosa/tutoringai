@@ -22,6 +22,26 @@
   {
     "type": "subtraction",
     "category": "arithmetic",
-    "text": "John has £30 in his wallet. He is hungry and buys food from the restaurant for £10. How much money does he have in his wallet?"
+    "text": "A boy had 8 marbles and he gave 3 to his friend. How many marbles does he have now?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "John has 5 boxes of chocolates, each box contains 10 chocolates. How many chocolates does John have in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A school has 4 classes, each class has 25 students. How many students are there in total at the school?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "There are 24 cookies to share equally among 6 children. How many cookies will each child get?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A teacher has 36 pencils to share equally among 9 students. How many pencils will each student get?"
   }
 ]
