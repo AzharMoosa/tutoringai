@@ -96,7 +96,7 @@ class TextToQuestion:
         return distractors[1:]
     
     @staticmethod
-    def get_mcq_question(text: str, options: int = 4, type: str="sense2vec") -> dict:
+    def get_mcq_question(text: str, options: int = 4, type: str="transformer") -> dict:
         """
         Generates MCQ questions for a text input.
 

@@ -1,4 +1,4 @@
-from backend.common.tutoring_engine.arithmetic_solver import AdditionSolver, SubtractionSolver, MultiplicationSolver, DivisionSolver
+from backend.common.tutoring_engine.arithmetic_solver import AdditionSolver, SubtractionSolver, MultiplicationSolver, DivisionSolver, AdditiveSolver
 import unittest
 
 class TestArithmeticSolvers(unittest.TestCase):
@@ -41,6 +41,16 @@ class TestArithmeticSolvers(unittest.TestCase):
         worded_problem = "A teacher has 36 pencils to share equally among 9 students. How many pencils will each student get?"
         answer = DivisionSolver.solve_problem(worded_problem)
         self.assertAlmostEqual(answer, 4.0)
+
+    def test_solve_additive_problem_correctly_one(self):
+        worded_problem = "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
+        answer = AdditiveSolver.solve_problem(worded_problem)
+        self.assertEqual(answer, 1)
+
+    def test_solve_additive_problem_correctly_two(self):
+        worded_problem = "John, Joe, Sarah are hungry and decide they want to go eat some lunch. They go to their favorite restaurant nearby and decide to order pizza. John takes 2 slices of pizza. Joe loves pizza and decides to take 4 slices of pizza. Sarah then takes the final 2 pizzas. Joe is feeling generous and gives 1 pizza to John. Sarah is also feeling generous and gives 1 pizza to John. How many pizzas did John eat?"
+        answer = AdditiveSolver.solve_problem(worded_problem)
+        self.assertEqual(answer, 4)
 
 if __name__ == '__main__':
     unittest.main()
