@@ -6,7 +6,7 @@ import json
 from nltk import tokenize
 load_dotenv()
 
-GPT_URL = os.getenv('GPT_MODEL_URL')
+GPT_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B"
 HUGGING_FACE_TOKEN = { "Authorization": f"Bearer {os.getenv('HUGGING_FACE_TOKEN')}"}
 
 class MathGPT:

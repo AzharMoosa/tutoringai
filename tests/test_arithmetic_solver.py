@@ -8,7 +8,7 @@ class TestArithmeticSolvers(unittest.TestCase):
         self.assertEqual(answer, 8)
 
     def test_solve_addition_problem_correctly_two(self):
-        worded_problem = "A library currently has 10 books. The librarian orders 20 more books. How many books does the library have?"
+        worded_problem = "A library currently has 10 books. The library buys 20 more books. How many books does the library have?"
         answer = AdditionSolver.solve_problem(worded_problem)
         self.assertEqual(answer, 30)
 
