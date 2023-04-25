@@ -13,4 +13,13 @@ class ParaphraseModel:
 
         response = requests.post(URL, headers=HEADERS, json=payload).json()
 
-        return response[0]["generated_text"] if response else ""
+        # If Error Retry Again
+        if "error" in response:
+            response = requests.post(URL, headers=HEADERS, json=payload).json()
+            if "error" in response:
+                return input
+
+        if not response or len(response) == 0 or "generated_text" not in response[0]: 
+            return input
+
+        return response[0]["generated_text"]

@@ -18,7 +18,7 @@ class TestArithmeticSolvers(unittest.TestCase):
         self.assertEqual(answer, 15)
 
     def test_solve_subtraction_problem_correctly_two(self):
-        worded_problem = "A boy had 8 marbles and he gave 3 to his friend. How many marbles does he have now?"
+        worded_problem = "A boy has 8 marbles. The boy gives 3 marbles away. How many marbles does the boy have now?"
         answer = SubtractionSolver.solve_problem(worded_problem)
         self.assertEqual(answer, 5)
 

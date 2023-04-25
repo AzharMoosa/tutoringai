@@ -20,19 +20,9 @@ class SolverUtility:
     @staticmethod
     def find_objects_in_sentence(doc):
         return [token.text for token in doc if token.dep_ == "dobj"]
-
-class ExplanationStep:
-    def __init__(self, sentence: str, explanation: str) -> None:
-        self.sentence = sentence
-        self.explanation = explanation
-        self.paraphrased_explanations = ParaphraseModel.query(explanation)
-
-    def __str__(self) -> str:
-        return f"{self.sentence} - {self.paraphrased_explanations}" if self.sentence else self.paraphrased_explanations
-
-class AdditionSolver:
+    
     @staticmethod
-    def __extract_key_information(text: str) -> dict:
+    def extract_key_information(text: str) -> dict:
         information = {}
         
         # Find All Subjects In Text
@@ -45,6 +35,16 @@ class AdditionSolver:
 
         return information
 
+class ExplanationStep:
+    def __init__(self, sentence: str, explanation: str) -> None:
+        self.sentence = sentence
+        self.explanation = explanation
+        self.paraphrased_explanations = ParaphraseModel.query(explanation)
+
+    def __str__(self) -> str:
+        return f"{self.sentence} - {self.paraphrased_explanations}" if self.sentence else self.paraphrased_explanations
+
+class AdditionSolver:
     @staticmethod
     def __get_addition_explanation(sentence: str, sentence_idx: int, current_number: int, object: str, prev_number: int = None) -> ExplanationStep:
         if sentence_idx == 0:
@@ -68,7 +68,7 @@ class AdditionSolver:
     @staticmethod
     def solve_problem_with_steps(word_problem: str):
         # Analyze Text & Find Key Information
-        information = AdditionSolver.__extract_key_information(word_problem)
+        information = SolverUtility.extract_key_information(word_problem)
 
         sentences = word_problem.split(".")
         subject = None
@@ -114,6 +114,19 @@ class AdditionSolver:
 
 class SubtractionSolver:
     @staticmethod
+    def __get_subtraction_explanation(sentence: str, sentence_idx: int, current_number: int, object: str, subject: str, prev_number: int = None) -> ExplanationStep:
+        if sentence_idx == 0:
+            explanation = f"From the question, we know that {subject} only has {current_number} {object}."
+        else:
+            explanation = f"Next we can take {current_number} {object}" + f"from {prev_number} {object}." if prev_number else "."
+
+        return ExplanationStep(sentence, explanation)
+    
+    @staticmethod
+    def __get_subtraction_final_explanation(answer: int, object: str, subtracted_numbers: str) -> ExplanationStep:
+        return ExplanationStep("", f"Finally, this gives us an answer of {answer} {object} because {subtracted_numbers} = {answer}.")
+
+    @staticmethod
     def solve_problem(word_problem: str) -> int:
         tokens = word_tokenize(word_problem)
         part_of_speech_tags = nltk.pos_tag(tokens)
@@ -122,7 +135,52 @@ class SubtractionSolver:
 
     @staticmethod
     def solve_problem_with_steps(word_problem: str) -> List[str]:
-        pass
+        # Analyze Text & Find Key Information
+        information = SolverUtility.extract_key_information(word_problem)
+
+        sentences = word_problem.split(".")
+        subject = None
+        explanations = []
+        all_numbers = []
+
+        for i, sentence in enumerate(sentences):
+            sentence = sentence.strip()
+            doc = nlp(sentence)
+
+            numbers = SolverUtility.find_numbers_in_sentence(doc)
+            
+            if "?" in sentence:
+                subject = SolverUtility.find_subjects_in_sentence(doc)[0]
+
+            if not numbers:
+                continue
+
+            # Get Objects & Subjects
+            subjects = SolverUtility.find_subjects_in_sentence(doc)
+            objects = SolverUtility.find_objects_in_sentence(doc)
+
+            if len(subjects) != 1 and len(objects) != 1:
+                continue
+
+            if i == 0:
+                information[subjects[0]] = numbers[0]
+            else:
+                information[subjects[0]] -= numbers[0]
+
+            explanation = SubtractionSolver.__get_subtraction_explanation(sentence, i, numbers[0], objects[0], subjects[0], all_numbers[-1] if all_numbers else None)
+            
+            explanations.append(explanation)
+
+            all_numbers.append(numbers[0])
+
+        answer = information[subject] if subject else -1
+        subtracted = " - ".join((str(num) for num in all_numbers))
+
+        concluding_explanation = SubtractionSolver.__get_subtraction_final_explanation(answer, objects[0], subtracted)
+        
+        explanations.append(concluding_explanation)
+        
+        return (explanations, answer)
 
 class MultiplicationSolver:
     @staticmethod
@@ -240,6 +298,10 @@ if __name__ == "__main__":
     # print(DivisionSolver.solve_problem("There are 24 cookies to share equally among 6 children. How many cookies will each child get?"))
     # print(AdditiveSolver.solve_problem("John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"))
     # print(AdditiveSolver.solve_problem("John, Joe, Sarah are hungry and decide they want to go eat some lunch. They go to their favorite restaurant nearby and decide to order pizza. John takes 2 slices of pizza. Joe loves pizza and decides to take 4 slices of pizza. Sarah then takes the final 2 pizzas. Joe is feeling generous and gives 1 pizza to John. Sarah is also feeling generous and gives 1 pizza to John. How many pizzas did John eat?"))
-    steps, answer = AdditionSolver.solve_problem_with_steps("A library currently has 10 books. The library buys 20 more books. How many books does the library have?")
+    steps, answer = AdditionSolver.solve_problem_with_steps("John has 5 apples. John gets 3 more apples from his friends. How many apples does John have now?")
     for step in steps:
         print(step)
+    # print()
+    # steps, answer = SubtractionSolver.solve_problem_with_steps("A boy has 8 cookies. The boy gives 3 cookies away. How many cookies does the boy have now?")
+    # for step in steps:
+    #     print(step)
