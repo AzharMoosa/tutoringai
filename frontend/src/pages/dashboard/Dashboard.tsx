@@ -6,6 +6,7 @@ import { getUser } from '../../features/user/userSlice';
 import './Dashboard.css';
 import { useEffect } from 'react';
 import Loader, { LoaderType } from '../../components/shared/Loader';
+import DashboardTitle from '../../components/dashboard/DashboardTitle';
 
 const Dashboard = () => {
   const userDetails = useAppSelector((state) => state.user.userDetails);
@@ -20,12 +21,12 @@ const Dashboard = () => {
   return (
     <MainContainer current={Page.DASHBOARD}>
       <div className="dashboard">
-        <h1>Dashboard</h1>
         {loading ? (
           <Loader loaderType={LoaderType.Oval} />
         ) : (
-          <div>
-            <h1>{userDetails?.fullName}</h1>
+          <div className="dashboard-layout">
+            <DashboardTitle name={userDetails?.fullName ?? ''} />
+            <div className="dashboard-grid"></div>
           </div>
         )}
       </div>
