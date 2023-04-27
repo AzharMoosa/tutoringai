@@ -54,8 +54,8 @@ const Home = () => {
         <div id="about">
           <h1>Who is M.A.R.C?</h1>
           <div className="about-grid">
-            {aboutBoxInfo.map((info: AboutInfo) => (
-              <InfoBox key={Math.random()} info={info}></InfoBox>
+            {aboutBoxInfo.map((info: AboutInfo, index) => (
+              <InfoBox key={index} info={info}></InfoBox>
             ))}
           </div>
         </div>
@@ -65,8 +65,8 @@ const Home = () => {
         <div className="container">
           <h1>Topics</h1>
           <div className="topics-grid">
-            {topicBoxInfo.map((info: TopicInfo) => (
-              <TopicBox info={info} key={Math.random()} />
+            {topicBoxInfo.map((info: TopicInfo, index) => (
+              <TopicBox info={info} key={index} />
             ))}
           </div>
         </div>
@@ -75,7 +75,7 @@ const Home = () => {
         <div id="services">
           {serviceBoxInfo.map((info, idx) => (
             <ServiceInfo
-              key={Math.random()}
+              key={idx}
               info={info}
               border={idx !== serviceBoxInfo.length - 1}
             />

@@ -24,7 +24,7 @@ const MessageList = ({
     <div className="message-list">
       {messageList.map(({ messageContent, fromChatbot, question }, index) => (
         <MessageBubble
-          key={Math.random()}
+          key={index}
           messageContent={messageContent}
           fromChatbot={fromChatbot}
           question={question}

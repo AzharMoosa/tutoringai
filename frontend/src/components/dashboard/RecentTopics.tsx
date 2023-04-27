@@ -16,8 +16,8 @@ const RecentTopics = ({ topics }: { topics: Array<Topic> }) => {
           </tr>
         </thead>
         <tbody>
-          {topics.slice(0, topN).map((topic) => (
-            <RecentTopic topic={topic} key={Math.random()} />
+          {topics.slice(0, topN).map((topic, index) => (
+            <RecentTopic topic={topic} key={index} />
           ))}
         </tbody>
       </table>

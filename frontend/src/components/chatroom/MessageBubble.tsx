@@ -9,8 +9,11 @@ import {
   CircleQuestion
 } from '../../utils/chatRoomUtils';
 import './MessageBubble.css';
+import { useState, useEffect } from 'react';
 
 type setMessageContentFunction = (messageContent: string) => void;
+
+const typingSpeed = 15;
 
 const messageBubbleStyle = (fromChatbot: boolean) => ({
   backgroundColor: fromChatbot ? PURPLE : BLUE
@@ -22,13 +25,23 @@ const DefaultMessageBubble = ({
 }: {
   messageContent: string;
   fromChatbot: boolean;
-}) => (
-  <>
+}) => {
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const typingEffect = setInterval(() => {
+      setMessageText(messageContent.slice(0, messageText.length + 1));
+    }, typingSpeed);
+
+    return () => clearInterval(typingEffect);
+  }, [messageContent, messageText]);
+
+  return (
     <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{messageContent}</p>
+      <p>{fromChatbot ? messageText : messageContent}</p>
     </div>
-  </>
-);
+  );
+};
 
 const NumericalMessageBubble = ({
   messageContent,
@@ -36,13 +49,23 @@ const NumericalMessageBubble = ({
 }: {
   messageContent: string;
   fromChatbot: boolean;
-}) => (
-  <>
+}) => {
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const typingEffect = setInterval(() => {
+      setMessageText(messageContent.slice(0, messageText.length + 1));
+    }, typingSpeed);
+
+    return () => clearInterval(typingEffect);
+  }, [messageContent, messageText]);
+
+  return (
     <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{messageContent}</p>
+      <p>{messageText}</p>
     </div>
-  </>
-);
+  );
+};
 
 const TrueOrFalseMessageBubble = ({
   messageContent,
@@ -57,6 +80,16 @@ const TrueOrFalseMessageBubble = ({
   setMessageContent: setMessageContentFunction;
   isLatestMessage: boolean;
 }) => {
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const typingEffect = setInterval(() => {
+      setMessageText(messageContent.slice(0, messageText.length + 1));
+    }, typingSpeed);
+
+    return () => clearInterval(typingEffect);
+  }, [messageContent, messageText]);
+
   const selectOption = (option: string) => {
     setMessageContent(option);
   };
@@ -64,21 +97,23 @@ const TrueOrFalseMessageBubble = ({
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageContent}</p>
-        <div className="true-or-false-container">
-          <p>{question.statement}</p>
-          <div className="true-or-false-options">
-            {['True', 'False'].map((option) => (
-              <div
-                onClick={() => isLatestMessage && selectOption(option)}
-                key={Math.random()}
-                className="mcq-option"
-              >
-                {option}
-              </div>
-            ))}
+        <p>{messageText}</p>
+        {messageText.length === messageContent.length && (
+          <div className="true-or-false-container">
+            <p>{question.statement}</p>
+            <div className="true-or-false-options">
+              {['True', 'False'].map((option, index) => (
+                <div
+                  onClick={() => isLatestMessage && selectOption(option)}
+                  key={index}
+                  className="mcq-option"
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
@@ -97,6 +132,16 @@ const MultipleChoiceMessageBubble = ({
   setMessageContent: setMessageContentFunction;
   isLatestMessage: boolean;
 }) => {
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const typingEffect = setInterval(() => {
+      setMessageText(messageContent.slice(0, messageText.length + 1));
+    }, typingSpeed);
+
+    return () => clearInterval(typingEffect);
+  }, [messageContent, messageText]);
+
   const selectOption = (option: string) => {
     setMessageContent(option);
   };
@@ -104,20 +149,22 @@ const MultipleChoiceMessageBubble = ({
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageContent}</p>
-        <div className="mcq-container">
-          <div className="mcq-options">
-            {question.options.map((option) => (
-              <div
-                onClick={() => isLatestMessage && selectOption(option)}
-                key={Math.random()}
-                className="mcq-option"
-              >
-                {option}
-              </div>
-            ))}
+        <p>{messageText}</p>
+        {messageText.length === messageContent.length && (
+          <div className="mcq-container">
+            <div className="mcq-options">
+              {question.options.map((option, index) => (
+                <div
+                  onClick={() => isLatestMessage && selectOption(option)}
+                  key={index}
+                  className="mcq-option"
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
@@ -132,12 +179,24 @@ const GraphicalQuestionMessageBubble = ({
   fromChatbot: boolean;
   question: TriangleQuestion | RectangleQuestion | CircleQuestion;
 }) => {
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const typingEffect = setInterval(() => {
+      setMessageText(messageContent.slice(0, messageText.length + 1));
+    }, typingSpeed);
+
+    return () => clearInterval(typingEffect);
+  }, [messageContent, messageText]);
+
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageContent}</p>
+        <p>{messageText}</p>
         <div className="graphics-image-container">
-          <img src={question.imageUrl} alt="shape" />
+          {messageText.length === messageContent.length && (
+            <img src={question.imageUrl} alt="shape" />
+          )}
         </div>
       </div>
     </>
