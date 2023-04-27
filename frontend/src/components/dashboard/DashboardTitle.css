@@ -4,4 +4,10 @@
     margin: 1rem 2rem;
     font-weight: 400;
     color: var(--black);
+    width: 90%;
+    margin: 1rem auto;
+}
+
+.dashboard-title-container span {
+    color: var(--purple);
 }

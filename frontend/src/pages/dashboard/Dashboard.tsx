@@ -7,6 +7,8 @@ import './Dashboard.css';
 import { useEffect } from 'react';
 import Loader, { LoaderType } from '../../components/shared/Loader';
 import DashboardTitle from '../../components/dashboard/DashboardTitle';
+import RecentTopics from '../../components/dashboard/RecentTopics';
+import QuestionsSolved from '../../components/dashboard/QuestionsSolved';
 
 const Dashboard = () => {
   const userDetails = useAppSelector((state) => state.user.userDetails);
@@ -26,7 +28,18 @@ const Dashboard = () => {
         ) : (
           <div className="dashboard-layout">
             <DashboardTitle name={userDetails?.fullName ?? ''} />
-            <div className="dashboard-grid"></div>
+            <div className="dashboard-grid">
+              <QuestionsSolved />
+              <QuestionsSolved />
+              <QuestionsSolved />
+            </div>
+            <RecentTopics
+              topics={[
+                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 },
+                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 },
+                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 }
+              ]}
+            />
           </div>
         )}
       </div>

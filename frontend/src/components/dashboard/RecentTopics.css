@@ -1,0 +1,35 @@
+@import '../../assets/Constants.css';
+
+.recent-topics {
+    margin: 1rem auto;
+    width: 90%;
+}
+
+.recent-topics-table {
+    margin: 1rem auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recent-topics-table thead {
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 18px;
+}
+
+.recent-topics-table thead th {
+    padding: 1rem 0;
+}
+
+.recent-topics-table tbody td {
+    color: var(--white);
+    padding: 1rem 0;
+}
+
+.recent-topics-table tbody tr:nth-child(odd) {
+    background-color: var(--dark-blue);
+}
+
+.recent-topics-table tbody tr:nth-child(even) {
+    background-color: var(--blue);
+}

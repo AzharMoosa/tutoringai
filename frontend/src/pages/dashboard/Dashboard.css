@@ -10,3 +10,11 @@
     width: 100%;
     height: 100%;
 }
+
+.dashboard-grid {
+    display: flex;
+    margin: 2rem auto;
+    width: 90%;
+    height: 300px;
+    justify-content: space-between;
+}
