@@ -56,7 +56,7 @@ def train_model():
     training_dataset, testing_dataset = MathDataset.load_dataset(path_to_training_json, path_to_test_json)
     
     # Tune Model
-    ModelTuner.tune_model(training_dataset, testing_dataset, MathDataset.process_data, model_name, output_directory)
+    ModelTuner.tune_model(training_dataset, testing_dataset, MathDataset.process_data, model_name, model_name, output_directory)
 
 if __name__ == "__main__":
     train_model()

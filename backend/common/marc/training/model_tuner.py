@@ -35,7 +35,7 @@ class ModelTuner:
         return transformers.TrainingArguments(
             output_dir=output_directory,
             evaluation_strategy="steps",
-            eval_steps=20,
+            eval_steps=100,
             do_train=True,
             num_train_epochs=1,
             per_device_train_batch_size=2,
@@ -45,9 +45,9 @@ class ModelTuner:
         )
 
     @staticmethod
-    def tune_model(training_dataset, testing_dataset, process_data, model_name, output_directory):
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-        model = transformers.AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    def tune_model(training_dataset, testing_dataset, process_data, model_path, tokenizer_path, output_directory):
+        tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_path)
+        model = transformers.AutoModelForSeq2SeqLM.from_pretrained(model_path)
         
         process_dataset = partial(process_data, tokenizer=tokenizer)
 
