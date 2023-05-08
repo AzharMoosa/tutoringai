@@ -46,11 +46,11 @@ export interface Circle {
 }
 
 export interface TriangleQuestion extends GraphicalQuestion {
-  triangle: Triangle
+  triangle: Triangle;
   questionType: string;
   topic: string;
   answer: number;
-  imageUrl: string
+  imageUrl: string;
 }
 
 export interface RectangleQuestion extends GraphicalQuestion {
@@ -58,7 +58,7 @@ export interface RectangleQuestion extends GraphicalQuestion {
   questionType: string;
   topic: string;
   answer: number;
-  imageUrl: string
+  imageUrl: string;
 }
 
 export interface CircleQuestion extends GraphicalQuestion {
@@ -66,7 +66,7 @@ export interface CircleQuestion extends GraphicalQuestion {
   questionType: string;
   topic: string;
   answer: number;
-  imageUrl: string
+  imageUrl: string;
 }
 
 export interface ChatbotResponse {
@@ -86,10 +86,10 @@ export interface ChatbotResponse {
 }
 
 export enum GraphicalType {
-  Triangle = "trigonometry",
-  Rectangle = "rectangles",
-  Circle = "circles",
-  Undefined = "undefined"
+  Triangle = 'trigonometry',
+  Rectangle = 'rectangles',
+  Circle = 'circles',
+  Undefined = 'undefined'
 }
 
 export enum QuestionType {
@@ -142,7 +142,7 @@ export const getGraphicsType = (category: string): GraphicalType => {
     default:
       return GraphicalType.Undefined;
   }
-}
+};
 
 export const getQuestionType = (questionType: string): QuestionType => {
   switch (questionType) {

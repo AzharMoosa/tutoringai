@@ -9,6 +9,13 @@ export interface IUserDetails {
   token: string;
 }
 
+export interface UpdatedUserDetails {
+  password?: string;
+  email?: string;
+  fullName?: string;
+  _id?: string;
+}
+
 interface UserState {
   userDetails: IUserDetails | null;
   loading: boolean;
@@ -21,15 +28,23 @@ const initialState: UserState = {
   error: null
 };
 
+export const getUser = createAsyncThunk('get/user', async (thunkAPI) => {
+  const token = localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  const { data } = await API.get('/api/users', config);
+  return data;
+});
 
-export const getUser = createAsyncThunk(
-  'get/user',
-  async (thunkAPI) => {
+export const updateUser = createAsyncThunk(
+  'update/user',
+  async (userDetails: UpdatedUserDetails, thunkAPI) => {
     const token = localStorage.getItem('token');
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-    const { data } = await API.get('/api/users', config);
+    const { data } = await API.put('/api/users', userDetails, config);
     return data;
   }
 );
@@ -44,10 +59,16 @@ export const UserSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {
-      toast.error('Invalid Email or Password', { id: 'invalid-login' });
+      toast.error('Invalid Email or Password', { id: 'invalid-get-user' });
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.userDetails = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
+      toast.error('Cannot Update User Details', { id: 'invalid-update' });
     });
   }
 });
-
 
 export default UserSlice.reducer;

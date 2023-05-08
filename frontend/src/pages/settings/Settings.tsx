@@ -1,30 +1,31 @@
-import { faGear, faRobot, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GeneralSettingsOptions from '../../components/settings/GeneralSettingsOptions';
 import MainContainer from '../../components/shared/MainContainer';
 import { Page } from '../../data/pageConstants';
 import './Settings.css';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { useEffect } from 'react';
+import { getUser } from '../../features/user/userSlice';
 
-const Settings = () => (
-  <MainContainer current={Page.SETTINGS}>
-    <div className="settings">
-      <h2>Settings</h2>
+const Settings = () => {
+  const userDetails = useAppSelector((state) => state.user.userDetails);
+  const loading = useAppSelector((state) => state.user.loading);
+  const dispatch = useAppDispatch();
 
-      <div className="settings-link">
-        <h3>General Settings</h3>
-        <FontAwesomeIcon icon={faGear} />
-      </div>
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch, loading]);
 
-      <div className="settings-link">
-        <h3>User Settings</h3>
-        <FontAwesomeIcon icon={faUser} />
-      </div>
-
-      <div className="settings-link">
-        <h3>Chatbot Settings</h3>
-        <FontAwesomeIcon icon={faRobot} />
-      </div>
-    </div>
-  </MainContainer>
-);
+  return (
+    <MainContainer current={Page.SETTINGS}>
+      {!loading && userDetails && (
+        <div className="settings">
+          <div className="settings-link">
+            <GeneralSettingsOptions userDetails={userDetails} />
+          </div>
+        </div>
+      )}
+    </MainContainer>
+  );
+};
 
 export default Settings;

@@ -1,0 +1,25 @@
+.general-settings-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.update-btn {
+    margin-top: 1rem;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 15px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 13px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: var(--purple);
+    color: var(--grey);
+    width: 150px;
+    transition: all 0.5s ease-in;
+  }
+  
+  .update-btn:hover {
+    background-color: #737fff;
+  }

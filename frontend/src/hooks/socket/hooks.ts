@@ -14,7 +14,7 @@ export const useSocket = (
       if (socket) {
         socket.emit('leave', {
           username: `${userDetails?.fullName ?? 'unknown'}`,
-          room: `${userDetails?._id ?? 'unknown'}`,
+          room: `${userDetails?._id ?? 'unknown'}`
         });
         socket.close();
       }
