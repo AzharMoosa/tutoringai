@@ -8,12 +8,28 @@ from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 import os
 from backend.common.conversation_engine.response_engine import ResponseEngine
+from collections import defaultdict
 
 lemmatizer = WordNetLemmatizer()
 __location__ = os.path.realpath(os.path.join(
     os.getcwd(), os.path.dirname(__file__)))
-intents = json.loads(
-    open(f"{__location__}/intents/chatbot_intents.json").read())["intents"]
+
+def merge_intents(*args):
+    m = defaultdict(list)
+    for d in args:
+        for k, v in d.items():
+            if isinstance(v, list):
+                m[k].extend(v)
+            else:
+                m[k].append(v)
+    return dict(m)
+
+def load_intent():
+    marc_intent = json.loads(open(f"{__location__}/intents/chatbot_intents.json").read())
+    prosocial_intent = json.loads(open(f"{__location__}/datasets/prosocial/prosocial_intent.json").read())
+    return merge_intents(marc_intent, prosocial_intent)
+
+intents = load_intent()["intents"]
 words = pickle.load(open(f"{__location__}/model/words.pkl", "rb"))
 classes = pickle.load(open(f"{__location__}/model/classes.pkl", "rb"))
 model = load_model(f"{__location__}/model/chatbotmodel.h5")
@@ -83,12 +99,12 @@ class Chatbot:
         state["message"] = state["message"].lower().strip()
         input_text = state["message"]
 
-        intents_list = predict_class(input_text)
-        tag = intents_list[0]["intent"]
-        prob = float(intents_list[0]["prob"])
-
         if state["isAnswering"]:
             return ResponseEngine.generate_answer_response(state)
+        
+        intents_list = predict_class(input_text)
+        tag = intents_list[0]["intent"] if len(intents_list) > 0 else None
+        prob = float(intents_list[0]["prob"]) if len(intents_list) > 0 else None
         
         if prob < UNCERTAIN_THRESHOLD:
             return ResponseEngine.generate_uncertain_response()

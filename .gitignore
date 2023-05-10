@@ -57,3 +57,7 @@ s2v/
 venv_old/
 
 wandb/
+
+backend/common/datasets/**/*.json
+backend/common/datasets/**/*.jsonl
+backend/common/datasets/**/*.csv
