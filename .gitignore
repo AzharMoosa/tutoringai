@@ -58,6 +58,6 @@ venv_old/
 
 wandb/
 
-backend/common/datasets/**/*.json
-backend/common/datasets/**/*.jsonl
+backend/common/datasets/train.json
+backend/common/datasets/validation.json
 backend/common/datasets/**/*.csv
