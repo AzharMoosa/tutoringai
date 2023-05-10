@@ -6,7 +6,7 @@ RUN npm ci
 COPY ./frontend ./
 RUN npm run build
 
-FROM python:3.10.9
+FROM python:3.9.7
 
 WORKDIR /
 
