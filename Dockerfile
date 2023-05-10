@@ -22,4 +22,4 @@ COPY --from=build /frontend/build/ ./frontend/build/
 
 EXPOSE 5000
 
-CMD gunicorn -k eventlet app:app
+CMD gunicorn -k eventlet -w 1 app:app
