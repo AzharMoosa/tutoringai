@@ -4,6 +4,7 @@ import json
 from datasets import Dataset
 from sklearn.utils import shuffle
 import ast
+import uuid
 
 pd.set_option("display.max_colwidth", None)
 
@@ -65,7 +66,7 @@ class QuestionDataset:
         with open(f"{__location__}/prosocial/prosocial_intent.json", 'w') as f:
             json.dump({
                 "intents": [{
-                "tag": training_dataset.loc[i, "tag"],
+                "tag": training_dataset.loc[i, "tag"] + "-" + str(uuid.uuid4()),
                 "patterns": [training_dataset.loc[i, "patterns"]],
                 "responses": ast.literal_eval(training_dataset.loc[i, "responses"]),
                 "context_set": "" } for i in range(len(training_dataset))]}, f)

@@ -104,7 +104,7 @@ class Chatbot:
         
         intents_list = predict_class(input_text)
         tag = intents_list[0]["intent"] if len(intents_list) > 0 else None
-        prob = float(intents_list[0]["prob"]) if len(intents_list) > 0 else None
+        prob = float(intents_list[0]["prob"]) if len(intents_list) > 0 else 0.0
         
         if prob < UNCERTAIN_THRESHOLD:
             return ResponseEngine.generate_uncertain_response()
