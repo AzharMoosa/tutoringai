@@ -1,6 +1,9 @@
 from tensorflow.keras.optimizers.legacy import SGD
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
+import keras_tuner as kt
 import numpy as np
 import pickle
 from nltk.tokenize import word_tokenize
@@ -93,7 +96,10 @@ def train_model(train_x, train_y, epochs=500, batch_size=5, verbose=0):
                   optimizer=sgd, metrics=["accuracy"])
     hist = model.fit(np.array(train_x, dtype=object).astype('float32'), np.array(train_y, dtype=object).astype('float32'),
                      epochs=epochs, batch_size=batch_size, verbose=verbose)
-    model.save(f"{__location__}/model/chatbotmodel.h5", hist)
+    metrics = model.evaluate(np.array(train_x, dtype=object).astype('float32'), 
+              np.array(train_y, dtype=object).astype('float32'))
+    print(f"Test Loss {metrics[0]}\nTest Accuracy {metrics[1]}")
+    # model.save(f"{__location__}/model/chatbotmodel.h5", hist)
 
 
 def train_chatbot():
@@ -116,5 +122,101 @@ def train_chatbot():
 
     print("Successfully Trained Chatbot!")
 
+
+def perform_hyperparameter_tuning():
+    intents = load_intent()
+    words, classes, documents = process_intents(intents)
+    lemmatizer = WordNetLemmatizer()
+
+    words = lemmatize_words(lemmatizer, words)
+    classes = sorted(set(classes))
+
+    pickle.dump(words, open(f"{__location__}/model/words.pkl", "wb"))
+    pickle.dump(classes, open(f"{__location__}/model/classes.pkl", "wb"))
+
+    training = generate_training_data(words, classes, documents, lemmatizer)
+
+    training = np.array(training, dtype=object)
+    
+    train_x, train_y = train_test_split(training)
+
+    def model_builder(hp):
+        model = Sequential()
+
+        # Tune Input Layer
+        input_layer_neurons = hp.Int("input_layer_neurons", min_value=32, max_value=128, step=32)
+        model.add(Dense(input_layer_neurons, input_shape=(len(train_x[0]), ), activation="relu"))
+        
+        if hp.Boolean("dropout_one"):
+            model.add(Dropout(0.5))
+        
+        # Tune First Layer
+        first_layer_neurons = hp.Int("first_layer_neurons", min_value=32, max_value=128, step=32)
+        model.add(Dense(units=first_layer_neurons, activation="relu"))
+        
+        if hp.Boolean("dropout_two"):
+            model.add(Dropout(0.5))
+
+        model.add(Dense(len(train_y[0]), activation="softmax"))
+
+        # Tune Learning Rate
+        hp_lr = hp.Choice("learning_rate", values=[1e-2, 1e-3, 1e-4])
+        sgd = SGD(learning_rate=hp_lr, decay=1e-6, momentum=0.9, nesterov=True)
+        model.compile(loss="categorical_crossentropy",
+                    optimizer=sgd,
+                    metrics=["accuracy"])
+        
+        return model
+
+    tuner = kt.Hyperband(model_builder,
+                     objective='val_accuracy',
+                     max_epochs=10,
+                     factor=3,
+                     directory=f"{__location__}/model",
+                     project_name='marc')
+    
+    stop_early = EarlyStopping(monitor='val_loss', patience=5)
+
+    tuner.search(np.array(train_x, dtype=object).astype('float32'), 
+                 np.array(train_y, dtype=object).astype('float32'), 
+                 epochs=50,
+                 validation_split=0.3,
+                 callbacks=[stop_early, TensorBoard(f"{__location__}/model/hp_logs")])
+
+    optimal_hp = tuner.get_best_hyperparameters()[0]
+
+    best_model = tuner.hypermodel.build(optimal_hp)
+
+    history = best_model.fit(np.array(train_x, dtype=object).astype('float32'), 
+                np.array(train_y, dtype=object).astype('float32'),
+                epochs=2,
+                validation_split=0.3,
+                batch_size=5)
+    
+    accuracy_per_epoch = history.history["val_accuracy"]
+    best_epoch = accuracy_per_epoch.index(max(accuracy_per_epoch)) + 1
+
+    model = tuner.hypermodel.build(optimal_hp)
+
+    model.fit(np.array(train_x, dtype=object).astype('float32'), 
+              np.array(train_y, dtype=object).astype('float32'),
+              epochs=best_epoch,
+              validation_split=0.3,
+              batch_size=5)
+    
+    metrics = model.evaluate(np.array(train_x, dtype=object).astype('float32'), 
+              np.array(train_y, dtype=object).astype('float32'))
+    
+    print(f"""
+    The optimal number of neurons in input layer is {optimal_hp.get('input_layer_neurons')}.
+    The optimal number of neurons in the first densely-connected layer is {optimal_hp.get('first_layer_neurons')}.
+    The optimal learning rate for the optimizer is {optimal_hp.get('learning_rate')}.
+    Dropout After First Layer: {optimal_hp.get("dropout_one")}
+    Dropout After Second Layer: {optimal_hp.get("dropout_two")}
+    """)
+    print(f"Best Epoch {best_epoch}")
+    print(f"Test Loss {metrics[0]}\nTest Accuracy {metrics[1]}")
+
+
 if __name__ == "__main__":
-    train_chatbot()
+    perform_hyperparameter_tuning()
