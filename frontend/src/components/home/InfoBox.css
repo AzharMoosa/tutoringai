@@ -27,3 +27,22 @@
   text-align: center;
   color: var(--black);
 }
+
+@media only screen and (max-width: 768px) {
+  .info-box {
+    width: 300px;
+  }
+
+  .info-box h2 {
+    font-size: 20px;
+  }
+
+  .info-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .info-box p {
+    font-size: 13px;
+  }
+}

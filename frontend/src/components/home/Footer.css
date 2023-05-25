@@ -15,7 +15,7 @@ footer .container {
 }
 
 .footer-left {
-  width: 50%;
+  width: 40%;
 }
 
 .footer-left h1 {
@@ -24,7 +24,7 @@ footer .container {
 }
 
 .footer-left p {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .footer-right {
@@ -71,4 +71,24 @@ footer .container {
   margin-left: 0.8rem;
   font-size: 14px;
   font-weight: 400;
+}
+
+@media only screen and (max-width: 1024px) {
+  .footer-left {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .quick-links {
+    display: none;
+  }
+
+  .footer-right {
+    width: 100%;
+  }
+
+  .get-in-touch {
+    padding-left: 0rem;
+  }
 }

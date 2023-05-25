@@ -1,7 +1,7 @@
 .navbar-items {
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 50%;
 }
 
 .navbar-items a {
@@ -9,4 +9,19 @@
   color: var(--grey);
   font-weight: 400;
   text-decoration: none;
+}
+
+@media only screen and (max-width: 1300px) {
+  .navbar-items a {
+    font-size: 14px;
+    color: var(--grey);
+    font-weight: 400;
+    text-decoration: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar-items {
+    display: none;
+  }
 }

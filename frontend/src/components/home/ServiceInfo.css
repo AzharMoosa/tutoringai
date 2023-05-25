@@ -52,3 +52,20 @@
   font-weight: 300;
   width: 80%;
 }
+
+@media only screen and (max-width: 1100px) {
+  .service-info-image {
+    display: none;
+  }
+
+  .service-info-content {
+    width: 100%;
+    margin: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .service-info-boxes {
+    flex-direction: column;
+  }
+}

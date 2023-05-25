@@ -29,7 +29,7 @@ const Footer = () => (
           <h2>Get In Touch</h2>
           <div className="get-in-touch-email">
             <FontAwesomeIcon icon={faEnvelope} className="email-icon" />
-            <h3>test@gmail.com</h3>
+            <h3>marc.chatbot@gmail.com</h3>
           </div>
         </div>
       </div>

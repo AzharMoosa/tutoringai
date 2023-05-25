@@ -25,7 +25,7 @@ export interface ServiceDetails {
 
 export const topicBoxInfo: Array<TopicInfo> = [
   {
-    title: 'Arithmetics'
+    title: 'ADDITION'
   },
   {
     title: 'TRIGONOMETRY'
@@ -34,13 +34,13 @@ export const topicBoxInfo: Array<TopicInfo> = [
     title: 'CIRCLES'
   },
   {
-    title: 'GRAPHS'
+    title: 'RECTANGLES'
   },
   {
-    title: 'GEOMETRY'
+    title: 'MULTIPLICATION'
   },
   {
-    title: 'FRACTIONS'
+    title: 'DIVISION'
   }
 ];
 
