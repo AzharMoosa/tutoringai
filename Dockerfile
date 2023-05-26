@@ -22,4 +22,4 @@ COPY --from=build /frontend/build/ ./frontend/build/
 
 EXPOSE 5000
 
-CMD gunicorn -k eventlet -w 1 app:app
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--worker-class", "eventlet", "app:app"]
