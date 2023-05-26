@@ -1,0 +1,3 @@
+[submodule "marc-model-api"]
+	path = marc-model-api
+	url = https://github.com/AzharMoosa/marc-model-api
