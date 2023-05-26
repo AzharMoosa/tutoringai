@@ -1,6 +1,1 @@
-# Accessing Understanding Through A Chatbot
-
-# Tasks
-
-- Improve Chatbot Conversation Engine
-- Populate Question Bank
+# M.A.R.C - An Intelligent Tutoring Chatbot To Assess Mathematical Understanding
