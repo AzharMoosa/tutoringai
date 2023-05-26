@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../../components/util/Button';
 import Input from '../../components/util/Input';
-import { GoogleLoginButton } from 'react-social-login-buttons';
 import './AuthDetailsContainer.css';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux/hooks';
@@ -50,9 +49,6 @@ const LoginDetailsContainer = () => {
         <h5 className="forgot-password">Forgot Password?</h5>
       </div>
 
-      <div className="sign-in-social">
-        <GoogleLoginButton onClick={() => alert('Hello')} />
-      </div>
       <h4 className="no-account">
         Don't have an account?{' '}
         <span>
