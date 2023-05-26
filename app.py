@@ -35,6 +35,7 @@ except Exception:
 def on_join(data):
     username, room = data["username"], data["room"]
     if room == "unknown":
+        print("Unknown Room")
         return
     join_room(room)
     # Create New Room In Database (If Not Exist)
@@ -88,6 +89,7 @@ def on_leave(data):
 def on_message(data):
     username, state, room = data["username"], data["state"], data["room"]
     if room == "unknown":
+        print("Unknown Room")
         return
     print(f"{username} sent a message to room: {room}!")
     # Update State In Database (If Room Exists)
