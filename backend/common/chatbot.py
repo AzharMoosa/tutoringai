@@ -25,12 +25,16 @@ class Chatbot:
         
         tag, prob = NaturalLanguageRecognition.predict_intention(input_text)
         
-        if prob < ConversationEngineUtil.UNCERTAIN_THRESHOLD:
+        if prob < ConversationEngineUtil.UNCERTAIN_THRESHOLD or tag in ConversationEngineUtil.ANSWERING_MODE_ONLY_TAGS:
             return ResponseEngine.generate_uncertain_response()
 
         response = ResponseEngine.get_response(intents, tag)
 
+        # Revision Mode
         if tag in topics:
             return ResponseEngine.generate_question_list(response, tag, state["room_id"])
+        
+        if tag == "assessment-mode":
+            return ResponseEngine.generate_question_list(response, tag, state["room_id"], assessment_mode=True)
 
         return ResponseEngine.generate_message(response, state["isAnswering"])

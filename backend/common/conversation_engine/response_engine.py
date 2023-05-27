@@ -95,11 +95,20 @@ class ResponseEngine:
         return ResponseEngine.go_to_next_question(state, question_index)
 
     @staticmethod
-    def generate_question_list(message_content, tag, room_id):
-        question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
-        first_question = question_list[0]
-        return {"message": f"{message_content}\n{first_question}", 
-                "isAnswering": True, 
-                "currentQuestion": first_question.serialize(), 
-                "questionList": [q.serialize() for q in question_list],
-                "questionIndex": "0" }
+    def generate_question_list(message_content, tag, room_id, assessment_mode=False):
+        if assessment_mode:
+            question_list = QuestionGenerator.retrieve_question_set_by_category("rectangle", room_id) + QuestionGenerator.retrieve_question_set_by_category("circle", room_id)
+            first_question = question_list[0]
+            return {"message": f"{message_content}\n{first_question}", 
+                    "isAnswering": True, 
+                    "currentQuestion": first_question.serialize(), 
+                    "questionList": [q.serialize() for q in question_list],
+                    "questionIndex": "0" }
+        else:
+            question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
+            first_question = question_list[0]
+            return {"message": f"{message_content}\n{first_question}", 
+                    "isAnswering": True, 
+                    "currentQuestion": first_question.serialize(), 
+                    "questionList": [q.serialize() for q in question_list],
+                    "questionIndex": "0" }

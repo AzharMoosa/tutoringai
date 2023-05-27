@@ -6,7 +6,8 @@ from collections import defaultdict
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 class ConversationEngineUtil:
-    UNCERTAIN_THRESHOLD = 0.4
+    UNCERTAIN_THRESHOLD = 0.8
+    ANSWERING_MODE_ONLY_TAGS = ["hint", "answer", "solution"]
 
     @staticmethod
     def extract_number_from_text(text: str) -> float:

@@ -103,6 +103,29 @@
       "context_set": ""
     },
     {
+      "tag": "assessment-mode",
+      "patterns": [
+        "assessment",
+        "assessment mode",
+        "i would like to test my knowledge",
+        "i would like to test my maths skills",
+        "test my knowledge",
+        "assess my skills",
+        "take an assessment",
+        "challenge me",
+        "quiz me",
+        "check my understanding",
+        "test my understanding",
+        "evaluate my learning",
+        "maths assessment",
+        "maths quiz"
+      ],
+      "responses": [
+        "Okay! Lets begin our assessment. Here is how it's going to work. I'm going to give you a set of questions, try your best to answer all questions. If you can't answer a question you can go on to the next one."
+      ],
+      "context_set": ""
+    },
+    {
       "tag": "arithmetic",
       "patterns": [
         "arithmetic",
