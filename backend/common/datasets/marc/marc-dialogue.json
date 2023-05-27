@@ -1,0 +1,39 @@
+[
+  {
+    "tag": "uncertain-responses",
+    "responses": [
+      "Sorry, I did not understand the question!",
+      "I am unable to answer that question.",
+      "I didn't quite catch that. Please try again!",
+      "I'm afraid I don't quite understand what you're asking.",
+      "I'm sorry, I'm having trouble understanding the question.",
+      "Apologies, but I didn't grasp the question you asked.",
+      "I'm afraid I don't quite understand what you're asking."
+    ]
+  },
+  {
+    "tag": "correct-responses",
+    "responses": [
+      "Excellent job, that is indeed the correct answer!",
+      "You've nailed it, that's the right solution!",
+      "Well done, your response is spot-on!",
+      "Great work, that is the correct solution!",
+      "Fantastic, you've got it exactly right!"
+    ]
+  },
+  {
+    "tag": "incorrect-responses",
+    "responses": [
+      "I appreciate your effort, but that is not the correct answer.",
+      "Hmm, let's try again. The answer you provided is not quite right.",
+      "It looks like there may have been a mistake in your response. Let's give it another shot.",
+      "Don't worry, everyone makes mistakes. The answer you gave is not correct, but let's work together to find the right one.",
+      "I understand it can be challenging, but the answer you provided is not accurate. Let's keep trying, you're doing great!",
+      "I can see you put in some thought, but unfortunately, that's not the right answer. Don't worry, we'll work through it together.",
+      "Oops! That answer didn't quite hit the mark, but don't fret, we'll figure it out.",
+      "Hmm, that's not the correct response, but no need to worry. Let's analyze the problem again and find the right solution.",
+      "I appreciate your participation, but that answer isn't accurate. Let's keep exploring different possibilities together.",
+      "Not quite there, but don't give up! We'll continue to work together until we arrive at the correct answer."
+    ]
+  }
+]
