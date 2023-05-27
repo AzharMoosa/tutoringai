@@ -12,26 +12,11 @@ import json
 import nltk
 import random
 import os
-from collections import defaultdict
+from backend.common.conversation_engine.util import ConversationEngineUtil
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-def merge_intents(*args):
-    m = defaultdict(list)
-    for d in args:
-        for k, v in d.items():
-            if isinstance(v, list):
-                m[k].extend(v)
-            else:
-                m[k].append(v)
-    return dict(m)
-
-def load_intent():
-    marc_intent = json.loads(open(f"{__location__}/intents/chatbot_intents.json").read())
-    prosocial_intent = json.loads(open(f"{__location__}/datasets/prosocial/prosocial_intent.json").read())
-    return merge_intents(marc_intent, prosocial_intent)
 
 def process_intents(intents):
     words = []
@@ -100,7 +85,7 @@ def train_model(train_x, train_y, epochs=500, batch_size=5, verbose=0):
 
 
 def train_chatbot():
-    intents = load_intent()
+    intents = ConversationEngineUtil.load_intent()
     words, classes, documents = process_intents(intents)
     lemmatizer = WordNetLemmatizer()
 
@@ -121,7 +106,7 @@ def train_chatbot():
 
 
 def get_training_data():
-    intents = load_intent()
+    intents = ConversationEngineUtil.load_intent()
     words, classes, documents = process_intents(intents)
     lemmatizer = WordNetLemmatizer()
 

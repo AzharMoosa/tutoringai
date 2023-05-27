@@ -2,10 +2,29 @@
   "intents": [
     {
       "tag": "greeting",
-      "patterns": ["hi", "how are you", "hello", "hey", "good day", "whats up"],
+      "patterns": [
+        "hi",
+        "how are you",
+        "hello",
+        "hey",
+        "good day",
+        "whats up",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "hey there",
+        "what's going on",
+        "how's it going",
+        "nice to meet you",
+        "howdy",
+        "yo"
+      ],
       "responses": [
         "Hello! How can I help you today?",
-        "Hi there, how can I help you?"
+        "Hi there, how can I help you?",
+        "Greetings! What can I do for you?",
+        "Hey! How may I assist you?",
+        "Hello, nice to meet you! How can I assist you today?"
       ],
       "context_set": ""
     },
@@ -32,9 +51,23 @@
         "i'm going",
         "i have to go",
         "see you",
-        "goodnight"
+        "goodnight",
+        "farewell",
+        "take care",
+        "until next time",
+        "see you later",
+        "gotta go",
+        "bye-bye"
       ],
-      "responses": ["Goodbye!", "Bye! It was nice speaking with you."],
+      "responses": [
+        "Goodbye!",
+        "Bye! It was nice speaking with you.",
+        "Farewell! Take care.",
+        "Until next time! Have a great day.",
+        "See you later! Don't hesitate to come back if you have more questions.",
+        "Goodnight! Sleep well.",
+        "Bye-bye! Take care and have a wonderful day."
+      ],
       "context_set": ""
     },
     {
@@ -162,6 +195,61 @@
         "Let's get started revising circles. We can work through a question together.",
         "Great. Let's begin by looking at some circles problems."
       ],
+      "context_set": ""
+    },
+    {
+      "tag": "answer",
+      "patterns": [
+        "i think the answer is",
+        "the answer is",
+        "i believe the answer is",
+        "answer"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
+      "tag": "solution",
+      "patterns": [
+        "i am struggling",
+        "i am completely lost",
+        "i do not know how to solve this.",
+        "whats the solution?",
+        "solution",
+        "struggling",
+        "i'm struggling, can you provide the solution?",
+        "i'm completely lost, what's the solution?",
+        "i don't know how to solve this, can you give me the solution?",
+        "what's the solution to this problem?",
+        "i'm really struggling here, i need the solution.",
+        "can you help me with the solution, please?",
+        "i've hit a wall, what's the solution?",
+        "i can't figure it out, can you provide the solution?",
+        "i'm at a loss, what's the solution to this question?"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
+      "tag": "hint",
+      "patterns": [
+        "i need help",
+        "help",
+        "i need a hint",
+        "hint",
+        "can i get a hint?",
+        "i am not sure but i need a hint",
+        "can you give me a hint?",
+        "i'm stuck, can you provide a hint?",
+        "i could use some assistance, any hints?",
+        "i'm having trouble, do you have any hints?",
+        "i'm not sure how to proceed, can you give me a hint?",
+        "i need some guidance, can you offer a hint?",
+        "could you point me in the right direction with a hint?",
+        "i'm finding it difficult, a hint would be appreciated.",
+        "i've hit a roadblock, can I get a hint?"
+      ],
+      "responses": [""],
       "context_set": ""
     }
   ]

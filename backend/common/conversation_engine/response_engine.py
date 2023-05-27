@@ -1,6 +1,8 @@
 import random
+from backend.common.conversation_engine.util import ConversationEngineUtil
 from backend.common.conversation_engine.marc_dialogue import MARCDialogue
 from backend.common.question_engine.question_generation import QuestionGenerator
+from backend.common.conversation_engine.natural_language_recognition import NaturalLanguageRecognition
 
 class ResponseEngine:
     @staticmethod
@@ -42,29 +44,55 @@ class ResponseEngine:
     @staticmethod
     def generate_finish_answering_response():
         message = f"{MARCDialogue.get_correct_response()}. That's all for now."
-        return ResponseEngine.generate_message(message, False)
+        return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod
     def generate_next_question_response(state, question_index):
         new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"])
         message = f"{MARCDialogue.get_correct_response()}. Let's try another question. " + new_state["currentQuestion"]["question"]
-        return ResponseEngine.generate_message(message, True, new_state)
+        return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
-    def generate_answer_response(state: dict):
-        question_index = int(state["questionIndex"])
-        users_answer = state["message"]
-        question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
-
-        if not question_set[question_index].is_correct(users_answer):
-            return ResponseEngine.generate_incorrect_response(state)
-        
+    def generate_hint_response(state):
+        return ResponseEngine.generate_message("Heres a hint", is_answering=True, state=state)
+    
+    @staticmethod
+    def generate_solution_response(state):
+        return ResponseEngine.generate_message("Heres the solution", is_answering=True, state=state)
+    
+    @staticmethod
+    def go_to_next_question(state, question_index: int):
         question_index += 1
         
         if question_index < len(state["questionList"]):
             return ResponseEngine.generate_next_question_response(state, question_index)
         else:
             return ResponseEngine.generate_finish_answering_response()
+
+    @staticmethod
+    def generate_answer_response(state: dict):
+        users_answer = ConversationEngineUtil.extract_number_from_text(state["message"])
+
+        if not users_answer:
+            # User Requires Hint/Solution
+            tag, prob = NaturalLanguageRecognition.predict_intention(state["message"])
+
+            if (tag in ("solution", "hint") and prob >= ConversationEngineUtil.UNCERTAIN_THRESHOLD):
+                if (tag == "hint"):
+                    return ResponseEngine.generate_hint_response(state)
+                else:
+                    return ResponseEngine.generate_solution_response(state)
+                
+            return ResponseEngine.generate_incorrect_response(state) 
+
+        # User Is Attempting To Answer
+        question_index = int(state["questionIndex"])
+        question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
+
+        if not question_set[question_index].is_correct(users_answer):
+            return ResponseEngine.generate_incorrect_response(state)
+        
+        return ResponseEngine.go_to_next_question(state, question_index)
 
     @staticmethod
     def generate_question_list(message_content, tag, room_id):

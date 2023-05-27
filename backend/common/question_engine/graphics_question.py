@@ -111,7 +111,7 @@ class TriangleQuestion(GraphicalQuestion):
 
     def is_correct(self, user_answer: str):
         try:
-            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -146,7 +146,7 @@ class RectangleQuestion(GraphicalQuestion):
 
     def is_correct(self, user_answer: str):
         try:
-            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -181,7 +181,7 @@ class CircleQuestion(GraphicalQuestion):
 
     def is_correct(self, user_answer: str):
         try:
-            return math.isclose(self.answer,  float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
         except ValueError:
             return False
 
