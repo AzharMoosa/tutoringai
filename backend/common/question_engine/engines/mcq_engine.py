@@ -247,8 +247,8 @@ class MCQEngine:
 
 
 if __name__ == "__main__":
-    m = MCQEngine("ww", "Barack Obama")
-    # print(m.generate_distractors_wordnet())
+    m = MCQEngine("ww", "Dog")
+    print(m.generate_distractors_wordnet())
     # print(m.generate_distractors_conceptnet())
     # print(m.generate_distractors_sense2vec())
-    print(m.generate_distractors_transformer())
+    # print(m.generate_distractors_transformer())

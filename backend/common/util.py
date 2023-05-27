@@ -140,4 +140,4 @@ def get_training_data():
     return train_x, train_y
 
 if __name__ == "__main__":
-    pass
+    train_chatbot()

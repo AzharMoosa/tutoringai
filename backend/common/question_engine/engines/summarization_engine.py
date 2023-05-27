@@ -96,4 +96,4 @@ class TextSummarization:
         return TextSummarization.__postprocess_text(decoded_output[0]).strip()
 
 if __name__ == "__main__":
-    print(TextSummarization.summarize("John, Joe, Sarah are playing football. John has 3 apple and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?", min_length=50, max_length=50))
+    print(TextSummarization.summarize("The term \"matter\" is used throughout physics in a bewildering variety of contexts: for example, one refers to \"condensed matter physics\", \"elementary matter\", \"partonic\" matter, \"dark\" matter, \"anti\"-matter, \"strange\" matter, and \"nuclear\" matter. In discussions of matter and antimatter, normal matter has been referred to by Alfvén as koinomatter (Gk. common matter). It is fair to say that in physics, there is no broad consensus as to a general definition of matter, and the term \"matter\" usually is used in conjunction with a specifying modifier."))

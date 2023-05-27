@@ -61,4 +61,4 @@ wandb/
 backend/common/datasets/train.json
 backend/common/datasets/validation.json
 backend/common/datasets/**/*.csv
-backend/common/hyperparameter_tuning/model/*
+backend/common/hyperparameter_tuning/model/
