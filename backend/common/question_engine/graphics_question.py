@@ -1,6 +1,7 @@
 from typing import Union, List
 from json import JSONEncoder
 import math
+from backend.common.conversation_engine.util import ConversationEngineUtil
 
 class GraphicQuestionEncoder(JSONEncoder):
     def default(self, o):
@@ -79,7 +80,7 @@ class GraphicalQuestion:
 
     def is_correct(self, user_answer: int):
         raise "ERROR: Method Access"
-
+    
     def __str__(self) -> str:
         return self.question
     
@@ -110,8 +111,11 @@ class TriangleQuestion(GraphicalQuestion):
         self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
+        answer = ConversationEngineUtil.extract_number_from_text(user_answer)
+        if not answer:
+            return False
         try:
-            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -145,8 +149,11 @@ class RectangleQuestion(GraphicalQuestion):
         self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
+        answer = ConversationEngineUtil.extract_number_from_text(user_answer)
+        if not answer:
+            return False
         try:
-            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(answer), rel_tol=1e-3)
         except ValueError:
             return False
 
@@ -180,8 +187,11 @@ class CircleQuestion(GraphicalQuestion):
         self.imageUrl = imageUrl
 
     def is_correct(self, user_answer: str):
+        answer = ConversationEngineUtil.extract_number_from_text(user_answer)
+        if not answer:
+            return False
         try:
-            return math.isclose(self.answer, float(user_answer), rel_tol=1e-3)
+            return math.isclose(self.answer, float(answer), rel_tol=1e-3)
         except ValueError:
             return False
 

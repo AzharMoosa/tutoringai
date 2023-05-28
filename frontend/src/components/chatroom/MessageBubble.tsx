@@ -8,6 +8,7 @@ import {
   RectangleQuestion,
   CircleQuestion
 } from '../../utils/chatRoomUtils';
+import MessageTextBlock from '../util/MessageTextBlock';
 import './MessageBubble.css';
 import { useState, useEffect } from 'react';
 
@@ -62,7 +63,7 @@ const NumericalMessageBubble = ({
 
   return (
     <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{messageText}</p>
+      <MessageTextBlock text={messageText} />
     </div>
   );
 };
@@ -97,7 +98,7 @@ const TrueOrFalseMessageBubble = ({
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageText}</p>
+        <MessageTextBlock text={messageText} />
         {messageText.length === messageContent.length && (
           <div className="true-or-false-container">
             <p>{question.statement}</p>
@@ -149,7 +150,7 @@ const MultipleChoiceMessageBubble = ({
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageText}</p>
+        <MessageTextBlock text={messageText} />
         {messageText.length === messageContent.length && (
           <div className="mcq-container">
             <div className="mcq-options">
@@ -192,7 +193,7 @@ const GraphicalQuestionMessageBubble = ({
   return (
     <>
       <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <p>{messageText}</p>
+        <MessageTextBlock text={messageText} />
         <div className="graphics-image-container">
           {messageText.length === messageContent.length && (
             <img src={question.imageUrl} alt="shape" />

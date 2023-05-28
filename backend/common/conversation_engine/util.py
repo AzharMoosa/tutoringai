@@ -6,7 +6,7 @@ from collections import defaultdict
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 class ConversationEngineUtil:
-    UNCERTAIN_THRESHOLD = 0.8
+    UNCERTAIN_THRESHOLD = 0.6
     ANSWERING_MODE_ONLY_TAGS = ["hint", "answer", "solution"]
 
     @staticmethod

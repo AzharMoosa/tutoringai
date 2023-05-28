@@ -3,6 +3,7 @@ from backend.common.conversation_engine.util import ConversationEngineUtil
 from backend.common.conversation_engine.marc_dialogue import MARCDialogue
 from backend.common.question_engine.question_generation import QuestionGenerator
 from backend.common.conversation_engine.natural_language_recognition import NaturalLanguageRecognition
+from backend.common.tutoring_engine.tutoring_engine import TutoringEngine
 
 class ResponseEngine:
     @staticmethod
@@ -71,25 +72,23 @@ class ResponseEngine:
 
     @staticmethod
     def generate_answer_response(state: dict):
-        users_answer = ConversationEngineUtil.extract_number_from_text(state["message"])
-
-        if not users_answer:
-            # User Requires Hint/Solution
-            tag, prob = NaturalLanguageRecognition.predict_intention(state["message"])
-
-            if (tag in ("solution", "hint") and prob >= ConversationEngineUtil.UNCERTAIN_THRESHOLD):
-                if (tag == "hint"):
-                    return ResponseEngine.generate_hint_response(state)
-                else:
-                    return ResponseEngine.generate_solution_response(state)
-                
-            return ResponseEngine.generate_incorrect_response(state) 
-
-        # User Is Attempting To Answer
+        users_answer = state["message"]
         question_index = int(state["questionIndex"])
         question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
+        current_question = question_set[question_index]
 
-        if not question_set[question_index].is_correct(users_answer):
+        # User Requires Hint/Solution
+        tag, prob = NaturalLanguageRecognition.predict_intention(users_answer)
+
+        if (tag in ("solution", "hint") and prob >= ConversationEngineUtil.UNCERTAIN_THRESHOLD):
+            if (tag == "hint"):
+                return ResponseEngine.generate_hint_response(state)
+            else:
+                solution = TutoringEngine.solve_question(current_question)
+                return ResponseEngine.generate_message(solution, is_answering=True, state=state)
+                
+        # User Is Attempting To Answer
+        if not current_question.is_correct(users_answer):
             return ResponseEngine.generate_incorrect_response(state)
         
         return ResponseEngine.go_to_next_question(state, question_index)

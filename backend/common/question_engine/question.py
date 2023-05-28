@@ -1,6 +1,6 @@
 from json import JSONEncoder
 from typing import Any, List
-import random
+from backend.common.conversation_engine.util import ConversationEngineUtil
 
 class Question:
     def __init__(self, question: str, category: str, topic: str, *args, **kwargs) -> None:
@@ -39,8 +39,11 @@ class NumericalQuestion(Question):
         self.question_type = "numerical"
 
     def is_correct(self, user_answer: str):
+        answer = ConversationEngineUtil.extract_number_from_text(user_answer)
+        if not answer:
+            return False
         try:
-            return self.answer == int(user_answer)
+            return self.answer == int(answer)
         except ValueError:
             return False
 

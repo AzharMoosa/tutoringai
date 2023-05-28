@@ -1,16 +1,11 @@
 from tensorflow.keras.optimizers.legacy import SGD
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import Dense, Activation, Dropout
+from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
-import keras_tuner as kt
 import numpy as np
 import pickle
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-import json
 import nltk
-import random
 import os
 from backend.common.conversation_engine.util import ConversationEngineUtil
 nltk.download('punkt')
