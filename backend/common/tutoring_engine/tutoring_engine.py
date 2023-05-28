@@ -1,6 +1,7 @@
 from backend.common.question_engine.graphics_question import GraphicalQuestion
 from backend.common.question_engine.question import Question
 from backend.common.tutoring_engine.shape_solver import ShapeQuestionSolver
+from backend.common.tutoring_engine.arithmetic_solver import ArithmeticSolver
 from typing import Union
 
 class TutoringEngine:
@@ -9,4 +10,4 @@ class TutoringEngine:
         if (isinstance(question, GraphicalQuestion)):
             return ShapeQuestionSolver.solve_question(question)
         else:
-            return "arithmetic solver"
+            return ArithmeticSolver.solve_question(question)

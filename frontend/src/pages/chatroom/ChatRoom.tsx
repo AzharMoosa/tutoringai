@@ -68,14 +68,20 @@ const ChatRoom = () => {
       setQuestionIndex(response.state.questionIndex);
     }
 
-    setMessageList([
-      ...messageList,
-      {
+    setMessageList((prevMessageList) => {
+      const lastMessageIndex = prevMessageList.length - 1;
+      const updatedLastMessage = {
+        ...prevMessageList[lastMessageIndex],
         messageContent: response.state.message,
         fromChatbot: true,
         question: response.state.currentQuestion
-      }
-    ]);
+      };
+
+      return [
+        ...prevMessageList.slice(0, lastMessageIndex),
+        updatedLastMessage
+      ];
+    });
   };
 
   useEffect(() => {
@@ -92,7 +98,8 @@ const ChatRoom = () => {
   const sendMessage = (messageContent: string) => {
     setMessageList([
       ...messageList,
-      { messageContent, fromChatbot: false, question: undefined }
+      { messageContent, fromChatbot: false, question: undefined },
+      { messageContent: '', fromChatbot: true, question: undefined }
     ]);
     socket.emit('message', {
       username: `${userDetails?.fullName ?? 'unknown'}`,

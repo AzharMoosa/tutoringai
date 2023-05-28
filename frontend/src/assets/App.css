@@ -71,3 +71,17 @@ a:link, a:visited {
 a:hover, a:active { 
   text-decoration: none; 
 }
+
+.blinking-pointer::after {
+  content: "|";
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

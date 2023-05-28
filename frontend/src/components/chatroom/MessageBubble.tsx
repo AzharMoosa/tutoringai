@@ -39,7 +39,7 @@ const DefaultMessageBubble = ({
 
   return (
     <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <p>{fromChatbot ? messageText : messageContent}</p>
+      <MessageTextBlock text={fromChatbot ? messageText : messageContent} />
     </div>
   );
 };
