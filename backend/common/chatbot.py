@@ -4,6 +4,7 @@ from backend.common.conversation_engine.natural_language_recognition import Natu
 
 intents = ConversationEngineUtil.load_intent()["intents"]
 topics = ["arithmetic", "trigonometry", "rectangle", "circle"]
+shape_solve = ["triangle-area", "rectangle-area", "circle-area", "circle-circumference"]
 
 class Chatbot:
     @staticmethod
@@ -34,7 +35,12 @@ class Chatbot:
         if tag in topics:
             return ResponseEngine.generate_question_list(response, tag, state["room_id"])
         
+        # Assessment Mode
         if tag == "assessment-mode":
             return ResponseEngine.generate_question_list(response, tag, state["room_id"], assessment_mode=True)
+
+        # Solve Shape
+        if tag in shape_solve:
+            return ResponseEngine.generate_shape_solution(state, tag)
 
         return ResponseEngine.generate_message(response, state["isAnswering"])

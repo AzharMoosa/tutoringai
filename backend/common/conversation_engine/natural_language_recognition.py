@@ -69,3 +69,4 @@ class NaturalLanguageRecognition:
         tag = intents_list[0]["intent"] if len(intents_list) > 0 else None
         prob = float(intents_list[0]["prob"]) if len(intents_list) > 0 else 0.0
         return tag, prob
+    

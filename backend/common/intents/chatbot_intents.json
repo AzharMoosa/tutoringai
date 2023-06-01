@@ -166,8 +166,6 @@
         "i need help with right angle triangles",
         "i need help with isosceles triangle",
         "i need help with scalene triangle",
-        "how do you calculate area of triangle",
-        "how do you calculate area of this triangle",
         "triangle",
         "triangles"
       ],
@@ -218,6 +216,64 @@
         "Let's get started revising circles. We can work through a question together.",
         "Great. Let's begin by looking at some circles problems."
       ],
+      "context_set": ""
+    },
+    {
+      "tag": "triangle-area",
+      "patterns": [
+        "find the area of a triangle with side lengths",
+        "how do i find the area of a triangle",
+        "how do i find the area of a triangle with side lengths",
+        "what is the area of a triangle with lengths",
+        "area of triangle with side lengths",
+        "how do you calculate area of triangle",
+        "how do you calculate area of triangle with side lengths",
+        "how do you calculate area of triangle with lengths"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
+      "tag": "rectangle-area",
+      "patterns": [
+        "find the area of a rectangle with side lengths",
+        "how do i find the area of a rectangle",
+        "how do i find the area of a rectangle with side lengths",
+        "what is the area of a rectangle with lengths",
+        "area of rectangle with side lengths",
+        "how do you calculate area of rectangle",
+        "how do you calculate area of rectangle with side lengths",
+        "how do you calculate area of rectangle with lengths"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
+      "tag": "circle-area",
+      "patterns": [
+        "find the area of a circle with radius",
+        "how do i find the area of a circle",
+        "how do i find the area of a circle with radius",
+        "what is the area of a circle with radius",
+        "area of circle with radius",
+        "how do you calculate area of circle",
+        "how do you calculate area of circle with radius"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
+      "tag": "circle-circumference",
+      "patterns": [
+        "find the circumference of a circle with radius",
+        "how do i find the circumference of a circle",
+        "how do i find the circumference of a circle with radius",
+        "what is the circumference of a circle with radius",
+        "area of circumference with radius",
+        "how do you calculate circumference of circle",
+        "how do you calculate circumference of circle with radius"
+      ],
+      "responses": [""],
       "context_set": ""
     },
     {

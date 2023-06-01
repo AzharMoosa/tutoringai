@@ -82,6 +82,8 @@ export interface ChatbotResponse {
       | (NumericalQuestion | MultipleChoiceQuestion | TrueOrFalseQuestion)[]
       | undefined;
     questionIndex: string | undefined;
+    mode: string | undefined;
+    correctAnswers: string | undefined;
   };
 }
 

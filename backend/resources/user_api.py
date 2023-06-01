@@ -65,4 +65,4 @@ class UserAPI(Resource):
             return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "_id": user_id}), 200)
         except Exception:
             traceback.print_exc()
-            return {'error': "Server Error! Unable to create a new user, please try again."}, 500
+            return {'error': "Server Error! Unable to update user, please try again."}, 500

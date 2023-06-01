@@ -4,6 +4,13 @@ from backend.common.conversation_engine.marc_dialogue import MARCDialogue
 from backend.common.question_engine.question_generation import QuestionGenerator
 from backend.common.conversation_engine.natural_language_recognition import NaturalLanguageRecognition
 from backend.common.tutoring_engine.tutoring_engine import TutoringEngine
+from backend.common.tutoring_engine.shape_solver import ShapeQuestionSolver
+from bson import ObjectId
+from backend.resources.db import client
+import traceback
+
+ASSESSMENT_MODE = "assessment"
+REVISION_MODE = "revision"
 
 class ResponseEngine:
     @staticmethod
@@ -23,6 +30,39 @@ class ResponseEngine:
             "questionList": question_list,
             "questionIndex": str(question_index)
         }
+    
+    @staticmethod
+    def update_recent_topic(user_id, topic, mode, total_answered, correctly_answered=0):
+        try:
+            db = client["Users"]
+            all_users = db.all_users
+            user = all_users.find_one({ "_id" : ObjectId(user_id) })
+
+            # Verify User Exists
+            if not user:
+                return {"error": "User Does Not Exist!"}, 403
+            
+            recentTopics = user["recentTopics"] if "recentTopics" in user else []
+
+            if mode == ConversationEngineUtil.ASSESSMENT_MODE:
+                recentTopic = { "topic": topic, "mode": mode, "total_answered": total_answered, "correctly_answered": correctly_answered }
+            else:
+                recentTopic = { "topic": topic, "mode": mode }
+
+            recentTopics.insert(0, recentTopic)
+
+            # Update User
+            all_users.update_one({
+                '_id': user["_id"]
+            }, {
+                '$set': {
+                    'recentTopics': recentTopics
+                }
+            }, upsert=False)
+
+        except Exception:
+            traceback.print_exc()
+            return {'error': "Server Error! Unable to update user, please try again."}, 500
 
     @staticmethod
     def get_response(intents, tag: str):
@@ -43,8 +83,9 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=True, state=state)
     
     @staticmethod
-    def generate_finish_answering_response():
+    def generate_finish_answering_response(state):
         message = f"{MARCDialogue.get_correct_response()}. That's all for now."
+        ConversationEngineUtil.update_recent_topic(state["room_id"], state["currentQuestion"]["category"], state["mode"], len(state["questionList"]), correctly_answered=state.get("correctAnswers", 0))
         return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod
@@ -62,13 +103,18 @@ class ResponseEngine:
         return ResponseEngine.generate_message("Heres the solution", is_answering=True, state=state)
     
     @staticmethod
+    def generate_shape_solution(state, tag):
+        solution = ShapeQuestionSolver.parse_shape_question(state["message"], tag)
+        return ResponseEngine.generate_message(solution, state["isAnswering"])
+
+    @staticmethod
     def go_to_next_question(state, question_index: int):
         question_index += 1
         
         if question_index < len(state["questionList"]):
             return ResponseEngine.generate_next_question_response(state, question_index)
         else:
-            return ResponseEngine.generate_finish_answering_response()
+            return ResponseEngine.generate_finish_answering_response(state)
 
     @staticmethod
     def generate_answer_response(state: dict):
@@ -96,13 +142,16 @@ class ResponseEngine:
     @staticmethod
     def generate_question_list(message_content, tag, room_id, assessment_mode=False):
         if assessment_mode:
-            question_list = QuestionGenerator.retrieve_question_set_by_category("rectangle", room_id) + QuestionGenerator.retrieve_question_set_by_category("circle", room_id)
+            # TODO: Get Assessment Questions
+            question_list = QuestionGenerator.retrieve_question_set_by_category("rectangle", room_id)
             first_question = question_list[0]
             return {"message": f"{message_content}\n{first_question}", 
                     "isAnswering": True, 
                     "currentQuestion": first_question.serialize(), 
                     "questionList": [q.serialize() for q in question_list],
-                    "questionIndex": "0" }
+                    "questionIndex": "0",
+                    "mode": ASSESSMENT_MODE,
+                    "correctAnswers": "0" }
         else:
             question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
             first_question = question_list[0]
@@ -110,4 +159,6 @@ class ResponseEngine:
                     "isAnswering": True, 
                     "currentQuestion": first_question.serialize(), 
                     "questionList": [q.serialize() for q in question_list],
-                    "questionIndex": "0" }
+                    "questionIndex": "0",
+                    "mode": REVISION_MODE,
+                    "correctAnswers": "0" }
