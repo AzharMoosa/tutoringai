@@ -1,12 +1,14 @@
 .sidebar {
   background-color: var(--blue);
   width: 350px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.sidebar-items, .sidebar-bottom-items {
+.sidebar-items,
+.sidebar-bottom-items {
   display: flex;
   flex-direction: column;
   padding-left: 1.5rem;
@@ -49,24 +51,25 @@
     align-items: center;
   }
 
-  .sidebar-items, .sidebar-bottom-items {
+  .sidebar-items,
+  .sidebar-bottom-items {
     padding: 0rem;
   }
 
-.sidebar-top {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-  
+  .sidebar-top {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
   .sidebar-item h2 {
     font-size: 13px;
   }
-  
+
   .sidebar-title {
     display: none;
   }
-  
+
   .sidebar-item h2 {
     display: none;
   }

@@ -28,11 +28,6 @@ const Dashboard = () => {
         ) : (
           <div className="dashboard-layout">
             <DashboardTitle name={userDetails?.fullName ?? ''} />
-            <div className="dashboard-grid">
-              <QuestionsSolved />
-              <QuestionsSolved />
-              <QuestionsSolved />
-            </div>
             <RecentTopics
               topics={[
                 { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 },
@@ -40,6 +35,11 @@ const Dashboard = () => {
                 { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 }
               ]}
             />
+            <div className="dashboard-grid">
+              <QuestionsSolved />
+              <QuestionsSolved />
+              <QuestionsSolved />
+            </div>
           </div>
         )}
       </div>

@@ -44,10 +44,10 @@ class ResponseEngine:
             
             recentTopics = user["recentTopics"] if "recentTopics" in user else []
 
-            if mode == ConversationEngineUtil.ASSESSMENT_MODE:
+            if mode == ASSESSMENT_MODE:
                 recentTopic = { "topic": topic, "mode": mode, "total_answered": total_answered, "correctly_answered": correctly_answered }
             else:
-                recentTopic = { "topic": topic, "mode": mode }
+                recentTopic = { "topic": topic, "mode": mode, "total_answered": total_answered }
 
             recentTopics.insert(0, recentTopic)
 
@@ -85,7 +85,7 @@ class ResponseEngine:
     @staticmethod
     def generate_finish_answering_response(state):
         message = f"{MARCDialogue.get_correct_response()}. That's all for now."
-        ConversationEngineUtil.update_recent_topic(state["room_id"], state["currentQuestion"]["category"], state["mode"], len(state["questionList"]), correctly_answered=state.get("correctAnswers", 0))
+        ResponseEngine.update_recent_topic(state["room_id"], state["currentQuestion"]["category"], state["mode"], len(state["questionList"]), correctly_answered=state.get("correctAnswers", 0))
         return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod

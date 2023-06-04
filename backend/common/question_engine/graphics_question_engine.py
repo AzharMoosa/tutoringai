@@ -12,6 +12,9 @@ from backend.common.question_engine.text_to_graphics_question import TextToGraph
 load_dotenv()
 client = MongoClient(os.getenv("MONGODB_URI"), serverSelectionTimeoutMS=5000)
 
+__location__ = os.path.realpath(os.path.join(
+    os.getcwd(), os.path.dirname(__file__)))
+
 class GraphicsQuestionEngine:
     @staticmethod
     def __push_to_question_bank(questions: List[GraphicalQuestion]) -> None:
@@ -33,7 +36,7 @@ class GraphicsQuestionEngine:
     @staticmethod
     def create_graphics_engine():
         # Change Directory To Graphics Engine
-        os.chdir("../graphical_engine")
+        os.chdir(f"{__location__}/../graphical_engine")
         
         # Make Graphics Engine Executable
         if os.system("make clean && make") != 0:
