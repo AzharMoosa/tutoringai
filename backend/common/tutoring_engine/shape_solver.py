@@ -1,6 +1,7 @@
 from backend.common.question_engine.graphics_question import TriangleQuestion, RectangleQuestion, CircleQuestion, Rectangle, Circle, Triangle
 from typing import Union
 import re
+import traceback
 
 class ShapeQuestionSolver:
     @staticmethod
@@ -90,10 +91,13 @@ class ShapeQuestionSolver:
         pattern = r'\d+(?:\.\d+)?'
         numbers = re.findall(pattern, question)
         numbers = list(map(int, numbers))
-        A, B, C = numbers[0], numbers[1], numbers[2]     
-        triangle = Triangle(A, B, C)
-        area = triangle.calculate_area()
-        return TriangleQuestion(question, "trigonometry", triangle, "area", area, "N/A")
+        A, B, C = numbers[0], numbers[1], numbers[2]
+        if (A + B > C and A + C > B and B + C > A):
+            triangle = Triangle(A, B, C)
+            area = triangle.calculate_area()
+            return TriangleQuestion(question, "trigonometry", triangle, "area", area, "N/A")
+
+        return None
     
     @staticmethod
     def __generate_rectangle_question(question: str):
@@ -120,8 +124,9 @@ class ShapeQuestionSolver:
     def parse_shape_question(question: str, tag: str):
         try:
             if tag == "triangle-area":
-                # TODO: Triangle Inequality
                 triangleQuestion = ShapeQuestionSolver.__generate_triangle_question(question)
+                if not triangleQuestion:
+                    return "This question cannot be solved because the sum of any two side lengths must always be greater than the length of the third side."
                 return ShapeQuestionSolver.solve_question(triangleQuestion)
             elif tag == "rectangle-area":
                 rectangleQuestion = ShapeQuestionSolver.__generate_rectangle_question(question)
@@ -133,4 +138,5 @@ class ShapeQuestionSolver:
                 circleQuestion = ShapeQuestionSolver.__generate_circle_question(question, "circumference")
                 return ShapeQuestionSolver.solve_question(circleQuestion)
         except:
+            traceback.print_exc()
             return "Sorry! I am unable to solve this question."

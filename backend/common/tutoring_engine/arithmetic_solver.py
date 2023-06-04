@@ -3,6 +3,7 @@ import requests
 from typing import Union
 from dotenv import load_dotenv
 from backend.common.question_engine.question import NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion
+
 load_dotenv()
 
 class ArithmeticSolver:
@@ -24,3 +25,5 @@ class ArithmeticSolver:
             return ArithmeticSolver.__solve_numerical_question(question)
         else:
             return ""
+
+        

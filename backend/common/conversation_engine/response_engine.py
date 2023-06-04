@@ -99,14 +99,24 @@ class ResponseEngine:
         return ResponseEngine.generate_message("Heres a hint", is_answering=True, state=state)
     
     @staticmethod
-    def generate_solution_response(state):
-        return ResponseEngine.generate_message("Heres the solution", is_answering=True, state=state)
-    
-    @staticmethod
     def generate_shape_solution(state, tag):
         solution = ShapeQuestionSolver.parse_shape_question(state["message"], tag)
         return ResponseEngine.generate_message(solution, state["isAnswering"])
 
+    @staticmethod
+    def generate_worded_problem_solution(state, tag):
+        solution = "worded_problem"
+        return ResponseEngine.generate_message(solution, state["isAnswering"])
+    
+    @staticmethod
+    def contains_arithmetic_equations(text):
+        return TutoringEngine.contains_simple_arithmetics(text) 
+    
+    @staticmethod
+    def generate_simple_arithmetic_solution(state):
+        solution = TutoringEngine.solve_simple_arithmetics(state["message"])
+        return ResponseEngine.generate_message(solution, state["isAnswering"]) 
+    
     @staticmethod
     def go_to_next_question(state, question_index: int):
         question_index += 1

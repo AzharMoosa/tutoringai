@@ -156,6 +156,22 @@
       "context_set": ""
     },
     {
+      "tag": "solve",
+      "patterns": [
+        "how do i solve",
+        "how do i solve this question",
+        "how do i calculate this question",
+        "what is the answer to this question",
+        "what is the solution to this question",
+        "what is the solution to this problem",
+        "solve this",
+        "find the answer to",
+        "calculate"
+      ],
+      "responses": [""],
+      "context_set": ""
+    },
+    {
       "tag": "trigonometry",
       "patterns": [
         "trigonometry",
