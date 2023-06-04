@@ -70,7 +70,7 @@ class QuestionEngine:
                 question_sets = []
 
                 for questions in question_variants:
-                    # 2 - Pass All Variants Into MCQ Engine, True/False Engine & Fill In Blank Questions
+                    # 2 - Pass All Variants Into MCQ Engine, True/False Engine Questions
                     try:
                         numerical_questions = [NumericalQuestion(question, template["category"], template["type"], answer) for question, answer in questions] if include_numerical_questions else []
                     except:
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     include_numerical_questions = True
     include_mcq_questions = True
     include_true_or_false_questions = True
-    clear_db = False
+    clear_db = True
 
     if include_true_or_false_questions:
         from backend.common.question_engine.engines.true_false_engine import TrueOrFalseEngine
