@@ -5,6 +5,9 @@ from typing import List, Tuple
 from json import JSONEncoder
 import os
 from backend.common.question_engine.question import Question, QuestionEncoder, NumericalQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion, QuestionSet
+from backend.common.question_engine.engines.true_false_engine import TrueOrFalseEngine
+from backend.common.question_engine.engines.text_to_question_engine import TextToQuestion
+from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -119,20 +122,10 @@ class QuestionEngine:
     
 if __name__ == "__main__":
     include_numerical_questions = True
-    include_mcq_questions = True
-    include_true_or_false_questions = True
-    clear_db = True
-
-    if include_true_or_false_questions:
-        from backend.common.question_engine.engines.true_false_engine import TrueOrFalseEngine
-
-    if include_numerical_questions or include_true_or_false_questions:
-        from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
-
-    if include_mcq_questions:
-        from backend.common.question_engine.engines.text_to_question_engine import TextToQuestion
-        from backend.common.question_engine.engines.maths_question_engine import MathsQuestions
-
+    include_mcq_questions = False
+    include_true_or_false_questions = False
+    clear_db = False
+    
     QuestionEngine.generate_questions(include_numerical_questions=include_numerical_questions, 
                                       include_mcq_questions=include_mcq_questions, 
                                       include_true_or_false_questions=include_true_or_false_questions, 

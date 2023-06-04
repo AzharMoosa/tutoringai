@@ -91,7 +91,7 @@ class MathsQuestions:
                 question = re.sub(name, names.get_first_name(), question, flags=re.IGNORECASE)
 
             for noun in template_info["nouns"][:1]:
-                a = MCQEngine("S", noun).generate_distractors_transformer()
+                a = MCQEngine.generate_distractors_transformer(noun)
                 question = re.sub(noun, random.choice(a).lower(), question, flags=re.IGNORECASE)
 
             sentences = question.split(".")
@@ -115,8 +115,11 @@ class MathsQuestions:
         return questions
 
 if __name__ == "__main__":
-    template = { "type": "additive", "text" : "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
- }
+    template =   {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
+    }
     questions = MathsQuestions.generate_questions(template, 2)
     for question in questions:
         print(question)

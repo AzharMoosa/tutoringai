@@ -1,5 +1,4 @@
 from typing import Tuple, List
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 from backend.common.question_engine.engines.keyword_extraction_engine import KeywordExtraction
 from backend.common.question_engine.engines.summarization_engine import TextSummarization
@@ -113,11 +112,11 @@ class TextToQuestion:
         mcq_mapping = {}
         for question, answer in question_list:
             if type == "wordnet":
-                distractors = MCQEngine(question, answer).generate_distractors_wordnet()
+                distractors = MCQEngine.generate_distractors_wordnet(answer)
             elif type == "sense2vec":
-                distractors = MCQEngine(question, answer).generate_distractors_sense2vec()
+                distractors = MCQEngine.generate_distractors_sense2vec(answer)
             elif type == "transformer":
-                distractors = MCQEngine(question, answer).generate_distractors_transformer()
+                distractors = MCQEngine.generate_distractors_transformer(answer)
             else:
                 distractors = []
 

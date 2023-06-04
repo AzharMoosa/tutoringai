@@ -1,5 +1,6 @@
 import spacy
-
+import re
+from functools import reduce
 nlp = spacy.load("en_core_web_sm")
 
 
@@ -42,7 +43,6 @@ class SolvingEngine:
             numbers = [int(token.text) for token in doc if token.pos_ == "NUM"]
             pos = [token.pos_ for token in doc]
 
-            
             if "?" in sentence:
                 people = [token.text for token in doc if token.dep_ == "nsubj"]
 
@@ -69,14 +69,45 @@ class SolvingEngine:
                     continue
             
                 information[people[0]] += numbers[0]
-        
+
         return information[subject] if subject else -1
+    
+    @staticmethod
+    def __extract_numbers(question: str):
+        numbers = re.findall(r'\d+', question)
+        return [int(num) for num in numbers]
+    
+    @staticmethod
+    def __solve_addition(question: str):
+        numbers = SolvingEngine.__extract_numbers(question)
+        return sum(numbers)
 
     @staticmethod
-    def solve(question: str, question_type: str) -> int:
-        if (question_type == "additive"):
-            return SolvingEngine.__solve_additive(question)
+    def __solve_subtraction(question: str):
+        numbers = SolvingEngine.__extract_numbers(question)
+        return reduce(lambda x, y: x - y, numbers)
 
-if __name__ == "__main__":
-    q =  "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
-    print(SolvingEngine.solve(q, "additive"))
+    @staticmethod
+    def __solve_multiplication(question: str):
+        numbers = SolvingEngine.__extract_numbers(question)
+        return reduce(lambda x, y: x * y, numbers)
+
+    @staticmethod
+    def __solve_division(question: str):
+        numbers = SolvingEngine.__extract_numbers(question)
+        return reduce(lambda x, y: x / y, numbers)
+    
+    @staticmethod
+    def solve(question: str, question_type: str) -> int:
+        if question_type in ("additive"):
+            return SolvingEngine.__solve_additive(question)
+        elif question_type == "addition":
+            return SolvingEngine.__solve_addition(question)
+        elif question_type == "subtraction":
+            return SolvingEngine.__solve_subtraction(question)
+        elif question_type == "multiplication":
+            return SolvingEngine.__solve_multiplication(question)
+        elif question_type == "division":
+            return SolvingEngine.__solve_division(question)
+
+        raise Exception("Unknown Question Type")
