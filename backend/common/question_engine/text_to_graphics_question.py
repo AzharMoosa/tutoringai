@@ -1,7 +1,7 @@
 from typing import List, Union
 import re
 import random
-from graphics_question import *
+from backend.common.question_engine.graphics_question import *
 import os
 import cloudinary
 import cloudinary.uploader
@@ -12,7 +12,7 @@ class TextToGraphicsQuestion:
         numbers = re.findall(r'\d+', text)
 
         for number in numbers:
-            new_number = str(random.randint(1, 10))
+            new_number = str(random.randint(1, 15))
             text = text.replace(number, new_number)
         
         return text
@@ -43,7 +43,7 @@ class TextToGraphicsQuestion:
         return upload_result["url"]
 
     @staticmethod
-    def __generate_triangle_questions(text, area_questions=10, angle_questions=10) -> List[TriangleQuestion]:
+    def __generate_triangle_questions(text, area_questions=50) -> List[TriangleQuestion]:
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):
@@ -58,7 +58,7 @@ class TextToGraphicsQuestion:
         return questions
     
     @staticmethod
-    def __generate_rectangle_questions(text, area_questions=10):
+    def __generate_rectangle_questions(text, area_questions=50):
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):
@@ -72,7 +72,7 @@ class TextToGraphicsQuestion:
         return questions
     
     @staticmethod
-    def __generate_circle_questions(text, area_questions=10, circumference_questions=10):
+    def __generate_circle_questions(text, area_questions=50, circumference_questions=50):
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):

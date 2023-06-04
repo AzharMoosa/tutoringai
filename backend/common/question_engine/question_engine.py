@@ -122,8 +122,8 @@ class QuestionEngine:
     
 if __name__ == "__main__":
     include_numerical_questions = True
-    include_mcq_questions = False
-    include_true_or_false_questions = False
+    include_mcq_questions = True
+    include_true_or_false_questions = True
     clear_db = False
     
     QuestionEngine.generate_questions(include_numerical_questions=include_numerical_questions, 

@@ -243,11 +243,15 @@ class MCQEngine:
         Returns:
             {List[str]} The distractors for the correct answer
         """
-        distractors = [correct_answer] + MCQEngine.generate_distractors_sense2vec(correct_answer)
-        a_embedding, d_embedding = MCQEngine.__get_embeddings(correct_answer, distractors)
-        filtered_distractors = MCQEngine.filter_distractors_mmr(
-            a_embedding, d_embedding, distractors)
-        return [distractor[0] for distractor in filtered_distractors][1:]
+        s2v_distractors = MCQEngine.generate_distractors_sense2vec(correct_answer)
+        distractors = [correct_answer] + s2v_distractors
+        try:
+            a_embedding, d_embedding = MCQEngine.__get_embeddings(correct_answer, distractors)
+            filtered_distractors = MCQEngine.filter_distractors_mmr(
+                a_embedding, d_embedding, distractors)
+            return [distractor[0] for distractor in filtered_distractors][1:]
+        except:
+            return s2v_distractors
 
 
 if __name__ == "__main__":

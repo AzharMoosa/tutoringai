@@ -6,8 +6,8 @@ import json
 from json import JSONEncoder
 import cloudinary
 import cloudinary.uploader
-from graphics_question import *
-from text_to_graphics_question import TextToGraphicsQuestion
+from backend.common.question_engine.graphics_question import *
+from backend.common.question_engine.text_to_graphics_question import TextToGraphicsQuestion
 
 load_dotenv()
 client = MongoClient(os.getenv("MONGODB_URI"), serverSelectionTimeoutMS=5000)
@@ -26,7 +26,6 @@ class GraphicsQuestionEngine:
 
     @staticmethod
     def __get_templates():
-        # TODO: Add To DB And Fetch
         return [{ "category" : "trigonometry", "text" : "A triangle has side lengths 1cm, 2cm, 3cm." },
                 { "category" : "rectangle", "text" : "A rectangle has width 2cm and height 3cm." },
                 { "category" : "circle", "text" : "A circle has radius 2cm." }]
