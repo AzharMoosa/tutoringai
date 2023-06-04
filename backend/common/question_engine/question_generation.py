@@ -42,7 +42,7 @@ class QuestionGenerator:
         return [question_set for question_set in question_bank if question_set["category"] == category]
     
     @staticmethod
-    def __generate_question_set_by_category(t, room_id: str):
+    def __generate_question_set_by_category(t: str, room_id: str, num_questions: int = 9):
         t = t.strip()
         db = client["ChatRooms"]
         all_chatrooms = db["all_chatrooms"]
@@ -76,17 +76,21 @@ class QuestionGenerator:
                 questions = q_options["questions"]
                 numerical_questions = get_numerical_questions(questions)
 
-                generated_questions.append(random.choice(numerical_questions))
+                generated_questions.extend(random.choices(numerical_questions, k=3))
 
                 mcq_questions = get_multiple_choice_questions(questions)
 
-                generated_questions.extend(random.choices(mcq_questions, k=2))
+                if len(mcq_questions) >= 2:
+                    generated_questions.extend(random.choices(mcq_questions, k=3))
 
                 true_or_false_questions = get_true_or_false_questions(questions)
 
-                generated_questions.extend(random.choices(true_or_false_questions, k=2))    
+                if len(true_or_false_questions) >= 2:
+                    generated_questions.extend(random.choices(true_or_false_questions, k=3))
         
         random.shuffle(generated_questions)
+
+        generated_questions = generated_questions[:num_questions]
 
         all_chatrooms.update_one({
             '_id': ObjectId(room_id)
@@ -99,5 +103,5 @@ class QuestionGenerator:
         return generated_questions
     
     @staticmethod
-    def retrieve_question_set_by_category(t, room_id: str):
-        return QuestionGenerator.__generate_question_set_by_category(t, room_id)
+    def retrieve_question_set_by_category(t: str, room_id: str, num_questions: int = 9):
+        return QuestionGenerator.__generate_question_set_by_category(t, room_id, num_questions)
