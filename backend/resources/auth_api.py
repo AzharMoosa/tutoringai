@@ -38,7 +38,7 @@ class LoginAPI(Resource):
             if encrypted_password != user["password"]:
                 return {'error': "Invalid email or password!"}, 403
 
-            return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "token": token, "_id": str(user["_id"])}), 200)
+            return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "token": token, "_id": str(user["_id"]), "recentTopics": user["recentTopics"]}), 200)
         except Exception:
             traceback.print_exc()
             return {'error': "Server Error! Unable to create a new user, please try again."}, 500
@@ -66,12 +66,12 @@ class RegisterAPI(Resource):
             current_date = datetime.datetime.today()
             hashed_password = encrypt_password(password)
             created_user = all_users.insert_one(
-                {"createdDate": current_date, "email": email, "fullName": full_name, "password": hashed_password})
+                {"createdDate": current_date, "email": email, "fullName": full_name, "password": hashed_password, "recentTopics": []})
 
             # Generate JWT Token
             token = create_access_token(identity=str(created_user.inserted_id), expires_delta=datetime.timedelta(days=30))
 
-            return make_response(jsonify({"email": email, "fullName": full_name, "token": token, "_id": str(created_user.inserted_id)}), 200)
+            return make_response(jsonify({"email": email, "fullName": full_name, "token": token, "_id": str(created_user.inserted_id), "recentTopics": []}), 200)
         except Exception:
             traceback.print_exc()
             return {'error': "Server Error! Unable to create a new user, please try again."}, 500

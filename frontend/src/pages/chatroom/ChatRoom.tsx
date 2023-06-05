@@ -45,7 +45,9 @@ const ChatRoom = () => {
   const [questionIndex, setQuestionIndex] = useState<string | undefined>(
     undefined
   );
-  const [correctAnswers, setCorrectAnswers] = useState<string | undefined>();
+  const [correctAnswers, setCorrectAnswers] = useState<string | undefined>(
+    undefined
+  );
   const [mode, setMode] = useState<string | undefined>(undefined);
   const [messageList, setMessageList] = useState<Array<Message>>([
     {

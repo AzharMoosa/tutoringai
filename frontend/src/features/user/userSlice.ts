@@ -2,11 +2,24 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import API from '../../lib/api';
 import toast from 'react-hot-toast';
 
+export enum AnsweringMode {
+  ASSESSMENT="assessment",
+  REVISION="revision"
+}
+
+export interface RecentTopicDetails {
+  topic: string;
+  mode: AnsweringMode; 
+  totalAnswered: number; 
+  correctlyAnswered: number | undefined;
+}
+
 export interface IUserDetails {
   email: string;
   fullName: string;
   _id: string;
   token: string;
+  recentTopics: Array<RecentTopicDetails>;
 }
 
 export interface UpdatedUserDetails {

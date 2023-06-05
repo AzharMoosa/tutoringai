@@ -58,6 +58,7 @@ def on_join(data):
                 "currentQuestion": None,
                 "questionList": None,
                 "questionIndex": None,
+                "correctAnswers": None,
                 "questionSetMapping": {}
             })
             emit("joined", {"message": f"{username} has joined room"}, to=room)
@@ -112,6 +113,7 @@ def on_message(data):
                 "currentQuestion": response_message["currentQuestion"] if "currentQuestion" in response_message else None,
                 "questionList": response_message["questionList"] if "questionList" in response_message else None,
                 "questionIndex": response_message["questionIndex"] if "questionIndex" in response_message else None,
+                "correctAnswers": response_message["correctAnswers"] if "correctAnswers" in response_message else None
             }
         }, upsert=False)
 

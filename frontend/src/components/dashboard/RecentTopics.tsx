@@ -1,9 +1,9 @@
-import { Topic } from '../../utils/dashboardUtils';
+import { RecentTopicDetails } from '../../features/user/userSlice';
 import RecentTopic from './RecentTopic';
 import './RecentTopics.css';
 
-const RecentTopics = ({ topics }: { topics: Array<Topic> }) => {
-  const topN = 10;
+const RecentTopics = ({ topics }: { topics: Array<RecentTopicDetails> }) => {
+  const topN = 5;
 
   return (
     <div className="recent-topics">
@@ -12,6 +12,7 @@ const RecentTopics = ({ topics }: { topics: Array<Topic> }) => {
         <thead>
           <tr>
             <th>Topic</th>
+            <th>Type</th>
             <th>Solved Questions</th>
           </tr>
         </thead>

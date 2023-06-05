@@ -22,7 +22,7 @@ class UserAPI(Resource):
             if not user:
                 return {"error": "User Does Not Exist!"}, 403
 
-            return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "_id": user_id}), 200)
+            return make_response(jsonify({"email": user["email"], "fullName": user["fullName"], "_id": user_id, "recentTopics": user["recentTopics"]}), 200)
 
         except Exception:
             traceback.print_exc()

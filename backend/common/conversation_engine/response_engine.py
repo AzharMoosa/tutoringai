@@ -14,7 +14,7 @@ REVISION_MODE = "revision"
 
 class ResponseEngine:
     @staticmethod
-    def __generate_next_question(question_index: int, question_list: list):
+    def __generate_next_question(question_index: int, question_list: list, correct_answers: int):
         """
         Returns the next question from the question list
 
@@ -28,11 +28,12 @@ class ResponseEngine:
         return {
             "currentQuestion": question_list[question_index], 
             "questionList": question_list,
-            "questionIndex": str(question_index)
+            "questionIndex": str(question_index),
+            "correctAnswers": str(correct_answers)
         }
     
     @staticmethod
-    def update_recent_topic(user_id, topic, mode, total_answered, correctly_answered=0):
+    def update_recent_topic(user_id, mode, total_answered, topic="-", correctly_answered="0"):
         try:
             db = client["Users"]
             all_users = db.all_users
@@ -45,9 +46,9 @@ class ResponseEngine:
             recentTopics = user["recentTopics"] if "recentTopics" in user else []
 
             if mode == ASSESSMENT_MODE:
-                recentTopic = { "topic": topic, "mode": mode, "total_answered": total_answered, "correctly_answered": correctly_answered }
+                recentTopic = { "mode": mode, "totalAnswered": total_answered, "correctlyAnswered": correctly_answered }
             else:
-                recentTopic = { "topic": topic, "mode": mode, "total_answered": total_answered }
+                recentTopic = { "topic": topic, "mode": mode, "totalAnswered": total_answered }
 
             recentTopics.insert(0, recentTopic)
 
@@ -83,15 +84,25 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=True, state=state)
     
     @staticmethod
-    def generate_finish_answering_response(state):
-        message = f"{MARCDialogue.get_correct_response()}. That's all for now."
-        ResponseEngine.update_recent_topic(state["room_id"], state["currentQuestion"]["category"], state["mode"], len(state["questionList"]), correctly_answered=state.get("correctAnswers", 0))
+    def generate_finish_answering_response(state, correct_answers):
+        if state["mode"] == ASSESSMENT_MODE:
+            message = "That's all for now."
+        else:
+            message = f"{MARCDialogue.get_correct_response()}. That's all for now."
+        ResponseEngine.update_recent_topic(state["room_id"], 
+                                           state["mode"], 
+                                           len(state["questionList"]), 
+                                           topic=state["currentQuestion"]["category"], 
+                                           correctly_answered=correct_answers)
         return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod
-    def generate_next_question_response(state, question_index):
-        new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"])
-        message = f"{MARCDialogue.get_correct_response()}. Let's try another question. " + new_state["currentQuestion"]["question"]
+    def generate_next_question_response(state, question_index, correct_answers):
+        new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"], correct_answers)
+        if state["mode"] == ASSESSMENT_MODE:
+            message = new_state["currentQuestion"]["question"]
+        else:
+            message = f"{MARCDialogue.get_correct_response()}. Let's try another question. " + new_state["currentQuestion"]["question"]
         return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
@@ -118,18 +129,19 @@ class ResponseEngine:
         return ResponseEngine.generate_message(solution, state["isAnswering"]) 
     
     @staticmethod
-    def go_to_next_question(state, question_index: int):
+    def go_to_next_question(state, question_index: int, correct_answers: int):
         question_index += 1
         
         if question_index < len(state["questionList"]):
-            return ResponseEngine.generate_next_question_response(state, question_index)
+            return ResponseEngine.generate_next_question_response(state, question_index, correct_answers)
         else:
-            return ResponseEngine.generate_finish_answering_response(state)
+            return ResponseEngine.generate_finish_answering_response(state, correct_answers)
 
     @staticmethod
     def generate_answer_response(state: dict):
         users_answer = state["message"]
         question_index = int(state["questionIndex"])
+        correct_answers = int(state["correctAnswers"])
         question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
         current_question = question_set[question_index]
 
@@ -137,6 +149,9 @@ class ResponseEngine:
         tag, prob = NaturalLanguageRecognition.predict_intention(users_answer)
 
         if (tag in ("solution", "hint") and prob >= ConversationEngineUtil.UNCERTAIN_THRESHOLD):
+            if state["mode"] == ASSESSMENT_MODE:
+                return ResponseEngine.generate_message("Unfortunately, I cannot give you a assist during this assessment. However, I will help you once we have completed this assessment", is_answering=True, state=state)
+
             if (tag == "hint"):
                 return ResponseEngine.generate_hint_response(state)
             else:
@@ -145,9 +160,15 @@ class ResponseEngine:
                 
         # User Is Attempting To Answer
         if not current_question.is_correct(users_answer):
-            return ResponseEngine.generate_incorrect_response(state)
+            if state["mode"] == ASSESSMENT_MODE:
+                return ResponseEngine.go_to_next_question(state, question_index, correct_answers)
+            else:
+                return ResponseEngine.generate_incorrect_response(state)
         
-        return ResponseEngine.go_to_next_question(state, question_index)
+        if state["mode"] == ASSESSMENT_MODE:
+            correct_answers += 1
+        
+        return ResponseEngine.go_to_next_question(state, question_index, correct_answers)
 
     @staticmethod
     def generate_question_list(message_content, tag, room_id, assessment_mode=False):

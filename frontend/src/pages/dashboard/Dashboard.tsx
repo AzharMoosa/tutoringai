@@ -28,13 +28,7 @@ const Dashboard = () => {
         ) : (
           <div className="dashboard-layout">
             <DashboardTitle name={userDetails?.fullName ?? ''} />
-            <RecentTopics
-              topics={[
-                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 },
-                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 },
-                { topic: 'Arithmetics', totalQuestions: 10, totalSolved: 5 }
-              ]}
-            />
+            <RecentTopics topics={userDetails?.recentTopics ?? []} />
             <div className="dashboard-grid">
               <QuestionsSolved />
               <QuestionsSolved />
