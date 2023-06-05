@@ -2,6 +2,7 @@
 
 .auth-screen {
   display: flex;
+  height: 100%;
 }
 
 .auth-right {

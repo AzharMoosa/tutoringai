@@ -1,7 +1,8 @@
 .auth-left {
   width: 50%;
   height: 100vh;
-  background-color: var(--grey);
+  background: url('../../assets/images/auth-image.png');
+  background-size:100% 100%;
 }
 
 @media only screen and (max-width: 1440px) {
