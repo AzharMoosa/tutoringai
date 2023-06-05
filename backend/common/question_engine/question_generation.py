@@ -3,6 +3,7 @@ from backend.resources.db import client
 import random
 from bson import ObjectId
 from backend.common.question_engine.graphics_question import *
+from collections import defaultdict
 
 db = client["Questions"]
 question_bank = list(db["question_bank"].find())
@@ -37,6 +38,19 @@ def deserialise_questions(questions):
     return deserialised
 
 class QuestionGenerator:
+    @staticmethod
+    def retrieve_one_of_each_type():
+        question_sets = [question_set for question_set in question_bank]
+        question_each_type = defaultdict(lambda: { "category": None, "questions": [] })
+
+        for question_set in question_sets:
+            category = question_set["category"]
+            if question_set["questions"] and (not question_each_type[category]["questions"] or len(question_set["questions"]) > len(question_each_type[category]["questions"])):
+                question_each_type[category] = question_set
+        
+        return list(question_each_type.values())
+    
+
     @staticmethod
     def retrieve_questions_by_category(category):
         return [question_set for question_set in question_bank if question_set["category"] == category]
@@ -91,6 +105,60 @@ class QuestionGenerator:
         random.shuffle(generated_questions)
 
         generated_questions = generated_questions[:num_questions]
+
+        all_chatrooms.update_one({
+            '_id': ObjectId(room_id)
+        }, {
+            '$set': {
+                f"questionSetMapping.{t}": [q.serialize() for q in generated_questions]
+            }
+        }, upsert=False)
+
+        return generated_questions
+    
+    @staticmethod
+    def retrieve_assessment_mode_questions(room_id: str):
+        t = "assessment"
+        db = client["ChatRooms"]
+        all_chatrooms = db["all_chatrooms"]
+
+        chatroom = all_chatrooms.find_one({ "_id" : ObjectId(room_id) })
+
+        if not chatroom:
+            print("Chatroom Does Not Exist")
+
+        if (t in chatroom["questionSetMapping"]):
+            return deserialise_questions(chatroom["questionSetMapping"][t])
+
+        question_options = QuestionGenerator.retrieve_one_of_each_type()
+
+        questions = sum([q_options["questions"] for q_options in question_options], [])
+
+        deserialised = []
+
+        for question in questions:
+            if question["question_type"] == "numerical":
+                deserialised.append(NumericalQuestion(**question))
+            elif question["question_type"] == "mcq":
+                deserialised.append(MultipleChoiceQuestion(**question))
+            elif question["question_type"] == "true-or-false":
+                deserialised.append(TrueOrFalseQuestion(**question))
+            elif question["question_type"] == "graphical":
+                if question["category"] == "trigonometry":
+                    deserialised.append(TriangleQuestion(**question))
+                elif question["category"] == "rectangle":
+                    deserialised.append(RectangleQuestion(**question))
+                elif question["category"] == "circle":
+                    deserialised.append(CircleQuestion(**question))
+
+        generated_questions = []
+
+        generated_questions.extend(random.choices([question for question in deserialised if isinstance(question, TriangleQuestion)], k=2))
+        generated_questions.extend(random.choices([question for question in deserialised if isinstance(question, RectangleQuestion)], k=2))
+        generated_questions.extend(random.choices([question for question in deserialised if isinstance(question, CircleQuestion)], k=2))
+        generated_questions.extend(random.choices([question for question in deserialised if isinstance(question, NumericalQuestion)], k=2))
+
+        random.shuffle(generated_questions)
 
         all_chatrooms.update_one({
             '_id': ObjectId(room_id)

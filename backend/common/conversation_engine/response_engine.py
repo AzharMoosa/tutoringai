@@ -84,11 +84,15 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=True, state=state)
     
     @staticmethod
-    def generate_finish_answering_response(state, correct_answers):
+    def generate_finish_answering_response(state, correct_answers, additional_message: str = ""):
+        message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            message = "That's all for now."
+            message += "That's all for now."
         else:
-            message = f"{MARCDialogue.get_correct_response()}. That's all for now."
+            if not additional_message:
+                message += f"{MARCDialogue.get_correct_response()}."
+            message += f"That's all for now."
+
         ResponseEngine.update_recent_topic(state["room_id"], 
                                            state["mode"], 
                                            len(state["questionList"]), 
@@ -97,12 +101,16 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod
-    def generate_next_question_response(state, question_index, correct_answers):
+    def generate_next_question_response(state, question_index, correct_answers, additional_message: str = ""):
         new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"], correct_answers)
+        message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            message = new_state["currentQuestion"]["question"]
+            message += new_state["currentQuestion"]["question"]
         else:
-            message = f"{MARCDialogue.get_correct_response()}. Let's try another question. " + new_state["currentQuestion"]["question"]
+            if not additional_message:
+                message += f"{MARCDialogue.get_correct_response()}."
+
+            message += f" Let's try another question. " + new_state["currentQuestion"]["question"]
         return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
@@ -129,20 +137,23 @@ class ResponseEngine:
         return ResponseEngine.generate_message(solution, state["isAnswering"]) 
     
     @staticmethod
-    def go_to_next_question(state, question_index: int, correct_answers: int):
+    def go_to_next_question(state, question_index: int, correct_answers: int, additional_message: str = ""):
         question_index += 1
         
         if question_index < len(state["questionList"]):
-            return ResponseEngine.generate_next_question_response(state, question_index, correct_answers)
+            return ResponseEngine.generate_next_question_response(state, question_index, correct_answers, additional_message)
         else:
-            return ResponseEngine.generate_finish_answering_response(state, correct_answers)
+            return ResponseEngine.generate_finish_answering_response(state, correct_answers, additional_message)
 
     @staticmethod
     def generate_answer_response(state: dict):
         users_answer = state["message"]
         question_index = int(state["questionIndex"])
         correct_answers = int(state["correctAnswers"])
-        question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
+        if state["mode"] == ASSESSMENT_MODE:
+            question_set = QuestionGenerator.retrieve_question_set_by_category("assessment", state["room_id"])
+        else:
+            question_set = QuestionGenerator.retrieve_question_set_by_category(state["currentQuestion"]["category"], state["room_id"])
         current_question = question_set[question_index]
 
         # User Requires Hint/Solution
@@ -156,7 +167,7 @@ class ResponseEngine:
                 return ResponseEngine.generate_hint_response(state)
             else:
                 solution = TutoringEngine.solve_question(current_question)
-                return ResponseEngine.generate_message(solution, is_answering=True, state=state)
+                return ResponseEngine.go_to_next_question(state, question_index, correct_answers, additional_message=solution)
                 
         # User Is Attempting To Answer
         if not current_question.is_correct(users_answer):
@@ -173,8 +184,7 @@ class ResponseEngine:
     @staticmethod
     def generate_question_list(message_content, tag, room_id, assessment_mode=False):
         if assessment_mode:
-            # TODO: Get Assessment Questions
-            question_list = QuestionGenerator.retrieve_question_set_by_category("rectangle", room_id)
+            question_list = QuestionGenerator.retrieve_assessment_mode_questions(room_id)
             first_question = question_list[0]
             return {"message": f"{message_content}\n{first_question}", 
                     "isAnswering": True, 
