@@ -4,6 +4,7 @@ import random
 from bson import ObjectId
 from backend.common.question_engine.graphics_question import *
 from collections import defaultdict
+import os
 
 db = client["Questions"]
 question_bank = list(db["question_bank"].find())
@@ -173,3 +174,67 @@ class QuestionGenerator:
     @staticmethod
     def retrieve_question_set_by_category(t: str, room_id: str, num_questions: int = 9):
         return QuestionGenerator.__generate_question_set_by_category(t, room_id, num_questions)
+    
+
+if __name__ == "__main__":
+    # q = QuestionGenerator.retrieve_one_of_each_type()
+
+    question_options = [question_set for question_set in question_bank]
+
+    questions = sum([q_options["questions"] for q_options in question_options], [])
+
+    deserialised = []
+
+    for question in questions:
+        if question["question_type"] == "numerical":
+            deserialised.append(NumericalQuestion(**question))
+        elif question["question_type"] == "mcq":
+            deserialised.append(MultipleChoiceQuestion(**question))
+        elif question["question_type"] == "true-or-false":
+            deserialised.append(TrueOrFalseQuestion(**question))
+        elif question["question_type"] == "graphical":
+            if question["category"] == "trigonometry":
+                deserialised.append(TriangleQuestion(**question))
+            elif question["category"] == "rectangle":
+                deserialised.append(RectangleQuestion(**question))
+            elif question["category"] == "circle":
+                deserialised.append(CircleQuestion(**question))
+
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+    shape_questions = []
+
+    shape_questions.extend(random.choices([question for question in deserialised if isinstance(question, TriangleQuestion)], k=4))
+    shape_questions.extend(random.choices([question for question in deserialised if isinstance(question, RectangleQuestion)], k=3))
+    shape_questions.extend(random.choices([question for question in deserialised if isinstance(question, CircleQuestion)], k=3))
+
+    with open(f"{__location__}/shape_random_question.txt", 'w') as fp:
+        for i, q in enumerate(shape_questions):
+            fp.write("=========================\n")
+            fp.write(f"{i}) {q}\n")
+            fp.write(f"Answer: {q.answer}\n")
+
+    numerical_questions = random.choices([question for question in deserialised if isinstance(question, NumericalQuestion)], k=10)
+    with open(f"{__location__}/numerical_random_question.txt", 'w') as fp:
+        for i, q in enumerate(numerical_questions):
+            fp.write("=========================\n")
+            fp.write(f"{i}) {q}\n")
+            fp.write(f"Answer: {q.answer}\n")
+
+    mcq_questions = random.choices([question for question in deserialised if isinstance(question, MultipleChoiceQuestion)], k=10)
+    with open(f"{__location__}/mcq_random_question.txt", 'w') as fp:
+        for i, q in enumerate(mcq_questions):
+            fp.write("=========================\n")
+            fp.write(f"{i}) {q.question}\n")
+            fp.write(f"Text: {q.text}\n")
+            fp.write(f"Answer: {q.answer}\n")
+            fp.write(f"Options: {q.options}\n")
+
+    true_questions = random.choices([question for question in deserialised if isinstance(question, TrueOrFalseQuestion)], k=10)
+    with open(f"{__location__}/true_random_question.txt", 'w') as fp:
+        for i, q in enumerate(true_questions):
+            fp.write("=========================\n")
+            fp.write(f"{i}) {q}\n")
+            fp.write(f"Statement: {q.statement}\n")
+            fp.write(f"Answer: {q.answer}\n")
+

@@ -28,5 +28,4 @@ class ConversationEngineUtil:
     @staticmethod
     def load_intent():
         marc_intent = json.loads(open(f"{__location__}/../intents/chatbot_intents.json").read())
-        # prosocial_intent = json.loads(open(f"{__location__}/../datasets/prosocial/prosocial_intent.json").read())
         return ConversationEngineUtil.merge_intents(marc_intent)
