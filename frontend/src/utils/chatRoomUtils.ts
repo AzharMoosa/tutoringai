@@ -84,6 +84,7 @@ export interface ChatbotResponse {
     questionIndex: string | undefined;
     mode: string | undefined;
     correctAnswers: string | undefined;
+    incorrectQuestions: number[];
   };
 }
 

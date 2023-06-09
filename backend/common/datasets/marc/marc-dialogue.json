@@ -35,5 +35,30 @@
       "I appreciate your participation, but that answer isn't accurate. Let's keep exploring different possibilities together.",
       "Not quite there, but don't give up! We'll continue to work together until we arrive at the correct answer."
     ]
+  },
+  {
+    "tag": "praise",
+    "responses": [
+      "Excellent work! You have really grasped the concept and applied it perfectly.",
+      "Fantastic job! Your understanding of the topic is impressive.",
+      "You're doing incredibly well! Your dedication and effort are paying off.",
+      "Wonderful job! Your answers are accurate and well-thought-out.",
+      "Superb work! I'm impressed by your ability to solve complex problems with ease.",
+      "Marvelous effort! You're demonstrating a deep understanding of the subject matter.",
+      "Great job! You're making remarkable progress and should be proud of your achievements.",
+      "Outstanding work! Your attention to detail and critical thinking skills are commendable.",
+      "Bravo! Your performance is consistently outstanding.",
+      "Well done! Your enthusiasm and eagerness to learn are truly inspiring."
+    ]
+  },
+  {
+    "tag": "feedback",
+    "responses": [
+      "Overall, I am impressed with your efforts, but I noticed a few small mistakes that need some correction.",
+      "I appreciate your effort, but there are a few areas that could use improvement.",
+      "Good job overall, but let's take a closer look at some areas to help you improve your understanding.",
+      "I appreciate your hard work, but there are a couple of errors that need to be addressed.",
+      "Your attempt is on the right track, but there are a few misunderstandings that we should clarify."
+    ]
   }
 ]

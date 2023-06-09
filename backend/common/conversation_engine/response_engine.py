@@ -14,7 +14,7 @@ REVISION_MODE = "revision"
 
 class ResponseEngine:
     @staticmethod
-    def __generate_next_question(question_index: int, question_list: list, correct_answers: int):
+    def __generate_next_question(question_index: int, question_list: list, correct_answers: int, incorrect_questions: list):
         """
         Returns the next question from the question list
 
@@ -29,7 +29,8 @@ class ResponseEngine:
             "currentQuestion": question_list[question_index], 
             "questionList": question_list,
             "questionIndex": str(question_index),
-            "correctAnswers": str(correct_answers)
+            "correctAnswers": str(correct_answers),
+            "incorrectQuestions": incorrect_questions
         }
     
     @staticmethod
@@ -84,10 +85,15 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=True, state=state)
     
     @staticmethod
-    def generate_finish_answering_response(state, correct_answers, additional_message: str = ""):
+    def generate_finish_answering_response(state, correct_answers, additional_message: str = "", incorrect_questions = []):
         message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            message += "That's all for now."
+            message += "That's all for now. Here are the solutions to the incorrect questions <br />"
+            question_set = QuestionGenerator.retrieve_question_set_by_category("assessment", state["room_id"])
+            for incorrect_idx in incorrect_questions:
+                current_question = question_set[incorrect_idx]
+                solution = TutoringEngine.solve_question(current_question)
+                message += f"{incorrect_idx + 1}) {solution} <br />"
         else:
             if not additional_message:
                 message += f"{MARCDialogue.get_correct_response()}."
@@ -101,8 +107,8 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=False)
     
     @staticmethod
-    def generate_next_question_response(state, question_index, correct_answers, additional_message: str = ""):
-        new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"], correct_answers)
+    def generate_next_question_response(state, question_index, correct_answers, additional_message: str = "", incorrect_questions = []):
+        new_state = ResponseEngine.__generate_next_question(question_index, state["questionList"], correct_answers, incorrect_questions)
         message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
             message += new_state["currentQuestion"]["question"]
@@ -118,16 +124,6 @@ class ResponseEngine:
         return ResponseEngine.generate_message("Heres a hint", is_answering=True, state=state)
     
     @staticmethod
-    def generate_shape_solution(state, tag):
-        solution = ShapeQuestionSolver.parse_shape_question(state["message"], tag)
-        return ResponseEngine.generate_message(solution, state["isAnswering"])
-
-    @staticmethod
-    def generate_worded_problem_solution(state, tag):
-        solution = "worded_problem"
-        return ResponseEngine.generate_message(solution, state["isAnswering"])
-    
-    @staticmethod
     def contains_arithmetic_equations(text):
         return TutoringEngine.contains_simple_arithmetics(text) 
     
@@ -137,19 +133,19 @@ class ResponseEngine:
         return ResponseEngine.generate_message(solution, state["isAnswering"]) 
     
     @staticmethod
-    def go_to_next_question(state, question_index: int, correct_answers: int, additional_message: str = ""):
+    def go_to_next_question(state, question_index: int, correct_answers: int, additional_message: str = "", incorrect_questions = []):
         question_index += 1
-        
         if question_index < len(state["questionList"]):
-            return ResponseEngine.generate_next_question_response(state, question_index, correct_answers, additional_message)
+            return ResponseEngine.generate_next_question_response(state, question_index, correct_answers, additional_message, incorrect_questions)
         else:
-            return ResponseEngine.generate_finish_answering_response(state, correct_answers, additional_message)
+            return ResponseEngine.generate_finish_answering_response(state, correct_answers, additional_message, incorrect_questions)
 
     @staticmethod
     def generate_answer_response(state: dict):
         users_answer = state["message"]
         question_index = int(state["questionIndex"])
         correct_answers = int(state["correctAnswers"])
+        incorrect_questions = state["incorrectQuestions"]
         if state["mode"] == ASSESSMENT_MODE:
             question_set = QuestionGenerator.retrieve_question_set_by_category("assessment", state["room_id"])
         else:
@@ -172,14 +168,15 @@ class ResponseEngine:
         # User Is Attempting To Answer
         if not current_question.is_correct(users_answer):
             if state["mode"] == ASSESSMENT_MODE:
-                return ResponseEngine.go_to_next_question(state, question_index, correct_answers)
+                incorrect_questions.append(question_index)
+                return ResponseEngine.go_to_next_question(state, question_index, correct_answers, incorrect_questions=incorrect_questions)
             else:
                 return ResponseEngine.generate_incorrect_response(state)
         
         if state["mode"] == ASSESSMENT_MODE:
             correct_answers += 1
         
-        return ResponseEngine.go_to_next_question(state, question_index, correct_answers)
+        return ResponseEngine.go_to_next_question(state, question_index, correct_answers, incorrect_questions=incorrect_questions)
 
     @staticmethod
     def generate_question_list(message_content, tag, room_id, assessment_mode=False):
@@ -192,7 +189,9 @@ class ResponseEngine:
                     "questionList": [q.serialize() for q in question_list],
                     "questionIndex": "0",
                     "mode": ASSESSMENT_MODE,
-                    "correctAnswers": "0" }
+                    "correctAnswers": "0",
+                    "incorrectQuestions": []
+                    }
         else:
             question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
             first_question = question_list[0]
@@ -202,4 +201,6 @@ class ResponseEngine:
                     "questionList": [q.serialize() for q in question_list],
                     "questionIndex": "0",
                     "mode": REVISION_MODE,
-                    "correctAnswers": "0" }
+                    "correctAnswers": "0",
+                    "incorrectQuestions": []
+                    }

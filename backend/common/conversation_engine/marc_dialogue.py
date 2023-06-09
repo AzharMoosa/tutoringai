@@ -26,3 +26,11 @@ class MARCDialogue:
     @staticmethod
     def get_incorrect_response():
         return MARCDialogue.get_response("incorrect-responses")
+    
+    @staticmethod
+    def get_praise_response():
+        return MARCDialogue.get_response("praise")
+    
+    @staticmethod
+    def get_feedback_response():
+        return MARCDialogue.get_response("feedback")

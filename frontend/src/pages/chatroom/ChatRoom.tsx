@@ -48,6 +48,9 @@ const ChatRoom = () => {
   const [correctAnswers, setCorrectAnswers] = useState<string | undefined>(
     undefined
   );
+  const [incorrectQuestions, setIncorrectQuestions] = useState<
+    number[] | undefined
+  >(undefined);
   const [mode, setMode] = useState<string | undefined>(undefined);
   const [messageList, setMessageList] = useState<Array<Message>>([
     {
@@ -78,6 +81,10 @@ const ChatRoom = () => {
 
     if (response.state.correctAnswers) {
       setCorrectAnswers(response.state.correctAnswers);
+    }
+
+    if (response.state.incorrectQuestions) {
+      setIncorrectQuestions(response.state.incorrectQuestions);
     }
 
     setMessageList((prevMessageList) => {
@@ -123,7 +130,8 @@ const ChatRoom = () => {
         questionList,
         questionIndex,
         mode,
-        correctAnswers
+        correctAnswers,
+        incorrectQuestions
       }
     });
   };
