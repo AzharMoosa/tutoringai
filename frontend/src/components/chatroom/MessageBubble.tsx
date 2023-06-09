@@ -16,6 +16,8 @@ type setMessageContentFunction = (messageContent: string) => void;
 
 const typingSpeed = 15;
 
+const NEWBOX_PATTERN = /<newbox\s*\/?\s*>/g;
+
 const messageBubbleStyle = (fromChatbot: boolean) => ({
   backgroundColor: fromChatbot ? PURPLE : BLUE
 });
@@ -37,10 +39,19 @@ const DefaultMessageBubble = ({
     return () => clearInterval(typingEffect);
   }, [messageContent, messageText]);
 
+  const boxes = messageText
+    .split(NEWBOX_PATTERN)
+    .map((message) => message.trim())
+    .filter((message) => message !== '');
+
   return (
-    <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <MessageTextBlock text={fromChatbot ? messageText : messageContent} />
-    </div>
+    <>
+      {boxes.map((message) => (
+        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+          <MessageTextBlock text={fromChatbot ? message : messageContent} />
+        </div>
+      ))}
+    </>
   );
 };
 
@@ -61,10 +72,19 @@ const NumericalMessageBubble = ({
     return () => clearInterval(typingEffect);
   }, [messageContent, messageText]);
 
+  const boxes = messageText
+    .split(NEWBOX_PATTERN)
+    .map((message) => message.trim())
+    .filter((message) => message !== '');
+
   return (
-    <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-      <MessageTextBlock text={messageText} />
-    </div>
+    <>
+      {boxes.map((message) => (
+        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+          <MessageTextBlock text={message} />
+        </div>
+      ))}
+    </>
   );
 };
 
@@ -95,27 +115,34 @@ const TrueOrFalseMessageBubble = ({
     setMessageContent(option);
   };
 
+  const boxes = messageText
+    .split(NEWBOX_PATTERN)
+    .map((message) => message.trim())
+    .filter((message) => message !== '');
+
   return (
     <>
-      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <MessageTextBlock text={messageText} />
-        {messageText.length === messageContent.length && (
-          <div className="true-or-false-container">
-            <p>{question.statement}</p>
-            <div className="true-or-false-options">
-              {['True', 'False'].map((option, index) => (
-                <div
-                  onClick={() => isLatestMessage && selectOption(option)}
-                  key={index}
-                  className="mcq-option"
-                >
-                  {option}
-                </div>
-              ))}
+      {boxes.map((message) => (
+        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+          <MessageTextBlock text={message} />
+          {message.length === messageContent.length && (
+            <div className="true-or-false-container">
+              <p>{question.statement}</p>
+              <div className="true-or-false-options">
+                {['True', 'False'].map((option, index) => (
+                  <div
+                    onClick={() => isLatestMessage && selectOption(option)}
+                    key={index}
+                    className="mcq-option"
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ))}
     </>
   );
 };
@@ -147,26 +174,33 @@ const MultipleChoiceMessageBubble = ({
     setMessageContent(option);
   };
 
+  const boxes = messageText
+    .split(NEWBOX_PATTERN)
+    .map((message) => message.trim())
+    .filter((message) => message !== '');
+
   return (
     <>
-      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <MessageTextBlock text={messageText} />
-        {messageText.length === messageContent.length && (
-          <div className="mcq-container">
-            <div className="mcq-options">
-              {question.options.map((option, index) => (
-                <div
-                  onClick={() => isLatestMessage && selectOption(option)}
-                  key={index}
-                  className="mcq-option"
-                >
-                  {option}
-                </div>
-              ))}
+      {boxes.map((message) => (
+        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+          <MessageTextBlock text={message} />
+          {message.length === messageContent.length && (
+            <div className="mcq-container">
+              <div className="mcq-options">
+                {question.options.map((option, index) => (
+                  <div
+                    onClick={() => isLatestMessage && selectOption(option)}
+                    key={index}
+                    className="mcq-option"
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ))}
     </>
   );
 };
@@ -190,16 +224,23 @@ const GraphicalQuestionMessageBubble = ({
     return () => clearInterval(typingEffect);
   }, [messageContent, messageText]);
 
+  const boxes = messageText
+    .split(NEWBOX_PATTERN)
+    .map((message) => message.trim())
+    .filter((message) => message !== '');
+
   return (
     <>
-      <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
-        <MessageTextBlock text={messageText} />
-        <div className="graphics-image-container">
-          {messageText.length === messageContent.length && (
-            <img src={question.imageUrl} alt="shape" />
-          )}
+      {boxes.map((message) => (
+        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+          <MessageTextBlock text={message} />
+          <div className="graphics-image-container">
+            {message.length === messageContent.length && (
+              <img src={question.imageUrl} alt="shape" />
+            )}
+          </div>
         </div>
-      </div>
+      ))}
     </>
   );
 };

@@ -88,16 +88,16 @@ class ResponseEngine:
     def generate_finish_answering_response(state, correct_answers, additional_message: str = "", incorrect_questions = []):
         message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            message += "That's all for now. Here are the solutions to the incorrect questions <br />"
+            message += "That's all for now. Here are the solutions to the incorrect questions <newbox />"
             question_set = QuestionGenerator.retrieve_question_set_by_category("assessment", state["room_id"])
             for incorrect_idx in incorrect_questions:
                 current_question = question_set[incorrect_idx]
                 solution = TutoringEngine.solve_question(current_question)
-                message += f"{incorrect_idx + 1}) {solution} <br />"
+                message += f"{incorrect_idx + 1}) {solution} <newbox />"
         else:
             if not additional_message:
                 message += f"{MARCDialogue.get_correct_response()}."
-            message += f"That's all for now."
+            message += f"<newbox /> That's all for now."
 
         ResponseEngine.update_recent_topic(state["room_id"], 
                                            state["mode"], 
