@@ -20,13 +20,13 @@ std::list<Drawable> GraphicalEngine::initialiseDrawableList(
 
 void GraphicalEngine::drawArrowCircle(
     std::list<Drawable> &drawList, double radius, double centreX,
-    double centreY, double perimX, double perimY, double sf, string unit = "cm",
+    double centreY, double perimX, double perimY, double sf,
     bool textAlias = true, int strokeWidth = 1, string strokeColor = "green",
     string strokeFillColor = "green") {
   drawList.push_back(DrawableTextAntialias(textAlias));
   drawList.push_back(DrawableStrokeWidth(strokeWidth));
   drawList.push_back(DrawableText((centreX + perimX) / 2 - 20, centreY - 5,
-                                  precision_to_string(radius) + unit));
+                                  precision_to_string(radius)));
   drawList.push_back(DrawableStrokeColor(strokeColor));
   drawList.push_back(DrawableFillColor(strokeFillColor));
   drawList.push_back(
@@ -51,13 +51,11 @@ Shape GraphicalEngine::drawShape(RectangleOptions options,
   auto textWidthPoint = options.getRectangleTextWidth();
   auto textHeightPoint = options.getRectangleTextHeight();
 
-  drawList.push_back(
-      DrawableText(textWidthPoint.first, textWidthPoint.second,
-                   precision_to_string(options.getWidth()) + "cm"));
+  drawList.push_back(DrawableText(textWidthPoint.first, textWidthPoint.second,
+                                  precision_to_string(options.getWidth())));
 
-  drawList.push_back(
-      DrawableText(textHeightPoint.first, textHeightPoint.second,
-                   precision_to_string(options.getHeight()) + "cm"));
+  drawList.push_back(DrawableText(textHeightPoint.first, textHeightPoint.second,
+                                  precision_to_string(options.getHeight())));
 
   return Shape::Rectangle;
 }

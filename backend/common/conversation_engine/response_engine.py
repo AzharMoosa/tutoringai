@@ -116,13 +116,23 @@ class ResponseEngine:
             if not additional_message:
                 message += f"{MARCDialogue.get_correct_response()}."
 
-            message += f" Let's try another question. " + new_state["currentQuestion"]["question"]
+            message += f"<newbox /> Let's try another question. " + new_state["currentQuestion"]["question"]
         return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
     def generate_hint_response(state):
         return ResponseEngine.generate_message("Heres a hint", is_answering=True, state=state)
     
+    @staticmethod
+    def generate_shape_solution(state, tag):
+        solution = ShapeQuestionSolver.parse_shape_question(state["message"], tag)
+        return ResponseEngine.generate_message(solution, state["isAnswering"])
+
+    @staticmethod
+    def generate_worded_problem_solution(state, tag):
+        solution = "worded_problem"
+        return ResponseEngine.generate_message(solution, state["isAnswering"])
+
     @staticmethod
     def contains_arithmetic_equations(text):
         return TutoringEngine.contains_simple_arithmetics(text) 

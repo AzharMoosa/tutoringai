@@ -42,7 +42,7 @@ class GraphicalEngine {
 
   void drawArrowCircle(std::list<Drawable> &drawList, double radius,
                        double centreX, double centreY, double perimX,
-                       double perimY, double sf, string unit, bool textAlias,
+                       double perimY, double sf, bool textAlias,
                        int strokeWidth, string strokeColor,
                        string strokeFillColor);
 

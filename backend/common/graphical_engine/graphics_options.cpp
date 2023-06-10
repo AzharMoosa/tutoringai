@@ -266,17 +266,17 @@ TriangleOptions::getTextCoordinatesIsosceles() {
   auto textCoordinateA =
       TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 50,
                              (coordinateA.second + coordinateB.second) / 2,
-                             precision_to_string(sameLength) + " cm");
+                             precision_to_string(sameLength));
 
   auto textCoordinateB =
       TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
                              (coordinateB.second + coordinateC.second) / 2 + 20,
-                             precision_to_string(otherLength) + " cm");
+                             precision_to_string(otherLength));
 
   auto textCoordinateC =
       TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 + 10,
                              (coordinateA.second + coordinateC.second) / 2,
-                             precision_to_string(sameLength) + " cm");
+                             precision_to_string(sameLength));
 
   return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
                                            textCoordinateC};
@@ -292,17 +292,17 @@ TriangleOptions::getTextCoordinatesEquilateral() {
   auto textCoordinateA =
       TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 + 10,
                              (coordinateA.second + coordinateB.second) / 2,
-                             precision_to_string(sideA) + " cm");
+                             precision_to_string(sideA));
 
   auto textCoordinateB =
       TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
                              (coordinateB.second + coordinateC.second) / 2 + 20,
-                             precision_to_string(sideB) + " cm");
+                             precision_to_string(sideB));
 
   auto textCoordinateC =
       TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
                              (coordinateA.second + coordinateC.second) / 2,
-                             precision_to_string(sideC) + " cm");
+                             precision_to_string(sideC));
 
   return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
                                            textCoordinateC};
@@ -321,17 +321,17 @@ std::list<TriangleTextCoordinate> TriangleOptions::getTextCoordinatesScalene() {
   auto textCoordinateA =
       TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 20,
                              (coordinateA.second + coordinateB.second) / 2 - 5,
-                             precision_to_string(shortestLength) + " cm");
+                             precision_to_string(shortestLength));
 
   auto textCoordinateB =
       TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 + 10,
                              (coordinateB.second + coordinateC.second) / 2,
-                             precision_to_string(middleLength) + " cm");
+                             precision_to_string(middleLength));
 
   auto textCoordinateC =
       TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
                              (coordinateA.second + coordinateC.second) / 2,
-                             precision_to_string(longestLength) + " cm");
+                             precision_to_string(longestLength));
 
   return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,
                                            textCoordinateC};

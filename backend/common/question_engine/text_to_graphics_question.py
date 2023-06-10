@@ -43,7 +43,7 @@ class TextToGraphicsQuestion:
         return upload_result["url"]
 
     @staticmethod
-    def __generate_triangle_questions(text, area_questions=50) -> List[TriangleQuestion]:
+    def __generate_triangle_questions(text, area_questions=150) -> List[TriangleQuestion]:
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):
@@ -58,7 +58,7 @@ class TextToGraphicsQuestion:
         return questions
     
     @staticmethod
-    def __generate_rectangle_questions(text, area_questions=50):
+    def __generate_rectangle_questions(text, area_questions=150):
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):
@@ -72,7 +72,7 @@ class TextToGraphicsQuestion:
         return questions
     
     @staticmethod
-    def __generate_circle_questions(text, area_questions=50, circumference_questions=50):
+    def __generate_circle_questions(text, area_questions=150, circumference_questions=150):
         questions = []
         # Generate Area Questions
         for _ in range(area_questions):
