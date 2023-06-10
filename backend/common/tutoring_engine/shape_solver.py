@@ -27,7 +27,6 @@ class ShapeQuestionSolver:
             solution.append(f"$A = \sqrt{{({area_squared})}}$")
             solution.append(f"$A = {triangle.calculate_area()}$")
             solution.append(f"Therefore, the area of the triangle is ${triangle.calculate_area():.3f}$")
-            solution.append("")
 
         return "<br />".join(solution)
 
@@ -46,8 +45,7 @@ class ShapeQuestionSolver:
             solution.append(f"The area of the rectangle can be computed using: $A = W * H$.")
             solution.append(f"$A = {width} * {height}$")
             solution.append(f"$A = {rectangle.calculate_area()}$")
-            solution.append(f"Therefore, the area of the rectangle is ${rectangle.calculate_area():.3f}")
-            solution.append("")
+            solution.append(f"Therefore, the area of the rectangle is ${rectangle.calculate_area():.3f}$")
 
         return "<br />".join(solution)
 
@@ -73,7 +71,6 @@ class ShapeQuestionSolver:
             solution.append(f"$C = {circle.calculate_circumference()}$")
             solution.append(f"Therefore, the circumference of the circle is ${circle.calculate_circumference():.3f}$")
             
-        solution.append("")
         return "<br />".join(solution)
          
     @staticmethod
