@@ -6,16 +6,9 @@ import { getUser } from '../../features/user/userSlice';
 import MessageBox from '../../components/chatroom/MessageBox';
 import MessageList from '../../components/chatroom/MessageList';
 import { Message } from '../../components/chatroom/types';
-import { useSocket } from '../../hooks/socket/hooks';
-import {
-  DEFAULT_MESSAGE,
-  WEB_SOCKET_URI,
-  WEB_SOCKET_CONFIG
-} from '../../data/chatRoomConstants';
+import { DEFAULT_MESSAGE } from '../../data/chatRoomConstants';
 import {
   ChatbotResponse,
-  startDefaultListeners,
-  initialiseChatRoom,
   Question,
   TrueOrFalseQuestion,
   MultipleChoiceQuestion,
@@ -23,6 +16,7 @@ import {
 } from '../../utils/chatRoomUtils';
 import MainContainer from '../../components/shared/MainContainer';
 import { Page } from '../../data/pageConstants';
+import axios from 'axios';
 
 const ChatRoom = () => {
   const userDetails = useAppSelector((state) => state.user.userDetails);
@@ -34,7 +28,6 @@ const ChatRoom = () => {
     dispatch(getUser());
   }, [dispatch, loading]);
 
-  const socket = useSocket(WEB_SOCKET_URI, WEB_SOCKET_CONFIG);
   const [isAnswering, setIsAnswering] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] = useState<
     NumericalQuestion | MultipleChoiceQuestion | TrueOrFalseQuestion | undefined
@@ -104,23 +97,24 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    socket.connect();
+    const initialiseChatroom = async () =>
+      await axios.post('/api/chatbot/initialise', {
+        username: `${userDetails?.fullName ?? 'unknown'}`,
+        room: `${userDetails?._id ?? 'unknown'}`
+      });
 
-    startDefaultListeners(socket);
-
-    if (!loading) {
-      initialiseChatRoom(socket, updateMessageList, userDetails);
-    }
+    initialiseChatroom();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageList, userDetails]);
+  }, [userDetails]);
 
-  const sendMessage = (messageContent: string) => {
+  const sendMessage = async (messageContent: string) => {
     setMessageList([
       ...messageList,
       { messageContent, fromChatbot: false, question: undefined },
       { messageContent: '', fromChatbot: true, question: undefined }
     ]);
-    socket.emit('message', {
+
+    const { data } = await axios.post('/api/chatbot', {
       username: `${userDetails?.fullName ?? 'unknown'}`,
       room: `${userDetails?._id ?? 'unknown'}`,
       state: {
@@ -134,6 +128,8 @@ const ChatRoom = () => {
         incorrectQuestions
       }
     });
+
+    updateMessageList(data);
   };
 
   const handleSendMessage = () => {

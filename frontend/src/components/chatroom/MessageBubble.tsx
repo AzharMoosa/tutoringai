@@ -46,8 +46,12 @@ const DefaultMessageBubble = ({
 
   return (
     <>
-      {boxes.map((message) => (
-        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+      {boxes.map((message, index) => (
+        <div
+          key={index}
+          className="message-bubble"
+          style={messageBubbleStyle(fromChatbot)}
+        >
           <MessageTextBlock text={fromChatbot ? message : messageContent} />
         </div>
       ))}
@@ -79,8 +83,12 @@ const NumericalMessageBubble = ({
 
   return (
     <>
-      {boxes.map((message) => (
-        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+      {boxes.map((message, index) => (
+        <div
+          key={index}
+          className="message-bubble"
+          style={messageBubbleStyle(fromChatbot)}
+        >
           <MessageTextBlock text={message} />
         </div>
       ))}
@@ -122,8 +130,12 @@ const TrueOrFalseMessageBubble = ({
 
   return (
     <>
-      {boxes.map((message) => (
-        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+      {boxes.map((message, index) => (
+        <div
+          key={index}
+          className="message-bubble"
+          style={messageBubbleStyle(fromChatbot)}
+        >
           <MessageTextBlock text={message} />
           {message.length === messageContent.length && (
             <div className="true-or-false-container">
@@ -181,8 +193,12 @@ const MultipleChoiceMessageBubble = ({
 
   return (
     <>
-      {boxes.map((message) => (
-        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+      {boxes.map((message, index) => (
+        <div
+          key={index}
+          className="message-bubble"
+          style={messageBubbleStyle(fromChatbot)}
+        >
           <MessageTextBlock text={message} />
           {message.length === messageContent.length && (
             <div className="mcq-container">
@@ -231,8 +247,12 @@ const GraphicalQuestionMessageBubble = ({
 
   return (
     <>
-      {boxes.map((message) => (
-        <div className="message-bubble" style={messageBubbleStyle(fromChatbot)}>
+      {boxes.map((message, index) => (
+        <div
+          key={index}
+          className="message-bubble"
+          style={messageBubbleStyle(fromChatbot)}
+        >
           <MessageTextBlock text={message} />
           <div className="graphics-image-container">
             {message.length === messageContent.length && (
