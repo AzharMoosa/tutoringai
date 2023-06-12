@@ -30,7 +30,9 @@ class ResponseEngine:
             "questionList": question_list,
             "questionIndex": str(question_index),
             "correctAnswers": str(correct_answers),
-            "incorrectQuestions": incorrect_questions
+            "incorrectQuestions": incorrect_questions,
+            "hintIndex": "0",
+            "solution": "-"
         }
     
     @staticmethod
@@ -120,8 +122,14 @@ class ResponseEngine:
         return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
-    def generate_hint_response(state):
-        return ResponseEngine.generate_message("Heres a hint", is_answering=True, state=state)
+    def generate_hint_response(state, current_question):
+        if not state["solution"] or state["solution"] == "-":
+            solution = TutoringEngine.solve_question(current_question)
+            state["solution"] = solution
+        hintIndex = int(state["hintIndex"])
+        hint = state["solution"].split("<br />")[hintIndex]
+        state["hintIndex"] = str(hintIndex + 1)
+        return ResponseEngine.generate_message(hint, is_answering=True, state=state)
     
     @staticmethod
     def generate_shape_solution(state, tag):
@@ -140,6 +148,7 @@ class ResponseEngine:
     @staticmethod
     def generate_simple_arithmetic_solution(state):
         solution = TutoringEngine.solve_simple_arithmetics(state["message"])
+        state["solution"] = solution
         return ResponseEngine.generate_message(solution, state["isAnswering"]) 
     
     @staticmethod
@@ -170,7 +179,7 @@ class ResponseEngine:
                 return ResponseEngine.generate_message("Unfortunately, I cannot give you a assist during this assessment. However, I will help you once we have completed this assessment", is_answering=True, state=state)
 
             if (tag == "hint"):
-                return ResponseEngine.generate_hint_response(state)
+                return ResponseEngine.generate_hint_response(state, current_question)
             else:
                 solution = TutoringEngine.solve_question(current_question)
                 return ResponseEngine.go_to_next_question(state, question_index, correct_answers, additional_message=solution)
@@ -203,5 +212,7 @@ class ResponseEngine:
                 "questionIndex": "0",
                 "mode": ASSESSMENT_MODE if assessment_mode else REVISION_MODE,
                 "correctAnswers": "0",
-                "incorrectQuestions": []
+                "incorrectQuestions": [],
+                "hintIndex": "0",
+                "solution": None
                 }

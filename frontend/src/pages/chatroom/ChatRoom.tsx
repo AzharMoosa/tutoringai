@@ -56,6 +56,8 @@ const ChatRoom = () => {
     }
   ]);
   const [messageContent, setMessageContent] = useState<string>('');
+  const [hintIndex, setHintIndex] = useState<string | undefined>(undefined);
+  const [solution, setSolution] = useState<string | undefined>('');
 
   const updateMessageList = (response: ChatbotResponse) => {
     setIsAnswering(response.state.isAnswering);
@@ -81,6 +83,14 @@ const ChatRoom = () => {
 
     if (response.state.incorrectQuestions) {
       setIncorrectQuestions(response.state.incorrectQuestions);
+    }
+
+    if (response.state.hintIndex) {
+      setHintIndex(response.state.hintIndex);
+    }
+
+    if (response.state.solution) {
+      setSolution(response.state.solution);
     }
 
     setMessageList((prevMessageList) => {
@@ -123,7 +133,9 @@ const ChatRoom = () => {
         questionIndex,
         mode,
         correctAnswers,
-        incorrectQuestions
+        incorrectQuestions,
+        hintIndex,
+        solution
       }
     });
 

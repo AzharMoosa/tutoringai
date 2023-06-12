@@ -52,7 +52,9 @@ class ChatbotInitialiseAPI(Resource):
                     "correctAnswers": None,
                     "questionSetMapping": {},
                     "mode": None,
-                    "incorrectQuestions": None
+                    "incorrectQuestions": None,
+                    "hintIndex": None,
+                    "solution": None
                     }
 
             if chatroom:
@@ -85,8 +87,11 @@ class ChatbotAPI(Resource):
                     "questionIndex": response_message["questionIndex"] if "questionIndex" in response_message else None,
                     "mode": response_message["mode"] if "mode" in response_message else None,
                     "correctAnswers": response_message["correctAnswers"] if "correctAnswers" in response_message else None,
-                    "incorrectQuestions": response_message["incorrectQuestions"] if "incorrectQuestions" in response_message else None
+                    "incorrectQuestions": response_message["incorrectQuestions"] if "incorrectQuestions" in response_message else None,
+                    "hintIndex": response_message["hintIndex"] if "hintIndex" in response_message else None,
+                    "solution": response_message["solution"] if "solution" in response_message else None
                 }
+
                 update_chatroom(room_id, new_state)
 
                 return {'state': response_message }

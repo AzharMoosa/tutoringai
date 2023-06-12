@@ -82,6 +82,8 @@ export interface ChatbotResponse {
     mode: string | undefined;
     correctAnswers: string | undefined;
     incorrectQuestions: number[];
+    hintIndex: string | undefined;
+    solution: string | undefined;
   };
 }
 
