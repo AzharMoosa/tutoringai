@@ -53,7 +53,7 @@ class Chatbot:
             
             # Solve Worded Question
             if tag == "solve":
-                return ResponseEngine.generate_worded_problem_solution(state, tag)
+                return ResponseEngine.generate_worded_problem_solution(state)
 
             return ResponseEngine.generate_message(response, state["isAnswering"])
         except:

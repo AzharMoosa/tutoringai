@@ -30,8 +30,14 @@ class GraphicsQuestionEngine:
     @staticmethod
     def __get_templates():
         return [{ "category" : "trigonometry", "text" : "A triangle has side lengths 1, 2, 3." },
+                { "category" : "trigonometry", "text" : "In this triangle, the side lengths are 1, 2, 3." },
+                { "category" : "trigonometry", "text" : "Suppose we have a triangle with side lengths 1, 2, 3." },
                 { "category" : "rectangle", "text" : "A rectangle has width 2 and height 3." },
-                { "category" : "circle", "text" : "A circle has radius 2." }]
+                { "category" : "rectangle", "text" : "In this rectangle, the width is 2 and height is 3." },
+                { "category" : "rectangle", "text" : "Suppose we have a rectangle with width 2 and height 3." },
+                { "category" : "circle", "text" : "A circle has radius 2." },
+                { "category" : "circle", "text" : "In this circle, the radius is 2." },
+                { "category" : "circle", "text" : "Suppose we have a circle with radius 2." }]
     
     @staticmethod
     def create_graphics_engine():

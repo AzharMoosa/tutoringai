@@ -75,17 +75,17 @@ class QuestionGenerator:
         generated_questions = []
 
         if t == "trigonometry":
-            for q_options in question_options:
-                questions = q_options["questions"]
-                generated_questions.extend(random.choices([TriangleQuestion(**question) for question in questions], k=2))
+            q_options = random.choice(question_options)
+            questions = q_options["questions"]
+            generated_questions.extend(random.choices([TriangleQuestion(**question) for question in questions], k=2))
         elif t == "rectangle":
-            for q_options in question_options:
-                questions = q_options["questions"]
-                generated_questions.extend(random.choices([RectangleQuestion(**question) for question in questions], k=2))
+            q_options = random.choice(question_options)
+            questions = q_options["questions"]
+            generated_questions.extend(random.choices([RectangleQuestion(**question) for question in questions], k=2))
         elif t == "circle":
-            for q_options in question_options:
-                questions = q_options["questions"]
-                generated_questions.extend(random.choices([CircleQuestion(**question) for question in questions], k=2))
+            q_options = random.choice(question_options)
+            questions = q_options["questions"]
+            generated_questions.extend(random.choices([CircleQuestion(**question) for question in questions], k=2))
         else:
             for q_options in question_options:
                 questions = q_options["questions"]

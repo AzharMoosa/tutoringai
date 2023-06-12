@@ -116,7 +116,7 @@ class ResponseEngine:
             if not additional_message:
                 message += f"{MARCDialogue.get_correct_response()}."
 
-            message += f"<newbox /> Let's try another question. " + new_state["currentQuestion"]["question"]
+            message += f"<br /> Let's try another question. " + new_state["currentQuestion"]["question"].strip()
         return ResponseEngine.generate_message(message, is_answering=True, state=new_state)
     
     @staticmethod
@@ -129,8 +129,8 @@ class ResponseEngine:
         return ResponseEngine.generate_message(solution, state["isAnswering"])
 
     @staticmethod
-    def generate_worded_problem_solution(state, tag):
-        solution = "worded_problem"
+    def generate_worded_problem_solution(state):
+        solution = TutoringEngine.solve_worded_problem(state["message"])
         return ResponseEngine.generate_message(solution, state["isAnswering"])
 
     @staticmethod
@@ -192,25 +192,16 @@ class ResponseEngine:
     def generate_question_list(message_content, tag, room_id, assessment_mode=False):
         if assessment_mode:
             question_list = QuestionGenerator.retrieve_assessment_mode_questions(room_id)
-            first_question = question_list[0]
-            return {"message": f"{message_content}\n{first_question}", 
-                    "isAnswering": True, 
-                    "currentQuestion": first_question.serialize(), 
-                    "questionList": [q.serialize() for q in question_list],
-                    "questionIndex": "0",
-                    "mode": ASSESSMENT_MODE,
-                    "correctAnswers": "0",
-                    "incorrectQuestions": []
-                    }
         else:
             question_list = QuestionGenerator.retrieve_question_set_by_category(tag, room_id)
-            first_question = question_list[0]
-            return {"message": f"{message_content}\n{first_question}", 
-                    "isAnswering": True, 
-                    "currentQuestion": first_question.serialize(), 
-                    "questionList": [q.serialize() for q in question_list],
-                    "questionIndex": "0",
-                    "mode": REVISION_MODE,
-                    "correctAnswers": "0",
-                    "incorrectQuestions": []
-                    }
+            
+        first_question = question_list[0]
+        return {"message": f"{message_content}\n{first_question}", 
+                "isAnswering": True, 
+                "currentQuestion": first_question.serialize(), 
+                "questionList": [q.serialize() for q in question_list],
+                "questionIndex": "0",
+                "mode": ASSESSMENT_MODE if assessment_mode else REVISION_MODE,
+                "correctAnswers": "0",
+                "incorrectQuestions": []
+                }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './ChatRoom.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
 import { getUser } from '../../features/user/userSlice';
-
+import { Toaster } from 'react-hot-toast';
 import MessageBox from '../../components/chatroom/MessageBox';
 import MessageList from '../../components/chatroom/MessageList';
 import { Message } from '../../components/chatroom/types';
@@ -16,7 +16,10 @@ import {
 } from '../../utils/chatRoomUtils';
 import MainContainer from '../../components/shared/MainContainer';
 import { Page } from '../../data/pageConstants';
-import axios from 'axios';
+import {
+  initialiseChatroom,
+  sendMessageToChatbot
+} from '../../services/chatroom/chatroom';
 
 const ChatRoom = () => {
   const userDetails = useAppSelector((state) => state.user.userDetails);
@@ -97,24 +100,19 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    const initialiseChatroom = async () =>
-      await axios.post('/api/chatbot/initialise', {
-        username: `${userDetails?.fullName ?? 'unknown'}`,
-        room: `${userDetails?._id ?? 'unknown'}`
-      });
-
-    initialiseChatroom();
+    initialiseChatroom(userDetails);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
 
   const sendMessage = async (messageContent: string) => {
+    setMessageContent('');
     setMessageList([
       ...messageList,
       { messageContent, fromChatbot: false, question: undefined },
-      { messageContent: '', fromChatbot: true, question: undefined }
+      { messageContent: '|', fromChatbot: true, question: undefined }
     ]);
 
-    const { data } = await axios.post('/api/chatbot', {
+    const data = await sendMessageToChatbot({
       username: `${userDetails?.fullName ?? 'unknown'}`,
       room: `${userDetails?._id ?? 'unknown'}`,
       state: {
@@ -132,10 +130,9 @@ const ChatRoom = () => {
     updateMessageList(data);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (messageContent !== '') {
-      sendMessage(messageContent);
-      setMessageContent('');
+      await sendMessage(messageContent);
     }
   };
 
@@ -148,6 +145,7 @@ const ChatRoom = () => {
 
   return (
     <MainContainer current={Page.CHATROOM}>
+      <Toaster />
       <div className="chatroom">
         <MessageList
           messageList={messageList}

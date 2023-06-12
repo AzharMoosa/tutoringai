@@ -14,6 +14,10 @@ class TutoringEngine:
             return ShapeQuestionSolver.solve_question(question)
         else:
             return ArithmeticSolver.solve_question(question)
+    
+    @staticmethod
+    def solve_worded_problem(text: str):
+        return ArithmeticSolver.solve_numerical_question(text)
         
     @staticmethod
     def solve_simple_arithmetics(text: str):

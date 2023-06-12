@@ -254,11 +254,11 @@ const GraphicalQuestionMessageBubble = ({
           style={messageBubbleStyle(fromChatbot)}
         >
           <MessageTextBlock text={message} />
-          <div className="graphics-image-container">
-            {message.length === messageContent.length && (
+          {message.length === messageContent.length && (
+            <div className="graphics-image-container">
               <img src={question.imageUrl} alt="shape" />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ))}
     </>

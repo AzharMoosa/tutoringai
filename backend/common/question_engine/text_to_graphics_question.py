@@ -12,7 +12,7 @@ class TextToGraphicsQuestion:
         numbers = re.findall(r'\d+', text)
 
         for number in numbers:
-            new_number = str(random.randint(1, 15))
+            new_number = str(random.randint(2, 15))
             text = text.replace(number, new_number)
         
         return text
