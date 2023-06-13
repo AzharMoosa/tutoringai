@@ -9,11 +9,15 @@ export const initialiseChatroom = async (userDetails: IUserDetails | null) => {
         room: `${userDetails?._id ?? 'unknown'}`
       });
   } catch {
-    toast.error('Server Error', { id: 'chatroom-initialise' });
+    toast.error('Server Error: Could Not Connect To Chatroom', { id: 'chatroom-initialise' });
   }
 };
 
 export const sendMessageToChatbot = async (data: any) => {
+  try {
     const { data: response } = await axios.post('/api/chatbot', data);
     return response;
+  } catch {
+    toast.error("Server Error: Could Not Retrieve Response From Chatbot", { id: 'response-error' })
+  }
 }
