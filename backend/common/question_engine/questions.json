@@ -1,15 +1,5 @@
 [
   {
-    "type": "additive",
-    "category": "arithmetic",
-    "text": "John, Joe, Sarah are in the park playing football and enjoying the sunny weather. They stop to have some lunch. John has 3 apples in his lunchbox. Joe has 2 apples in his lunchbox. Joe is feeling generous and gives 2 apples to John. Sarah also has 9 apples in her lunchbox. John is full and gives 4 apples to Sarah. How many apples does John now have?"
-  },
-  {
-    "type": "additive",
-    "category": "arithmetic",
-    "text": "John, Joe, Sarah are hungry and decide they want to go eat some lunch. They go to their favorite restaurant nearby and decide to order pizza. John takes 2 slices of pizza. Joe loves pizza and decides to take 4 slices of pizza. Sarah then takes the final 2 pizzas. Joe is feeling generous and gives 1 pizza to John. Sarah is also feeling generous and gives 1 pizza to John. How many pizzas did John eat?"
-  },
-  {
     "type": "addition",
     "category": "arithmetic",
     "text": "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
@@ -18,6 +8,56 @@
     "type": "addition",
     "category": "arithmetic",
     "text": "A library currently has 10 books. The librarian orders 20 more books. How many books does the library have?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "Joe bought 6 pencils from the store and his sister gave him 4 additional pencils. How many pencils does Joe have in total?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "There are 15 students in a class. 7 more students join the class. How many students are there in total?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "A pizza has 8 slices, and 3 more slices are added to it. How many slices does the pizza have now?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "In a toy store, there are 12 teddy bears on the shelf. The store owner brings in 5 more teddy bears. How many teddy bears are there in the store now?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "Mary had 7 stickers, and her friend gave her 9 more stickers. How many stickers does Mary have in total?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "There are 18 marbles in a jar, and 6 more marbles are added to it. How many marbles are there in the jar now?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "Peter had £10 in his wallet, and his father gave him £15 more. How much money does Peter have now?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "A car has traveled 50 kilometers, and then it travels an additional 30 kilometers. How far has the car traveled in total?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "There are 25 balloons at a party, and 8 more balloons are brought in. How many balloons are there in total?"
+  },
+  {
+    "type": "addition",
+    "category": "arithmetic",
+    "text": "A grocery store initially had 40 oranges. They received a shipment of 20 more oranges. How many oranges are there in the store now?"
   },
   {
     "type": "subtraction",
@@ -30,6 +70,56 @@
     "text": "A boy has 8 marbles. The boy gives 3 marbles away. How many marbles does the boy have now?"
   },
   {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "Sarah had 15 cookies, but she ate 7 of them. How many cookies does Sarah have left?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "There are 30 students in a class, and 12 of them leave for a field trip. How many students are left in the class?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "A store has 50 apples, and 20 of them get spoiled. How many apples are still good?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "A toy box contains 40 toys, and 5 of them are taken out. How many toys are left in the box?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "John had £100, but he spent £45. How much money does John have now?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "A garden has 30 flowers, and 8 of them are picked. How many flowers are left in the garden?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "A bag contains 25 marbles, and 15 of them are red. How many marbles are not red?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "There are 60 balloons at a party, and 25 of them burst. How many balloons are still intact?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "A bakery has 80 cupcakes, and 10 of them are sold. How many cupcakes are left in the bakery?"
+  },
+  {
+    "type": "subtraction",
+    "category": "arithmetic",
+    "text": "Alice has 50 stickers, but she gives away 18 of them. How many stickers does Alice have now?"
+  },
+  {
     "type": "multiplication",
     "category": "arithmetic",
     "text": "John has 5 boxes of chocolates, each box contains 10 chocolates. How many chocolates does John have in total?"
@@ -40,6 +130,46 @@
     "text": "A school has 4 classes, each class has 25 students. How many students are there in total at the school?"
   },
   {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "There are 8 shelves in a library, and each shelf contains 30 books. How many books are there in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A store sells 6 packs of soda, and each pack contains 24 cans. How many cans of soda are there in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A farmer has 10 fields, and each field has 50 cows. How many cows does the farmer have in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A box contains 15 packets, and each packet has 20 envelopes. How many envelopes are there in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A car travels at a speed of 60 kilometers per hour for 5 hours. How far does the car travel in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A pack of pencils contains 8 pencils, and there are 10 packs. How many pencils are there in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "A factory produces 3 batches of products, and each batch contains 100 items. How many items are produced in total?"
+  },
+  {
+    "type": "multiplication",
+    "category": "arithmetic",
+    "text": "There are 5 bags, and each bag contains 12 apples. How many apples are there in total?"
+  },
+  {
     "type": "division",
     "category": "arithmetic",
     "text": "There are 24 cookies to share equally among 6 children. How many cookies will each child get?"
@@ -48,5 +178,45 @@
     "type": "division",
     "category": "arithmetic",
     "text": "A teacher has 36 pencils to share equally among 9 students. How many pencils will each student get?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A farm has 45 cows that need to be distributed equally into 9 pens. How many cows will be in each pen?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A box contains 48 chocolates, and they need to be divided equally among 6 friends. How many chocolates will each friend receive?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A group of 36 people wants to share 9 pizzas equally. How many pizzas will each person get?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A bag contains 60 marbles, and they need to be divided equally among 5 children. How many marbles will each child receive?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A factory produces 96 widgets, and they need to be distributed equally among 8 crates. How many widgets will be in each crate?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A charity collected 54 books and wants to divide them equally into 6 boxes. How many books will be in each box?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A group of 40 students wants to share 8 rulers equally. How many rulers will each student get?"
+  },
+  {
+    "type": "division",
+    "category": "arithmetic",
+    "text": "A bakery made 72 muffins and wants to distribute them equally into 12 trays. How many muffins will be in each tray?"
   }
 ]

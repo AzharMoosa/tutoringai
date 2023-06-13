@@ -21,8 +21,8 @@ std::list<Drawable> GraphicalEngine::initialiseDrawableList(
 void GraphicalEngine::drawArrowCircle(
     std::list<Drawable> &drawList, double radius, double centreX,
     double centreY, double perimX, double perimY, double sf,
-    bool textAlias = true, int strokeWidth = 1, string strokeColor = "green",
-    string strokeFillColor = "green") {
+    bool textAlias = true, int strokeWidth = 1, string strokeColor = "#646edc",
+    string strokeFillColor = "#646edc") {
   drawList.push_back(DrawableTextAntialias(textAlias));
   drawList.push_back(DrawableStrokeWidth(strokeWidth));
   drawList.push_back(DrawableText((centreX + perimX) / 2 - 20, centreY - 5,
@@ -104,8 +104,8 @@ Shape GraphicalEngine::drawShape(TriangleOptions options,
 int main(int argc, char **argv) {
   InitializeMagick(*argv);
   GraphicalEngine engine = GraphicalEngine();
-  CanvasOptions canvasOptions = CanvasOptions(200, 200, "white");
-  ShapeOptions shapeOptions = ShapeOptions("black", 2, "white");
+  CanvasOptions canvasOptions = CanvasOptions(200, 200, "#646edc");
+  ShapeOptions shapeOptions = ShapeOptions("white", 1, "#1c3049");
 
   std::string shape(argv[1]);
 

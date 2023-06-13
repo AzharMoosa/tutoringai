@@ -103,7 +103,7 @@ std::pair<double, double> RectangleOptions::getRectangleTextWidth() {
   auto upperRight = getRectangleUpperRight();
   auto upperLeft = getRectangleUpperLeft();
 
-  return {(upperLeft.first + upperRight.first) / 2 - 20, upperLeft.second - 5};
+  return {(upperLeft.first + upperRight.first) / 2 - 15, upperLeft.second - 5};
 }
 
 std::pair<double, double> RectangleOptions::getRectangleTextHeight() {
@@ -264,12 +264,12 @@ TriangleOptions::getTextCoordinatesIsosceles() {
   }
 
   auto textCoordinateA =
-      TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 50,
+      TriangleTextCoordinate((coordinateA.first + coordinateB.first) / 2 - 32,
                              (coordinateA.second + coordinateB.second) / 2,
                              precision_to_string(sameLength));
 
   auto textCoordinateB =
-      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 10,
                              (coordinateB.second + coordinateC.second) / 2 + 20,
                              precision_to_string(otherLength));
 
@@ -295,12 +295,12 @@ TriangleOptions::getTextCoordinatesEquilateral() {
                              precision_to_string(sideA));
 
   auto textCoordinateB =
-      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 20,
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 - 10,
                              (coordinateB.second + coordinateC.second) / 2 + 20,
                              precision_to_string(sideB));
 
   auto textCoordinateC =
-      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
+      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 30,
                              (coordinateA.second + coordinateC.second) / 2,
                              precision_to_string(sideC));
 
@@ -324,13 +324,13 @@ std::list<TriangleTextCoordinate> TriangleOptions::getTextCoordinatesScalene() {
                              precision_to_string(shortestLength));
 
   auto textCoordinateB =
-      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 + 10,
+      TriangleTextCoordinate((coordinateB.first + coordinateC.first) / 2 + 15,
                              (coordinateB.second + coordinateC.second) / 2,
                              precision_to_string(middleLength));
 
   auto textCoordinateC =
-      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 50,
-                             (coordinateA.second + coordinateC.second) / 2,
+      TriangleTextCoordinate((coordinateA.first + coordinateC.first) / 2 - 30,
+                             (coordinateA.second + coordinateC.second) / 2 - 10,
                              precision_to_string(longestLength));
 
   return std::list<TriangleTextCoordinate>{textCoordinateA, textCoordinateB,

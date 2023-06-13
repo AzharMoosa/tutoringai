@@ -72,9 +72,9 @@ class MathsQuestions:
         numbers = re.findall(r'\d+', text)
 
         for number in numbers:
-            new_number = str(random.randint(1, 10))
+            new_number = str(random.randint(1, 20))
             text = text.replace(number, new_number)
-        
+
         return text
 
     @staticmethod
@@ -84,8 +84,9 @@ class MathsQuestions:
         questions = []
 
         for _ in range(variants):
-            question = MathsQuestions.normalise_numbers(text)
-            answer = SolvingEngine.solve(text, template["type"])
+            parsed_text = MathsQuestions.__randomize_numbers(text)
+            question = MathsQuestions.normalise_numbers(parsed_text)
+            answer = SolvingEngine.solve(parsed_text, template["type"])
             # Replace Names
             for name in template_info["names"]:
                 question = re.sub(name, names.get_first_name(), question, flags=re.IGNORECASE)
@@ -109,8 +110,6 @@ class MathsQuestions:
                 res.add(" ".join(s))
 
             questions.append([(question, answer) for question in res])
-
-            text = MathsQuestions.__randomize_numbers(text)
 
         return questions
 
