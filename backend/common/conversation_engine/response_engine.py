@@ -90,7 +90,12 @@ class ResponseEngine:
     def generate_finish_answering_response(state, correct_answers, additional_message: str = "", incorrect_questions = []):
         message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            message += "That's all for now. Here are the solutions to the incorrect questions <newbox />"
+            score = state["correctAnswers"]
+            message += f"That's all for now. Your final score is {score}. "
+            if len(incorrect_questions) == 0:
+                message += f"{MARCDialogue.get_praise_response()}"
+            else:
+                message += f"{MARCDialogue.get_feedback_response()} Here are the solutions to the incorrect questions <newbox />"
             question_set = QuestionGenerator.retrieve_question_set_by_category("assessment", state["room_id"])
             for incorrect_idx in incorrect_questions:
                 current_question = question_set[incorrect_idx]
@@ -98,8 +103,12 @@ class ResponseEngine:
                 message += f"{incorrect_idx + 1}) {solution} <newbox />"
         else:
             if not additional_message:
-                message += f"{MARCDialogue.get_correct_response()}."
-            message += f"<newbox /> That's all for now."
+                message += f"{MARCDialogue.get_correct_response()}"
+            message += f"<newbox /> That's all for now. "
+            if len(incorrect_questions) == 0:
+                message += f"{MARCDialogue.get_praise_response()}"
+            else:
+                message += f"{MARCDialogue.get_feedback_response()} Let me know when you want to revise this topic again."
 
         ResponseEngine.update_recent_topic(state["room_id"], 
                                            state["mode"], 
@@ -181,8 +190,9 @@ class ResponseEngine:
             if (tag == "hint"):
                 return ResponseEngine.generate_hint_response(state, current_question)
             else:
+                incorrect_questions.append(question_index)
                 solution = TutoringEngine.solve_question(current_question)
-                return ResponseEngine.go_to_next_question(state, question_index, correct_answers, additional_message=solution)
+                return ResponseEngine.go_to_next_question(state, question_index, correct_answers, additional_message=solution, incorrect_questions=incorrect_questions)
                 
         # User Is Attempting To Answer
         if not current_question.is_correct(users_answer):
