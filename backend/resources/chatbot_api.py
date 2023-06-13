@@ -6,6 +6,7 @@ import traceback
 from bson import ObjectId
 from flask import request
 from datetime import datetime
+from backend.common.conversation_engine.response_engine import ResponseEngine
 
 def find_chatroom(room):
     db = client["ChatRooms"]
@@ -99,4 +100,4 @@ class ChatbotAPI(Resource):
                 return {'error': "Server Error. There was a problem with your request, please try again."}
         except:
             traceback.print_exc()
-            return {'error': "Server Error. There was a problem with your request, please try again."}
+            return { 'state': ResponseEngine.generate_message("Sorry! As a language model, I am unable to answer this!", state=state, is_answering=state["isAnswering"]) }
