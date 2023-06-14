@@ -76,13 +76,12 @@
         "what do you do?",
         "service",
         "what do you offer?",
-        "what can you help me with?",
-        "i need help",
-        "help"
+        "what can you help me with?"
       ],
       "responses": [
         "I offer two services for tutoring mathematics: Revision Mode and Assessment Mode. During revision mode, I can help you understand math topics. During assessment mode, I can test your knowledge and give you feedback to identify your strengths and weaknesses.",
-        "I can help you understand mathematics. I offer a revision mode and an assessment mode."
+        "I can help you understand mathematics. I offer a revision mode and an assessment mode.",
+        "I have two modes: revision and assessment mode. I can help you revise a topic such as arithmetics, triangles, rectangles, and circles. I can also test your knowledge and give you feedback to identify your strengths and weaknesses."
       ],
       "context_set": ""
     },
@@ -98,7 +97,16 @@
       ],
       "responses": [
         "Okay! Lets begin our revision session. What topic would you like to revise?",
-        "Great! I will help you revise. What would you specifically like to revise?"
+        "Great! I will help you revise. What would you specifically like to revise?",
+        "What would you specifically like to revise?",
+        "Absolutely! I'm here to help you with your revision. Which subject or concept would you like to focus on?",
+        "Fantastic! Let's dive into your revision. Could you please let me know the specific area or topic you'd like to cover?",
+        "That's wonderful! I'm ready to assist you with your revision. What particular aspect or subject do you want to go over?",
+        "Perfect! I'm here to support your revision efforts. Is there a particular chapter or subject you'd like to concentrate on?",
+        "Excellent choice! Let's get started with your revision. Which specific topic or chapter do you want to review?",
+        "Terrific! I'm here to guide you through your revision. Please let me know the subject or concept you'd like to focus on.",
+        "Wonderful! Revision is a great way to solidify your understanding. Which particular area or topic do you want to revise?",
+        "Great initiative! Let's make your revision session productive. Could you please mention the specific topic or subject you'd like to go through?"
       ],
       "context_set": ""
     },
@@ -121,7 +129,84 @@
         "maths quiz"
       ],
       "responses": [
-        "Okay! Lets begin our assessment. Here is how it's going to work. I'm going to give you a set of questions, try your best to answer all questions. If you can't answer a question you can go on to the next one."
+        "Okay! Lets begin our assessment. Here is how it's going to work. I'm going to give you a set of questions, try your best to answer all questions. If you can't answer a question you can go on to the next one.",
+        "Great! Here's the plan: I'll provide you with a set of questions, and your goal is to answer as many as you can. If you come across a challenging question, you can always move on to the next one.",
+        "Perfect! Let's kick off the assessment. Here is how it's going to work. I'll ask you a set of questions, and you'll attempt to answer them all. If you get stuck on a question, don't worry, just proceed to the next one.",
+        "Excellent! The assessment begins now. Here's the rundown: I'll be giving you a series of questions to tackle. Answer to the best of your ability, and if you encounter any difficulty, simply proceed to the next question.",
+        "Wonderful! It's time to put your knowledge to the test. Here's what we'll do: I'll ask you a range of questions, and your objective is to answer as many as possible. Don't fret if you get stuck; you can always move on to the next question."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "gratitude",
+      "patterns": [
+        "thank you",
+        "thanks",
+        "thanks for the help",
+        "i appreciate the help",
+        "thank for the support",
+        "i am grateful for your service",
+        "i am grateful"
+      ],
+      "responses": [
+        "You're welcome!",
+        "You're most welcome!",
+        "No problem at all! Happy to help.",
+        "It's my pleasure to assist you!",
+        "Not a problem! I'm here to support you.",
+        "You're absolutely welcome! I'm glad I could be of help.",
+        "You're very welcome! If you have any more questions, feel free to ask.",
+        "Don't mention it! I'm always here to lend a hand.",
+        "Anytime! I'm here 24/7 to assist you.",
+        "You're welcome! If there's anything else you need assistance with, just let me know.",
+        "You're welcome! Remember, I'm here to help you anytime you need it.",
+        "It's my pleasure to be of service! Let me know if there's anything else I can do for you.",
+        "No worries! Helping you is what I'm here for.",
+        "You're welcome! I'm delighted I could be of assistance to you.",
+        "It's no trouble at all! Helping you is my priority.",
+        "You're welcome! I'm grateful to be able to support you in your needs."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "apologies",
+      "patterns": [
+        "thats wrong",
+        "looks like that is wrong",
+        "apologies",
+        "thats not nice to say",
+        "thats inappropriate",
+        "that is not right"
+      ],
+      "responses": [
+        "I'm sorry for the inconvenience.",
+        "I apologize for any inconvenience caused.",
+        "Sorry about that.",
+        "Apologies for the confusion.",
+        "I'm sorry if I misunderstood.",
+        "I apologize if I made a mistake.",
+        "Sorry, I'll try to do better next time."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "jokes",
+      "patterns": [
+        "joke",
+        "can you tell me a joke",
+        "give me a joke",
+        "say something funny",
+        "funny",
+        "what is a joke"
+      ],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything!",
+        "Why did the bicycle fall over? Because it was two-tired!",
+        "What do you call a fish with no eyes? Fsh!",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "What do you call fake spaghetti? An impasta!",
+        "Why did the tomato turn red? Because it saw the salad dressing!",
+        "What's the best time to go to the dentist? Tooth-hurty!"
       ],
       "context_set": ""
     },
