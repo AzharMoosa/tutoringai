@@ -2,7 +2,7 @@
   {
     "type": "addition",
     "category": "arithmetic",
-    "text": "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
+    "text": "John has 5 apples and his friend gives him 3 more. How many apples does John have now?"
   },
   {
     "type": "addition",
@@ -12,7 +12,7 @@
   {
     "type": "addition",
     "category": "arithmetic",
-    "text": "Joe bought 6 pencils from the store and his sister gave him 4 additional pencils. How many pencils does Joe have in total?"
+    "text": "Joe bought 6 pencils from the store and his sister gives him 4 additional pencils. How many pencils does Joe have in total?"
   },
   {
     "type": "addition",
@@ -32,22 +32,12 @@
   {
     "type": "addition",
     "category": "arithmetic",
-    "text": "Mary had 7 stickers, and her friend gave her 9 more stickers. How many stickers does Mary have in total?"
+    "text": "Mary had 7 stickers, and her friend gives her 9 more stickers. How many stickers does Mary have in total?"
   },
   {
     "type": "addition",
     "category": "arithmetic",
     "text": "There are 18 marbles in a jar, and 6 more marbles are added to it. How many marbles are there in the jar now?"
-  },
-  {
-    "type": "addition",
-    "category": "arithmetic",
-    "text": "Peter had £10 in his wallet, and his father gave him £15 more. How much money does Peter have now?"
-  },
-  {
-    "type": "addition",
-    "category": "arithmetic",
-    "text": "A car has traveled 50 kilometers, and then it travels an additional 30 kilometers. How far has the car traveled in total?"
   },
   {
     "type": "addition",
@@ -62,7 +52,7 @@
   {
     "type": "subtraction",
     "category": "arithmetic",
-    "text": "There are 25 birds that are currently sitting on a tree. It starts to rain and 10 of them fly away. How many birds are there left on the tree?"
+    "text": "There are 25 birds that are currently sitting on a tree. It starts to rain and 10 of them leave. How many birds are there left on the tree?"
   },
   {
     "type": "subtraction",
@@ -88,11 +78,6 @@
     "type": "subtraction",
     "category": "arithmetic",
     "text": "A toy box contains 40 toys, and 5 of them are taken out. How many toys are left in the box?"
-  },
-  {
-    "type": "subtraction",
-    "category": "arithmetic",
-    "text": "John had £100, but he spent £45. How much money does John have now?"
   },
   {
     "type": "subtraction",

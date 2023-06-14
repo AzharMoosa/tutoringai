@@ -71,9 +71,12 @@ class MathsQuestions:
     def __randomize_numbers(text: str):
         numbers = re.findall(r'\d+', text)
 
-        for number in numbers:
-            new_number = str(random.randint(1, 20))
-            text = text.replace(number, new_number)
+        new_numbers = [random.randint(1, 10) for _ in range(len(numbers))]
+
+        new_numbers.sort(reverse=True)
+
+        for number, new_number in zip(numbers, new_numbers):
+            text = text.replace(number, str(new_number))
 
         return text
 
@@ -87,6 +90,8 @@ class MathsQuestions:
             parsed_text = MathsQuestions.__randomize_numbers(text)
             question = MathsQuestions.normalise_numbers(parsed_text)
             answer = SolvingEngine.solve(parsed_text, template["type"])
+            if answer < 0:
+                continue
             # Replace Names
             for name in template_info["names"]:
                 question = re.sub(name, names.get_first_name(), question, flags=re.IGNORECASE)
@@ -117,7 +122,7 @@ if __name__ == "__main__":
     template =   {
     "type": "addition",
     "category": "arithmetic",
-    "text": "John has 5 apples and his friend gave him 3 more. How many apples does John have now?"
+    "text": "John has 5 apples and his friend gives him 3 more. How many apples does John have now?"
     }
     questions = MathsQuestions.generate_questions(template, 2)
     for question in questions:

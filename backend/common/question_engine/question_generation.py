@@ -59,7 +59,7 @@ class QuestionGenerator:
         return [question_set for question_set in question_bank if question_set["category"] == category]
     
     @staticmethod
-    def __generate_question_set_by_category(t: str, room_id: str, num_questions: int = 9):
+    def __generate_question_set_by_category(t: str, room_id: str, num_questions: int = 4):
         t = t.strip()
         db = client["ChatRooms"]
         all_chatrooms = db["all_chatrooms"]
@@ -174,5 +174,5 @@ class QuestionGenerator:
         return generated_questions
     
     @staticmethod
-    def retrieve_question_set_by_category(t: str, room_id: str, num_questions: int = 9):
+    def retrieve_question_set_by_category(t: str, room_id: str, num_questions: int = 4):
         return QuestionGenerator.__generate_question_set_by_category(t, room_id, num_questions)
