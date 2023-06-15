@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner_lowercase }}/tutoring-ai:latest
+  IMAGE_NAME: ${{ secrets.USER_LOWERCASE }}/tutoring-ai:latest
 
 jobs:
   publish:
