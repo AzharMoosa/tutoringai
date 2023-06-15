@@ -58,6 +58,8 @@ venv_old/
 
 wandb/
 
+docker-compose.yml
+
 backend/common/datasets/train.json
 backend/common/datasets/validation.json
 backend/common/datasets/**/*.csv
