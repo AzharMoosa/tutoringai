@@ -8,10 +8,8 @@ const Footer = () => (
       <div className="footer-left">
         <Title />
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel
-          vestibulum ante. Vivamus aliquet a libero ut cursus. Mauris
-          ullamcorper posuere ex non ultricies. Aliquam congue mi finibus
-          pharetra finibus.
+          Get started learning mathematics today with the ultimate intelligent
+          tutoring chatbot.
         </p>
       </div>
       <div className="footer-right">

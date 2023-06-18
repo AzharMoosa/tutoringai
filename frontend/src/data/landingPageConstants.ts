@@ -49,37 +49,37 @@ export const aboutBoxInfo: Array<AboutInfo> = [
     title: 'Intelligent Tutoring Chatbot',
     icon: 'robot',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Built using a large language model and leverages advanced AI capabilities to provide personalised educational support.'
   },
   {
-    title: 'Intelligent Tutoring Chatbot',
-    icon: 'robot',
+    title: 'Mathematics',
+    icon: 'calculator',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Equipped with mathematical knowledege which uses state-of-the-art deep-learning techniques to tutor a variety of different topics.'
   },
   {
-    title: 'Intelligent Tutoring Chatbot',
-    icon: 'robot',
+    title: 'Feedback',
+    icon: 'comment-dots',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Recieve feedback on areas of strengths and weaknesses to improve your understanding and knowledge about mathematics.'
   },
   {
-    title: 'Intelligent Tutoring Chatbot',
-    icon: 'robot',
+    title: 'Personalised Tutoring',
+    icon: 'person-chalkboard',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Trained using tutoring principles applied by human tutors, receive a personalised tutoring experience tailored to your needs.'
   },
   {
-    title: 'Intelligent Tutoring Chatbot',
-    icon: 'robot',
+    title: 'Assessment Mode',
+    icon: 'clipboard-list',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Test your current knowledge using the assessment mode to understand what areas of mathematics you require assistance on.'
   },
   {
-    title: 'Intelligent Tutoring Chatbot',
-    icon: 'robot',
+    title: 'Revision Mode',
+    icon: 'calendar-day',
     textContent:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet elit eget est ultricies.'
+      'Enhance your current knowledege using the revision mode by tackling new mathematical problems and working with the M.A.R.C to solve them.'
   }
 ];
 

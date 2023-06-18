@@ -32,9 +32,8 @@ const Home = () => {
             <div className="home-left">
               <h1>M.A.R.C</h1>
               <h3>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                nec mi est. Cras lorem diam, feugiat ut aliquam eu, egestas et
-                libero.
+                An intelligent tutoring chatbot to help you revise mathematics
+                and assess your understanding.
               </h3>
               <div className="button-layout">
                 <Link to="/login">
