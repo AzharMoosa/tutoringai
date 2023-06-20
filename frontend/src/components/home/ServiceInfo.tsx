@@ -9,10 +9,7 @@ const ServiceInfo = ({
   border: boolean;
 }) => {
   const ServiceInfoContent = (
-    <div
-      style={{ marginLeft: `${info.flipped ? '4rem' : '0rem'}` }}
-      className="service-info-content"
-    >
+    <div className="service-info-content">
       <h2>{info.title}</h2>
       <p>{info.description}</p>
       <div className="service-info-boxes">
@@ -28,12 +25,9 @@ const ServiceInfo = ({
     </div>
   );
 
-  const ServiceInfoImage = <div className="service-info-image"></div>;
-
   return (
     <div className={`service-info ${border && 'service-info-border'}`}>
-      {info.flipped ? ServiceInfoImage : ServiceInfoContent}
-      {info.flipped ? ServiceInfoContent : ServiceInfoImage}
+      {ServiceInfoContent}
     </div>
   );
 };

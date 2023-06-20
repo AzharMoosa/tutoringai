@@ -87,16 +87,16 @@ export const serviceBoxInfo: Array<ServiceDetails> = [
   {
     title: 'Revision',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus. Vivamus viverra, urna et rhoncus luctus, libero dolor dapibus diam, et pulvinar justo metus sit amet tellus. Suspendisse eleifend, lacus ac molestie accumsan, neque nunc egestas tellus, luctus consectetur lorem quam sit amet nisi.',
+      'Revision mode is a feature designed to help users reinforce their understanding of key concepts. When activated, M.A.R.C presents targeted exercises and questions to the users, tailored to their individual learning needs. The user receives immediate feedback and guidance to address any mistakes or misconceptions.',
     boxOne: {
-      title: 'Heading One',
+      title: 'Reinforcing Understanding',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus'
+        'By actively practicing and solving problems, users can deepen their comprehension and gain confidence in their mathematical abilities. The chatbot provides timely feedback, guiding users to correct any mistakes or misconceptions, and encourages them to engage in meaningful revision.'
     },
     boxTwo: {
-      title: 'Heading Two',
+      title: 'Active Learning and Mastery',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus'
+        'Through interactive exercises and challenges, users actively apply their knowledge, solve problems, and improve their problem-solving abilities. M.A.R.C offers immediate feedback, allowing users to identify areas of improvement and refine their approaches.'
     },
     image: '',
     flipped: false
@@ -104,16 +104,16 @@ export const serviceBoxInfo: Array<ServiceDetails> = [
   {
     title: 'Assessment',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus. Vivamus viverra, urna et rhoncus luctus, libero dolor dapibus diam, et pulvinar justo metus sit amet tellus. Suspendisse eleifend, lacus ac molestie accumsan, neque nunc egestas tellus, luctus consectetur lorem quam sit amet nisi.',
+      "Assessment mode is used to evaluate user' knowledge and skills. It presents questions and exercises to assess their understanding of mathematical concepts and their ability to apply them. Users receive immediate feedback on their answers, highlighting correct solutions and explaining any mistakes. This helps users identify areas where they need improvement and enhances their mathematical reasoning. M.A.R.C also provides performance reports that summarize users' progress, showing their strengths and areas that need more attention.",
     boxOne: {
-      title: 'Heading One',
+      title: 'Checking Knowledge and Progress',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus'
+        "Through various quizzes, M.A.R.C assesses users' understanding of mathematical concepts and measures their progress over time. Users are presented with questions that test their comprehension and application of mathematical principles."
     },
     boxTwo: {
-      title: 'Heading Two',
+      title: 'Feedback',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor tortor vitae neque congue luctus. Donec sed elit nec lacus malesuada ornare. Sed non condimentum turpis. Vivamus imperdiet vel odio eget luctus'
+        'After users completes these assessments, M.A.R.C provides them with valuable feedback on their performance. This feedback includes explanations for correct solutions and guidance on any errors made. By understanding their mistakes, users can gain clarity, correct misconceptions, and deepen their understanding of mathematical concepts.'
     },
     image: '',
     flipped: true
