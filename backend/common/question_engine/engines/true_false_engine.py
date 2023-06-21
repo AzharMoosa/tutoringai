@@ -219,7 +219,3 @@ class TrueOrFalseEngine:
             sentence)) for sentence in generated_sentences]
 
         return false_options
-
-
-if __name__ == "__main__":
-    TrueOrFalseEngine.generate_false_options("John, Joe, Sarah are in the park playing football and enjoying the sunny weather.")

@@ -117,13 +117,3 @@ class MathsQuestions:
             questions.append([(question, answer) for question in res])
 
         return questions
-
-if __name__ == "__main__":
-    template =   {
-    "type": "addition",
-    "category": "arithmetic",
-    "text": "John has 5 apples and his friend gives him 3 more. How many apples does John have now?"
-    }
-    questions = MathsQuestions.generate_questions(template, 2)
-    for question in questions:
-        print(question)

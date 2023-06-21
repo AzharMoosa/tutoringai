@@ -90,7 +90,3 @@ class KeywordExtraction:
                 keywords.append(keyword)
         
         return keywords[:min(top, len(keywords))]
-
-
-if __name__ == "__main__":
-    print(KeywordExtraction.get_keywords("Different fields of science use the term matter in different, and sometimes incompatible, ways. Some of these ways are based on loose historical meanings, from a time when there was no reason to distinguish mass and matter. As such, there is no single universally agreed scientific meaning of the word \"matter\". Scientifically, the term \"mass\" is well-defined, but \"matter\" is not. Sometimes in the field of physics \"matter\" is simply equated with particles that exhibit rest mass (i.e., that cannot travel at the speed of light), such as quarks and leptons. However, in both physics and chemistry, matter exhibits both wave-like and particle-like properties, the so-called wave–particle duality."))     

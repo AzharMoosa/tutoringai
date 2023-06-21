@@ -2,20 +2,18 @@ from typing import Tuple, List
 import torch
 from backend.common.question_engine.engines.keyword_extraction_engine import KeywordExtraction
 from backend.common.question_engine.engines.summarization_engine import TextSummarization
-from transformers import T5ForConditionalGeneration, T5Tokenizer
 from sense2vec import Sense2Vec
 import random
 from rapidfuzz.distance import Levenshtein
 from backend.common.question_engine.engines.mcq_engine import MCQEngine
 import nltk
 import os
-nltk.download('omw-1.4')
+import traceback
+import requests
+from dotenv import load_dotenv
+load_dotenv()
 
-model = T5ForConditionalGeneration.from_pretrained('ramsrigouthamg/t5_squad_v1')
-tokenizer = T5Tokenizer.from_pretrained('ramsrigouthamg/t5_squad_v1')
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Device {device}")
-model = model.to(device)
+nltk.download('omw-1.4')
 
 __location__ = os.path.realpath(os.path.join(
     os.getcwd(), os.path.dirname(__file__)))
@@ -24,26 +22,16 @@ s2v = Sense2Vec().from_disk(f"{__location__}/s2v")
 
 class TextToQuestion:
     @staticmethod
-    def __get_input_ids_attention_mask(text: str):
-        """
-        The input text is first preprocessed and encoded
-        using the tokenizer. Then the input ids and 
-        attention mask is extracted.
-
-        Arguments:
-            text {str} The input text to be encoded
-
-        Returns:
-            {tuple()} The input ids and the attention mask
-        """
-        max_length = 384
-        encoder = tokenizer.encode_plus(text,
-                                        max_length=max_length,
-                                        pad_to_max_length=False,
-                                        truncation=True,
-                                        return_tensors="pt").to(device)
-
-        return encoder["input_ids"], encoder["attention_mask"]
+    def generate_question_api(context: str, answer: str):
+        BASE_URL = os.getenv("MARC_API_URI")
+        API_URL = f"{BASE_URL}/generate-question"
+        payload = { "context": str(context), "answer": str(answer) }
+        try:
+            response = requests.post(API_URL, json=payload).json()
+            return response["question"]
+        except:
+            traceback.print_exc()
+            return []
 
     @staticmethod
     def __filter_same_sense(sense: str, words: List[str]) -> List[str]:
@@ -142,28 +130,10 @@ class TextToQuestion:
         question_list = []
 
         for keyword in keywords:
-            text = f"context: {summarized_text} answer: {keyword}"
-            input_ids, attention_mask = TextToQuestion.__get_input_ids_attention_mask(text)
-            
-            model_output = model.generate(input_ids=input_ids,
-                                      attention_mask=attention_mask,
-                                      early_stopping=True,
-                                      num_beams=5,
-                                      num_return_sequences=1,
-                                      no_repeat_ngram_size=2,
-                                      max_length=72)
-        
-            decoded_output = [tokenizer.decode(id, skip_special_tokens=True) for id in model_output]
-            question = decoded_output[0].replace("question:", "").strip()
+            questions = TextToQuestion.generate_question_api(summarized_text, keyword)
+            if not questions:
+                continue
+            question = random.choice(questions).replace("question:", "").strip()
             question_list.append((question, keyword))
 
         return question_list
-    
-
-if __name__ == "__main__":
-    a = TextToQuestion.get_question("In 1066, Duke William II of Normandy conquered England killing King Harold II at the Battle of Hastings. The invading Normans and their descendants replaced the Anglo-Saxons as the ruling class of England. The nobility of England were part of a single Normans culture and many had lands on both sides of the channel. Early Norman kings of England, as Dukes of Normandy, owed homage to the King of France for their land on the continent. They considered England to be their most important holding (it brought with it the title of King—an important status symbol).")
-    print(a)
-    # b = TextToQuestion.get_mcq_question("A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his nap, the Lion laid his huge paw angrily on the tiny creature to kill her.  \"Spare me!\" begged the poor Mouse. \"Please let me go and some day I will surely repay you.\"  The Lion was much amused to think that a Mouse could ever help him. But he was generous and finally let the Mouse go.  Some days later, while stalking his prey in the forest, the Lion was caught in the toils of a hunter's net. Unable to free himself, he filled the forest with his angry roaring. The Mouse knew the voice and quickly found the Lion struggling in the net. Running to one of the great ropes that bound him, she gnawed it until it parted, and soon the Lion was free. \"You laughed when I said I would repay you,\" said the Mouse. \"Now you see that even a Mouse can help a Lion.")
-    # print(b)
-    # c = TextToQuestion.get_mcq_question("John, Joe, Sarah are playing football. John has 5 apples and Joe has 2 apples. Joe gives 2 apples to John. Sarah has 9 apples. John gives 4 apples to Sarah. How many apples does John have?")
-    # print(c)

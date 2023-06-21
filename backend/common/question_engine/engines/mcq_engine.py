@@ -252,10 +252,3 @@ class MCQEngine:
             return [distractor[0] for distractor in filtered_distractors][1:]
         except:
             return s2v_distractors
-
-
-if __name__ == "__main__":
-    # print(MCQEngine.generate_distractors_wordnet("Dog"))
-    # print(MCQEngine.generate_distractors_conceptnet("Dog"))
-    # print(MCQEngine.generate_distractors_sense2vec("Dog"))
-    print(MCQEngine.generate_distractors_transformer("Dog"))
