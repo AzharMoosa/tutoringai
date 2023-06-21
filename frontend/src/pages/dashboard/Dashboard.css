@@ -18,3 +18,27 @@
     height: 300px;
     justify-content: space-between;
 }
+
+.dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+.pagination h5 {
+    cursor: pointer;
+}
+
+.previous-btn {
+    margin-right: auto;
+}
+
+.next-btn {
+    margin-left: auto;
+}
