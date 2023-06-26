@@ -90,8 +90,7 @@ class ResponseEngine:
     def generate_finish_answering_response(state, correct_answers, additional_message: str = "", incorrect_questions = []):
         message = additional_message
         if state["mode"] == ASSESSMENT_MODE:
-            score = state["correctAnswers"]
-            message += f"That's all for now. Your final score is {score}. "
+            message += f"That's all for now. "
             if len(incorrect_questions) == 0:
                 message += f"{MARCDialogue.get_praise_response()}"
             else:
